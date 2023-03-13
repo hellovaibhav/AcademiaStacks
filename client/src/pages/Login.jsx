@@ -1,6 +1,19 @@
-import React from "react";
+import React , {useState} from "react";
 import { Link } from "react-router-dom";
 const Login = () => {
+//useStates to hold input 
+const [data, setdata] = useState({
+  username:"",
+  password:""
+})
+function handleChange(e){
+  const newdata ={ ...data};
+  newdata[e.target.id] = e.target.value;
+  setdata(newdata);
+  console.log(newdata);
+}
+
+
   return (
     <div className="min-h-[86.2vh] flex items-center justify-center ">
       <div className="bg-gray-800 flex flex-col justify-around w-[24rem] h-[28rem] py-10">
@@ -14,14 +27,18 @@ const Login = () => {
         >
           <input
             type="text"
+            id="username"
+            value={data.username}
+            onChange={(e)=>handleChange(e)}
             placeholder="Username"
             className="min-h-[2rem] rounded p-2"
           />
           <input
             type="password"
-            name=""
             placeholder="Password"
-            id=""
+            id="password"
+            value={data.password}
+            onChange={(e)=>handleChange(e)}
             className="min-h-[2rem] rounded p-2"
           />
           <Link to="/register" className="text-blue-600 text-sm">Register</Link>
