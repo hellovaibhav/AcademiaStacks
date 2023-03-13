@@ -5,6 +5,11 @@ const materialSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    materialLink:{
+        type:String,
+        required:true,
+        unique:true
+    },
     subject: {
         type: String,
         required: true,
