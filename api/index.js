@@ -1,16 +1,21 @@
 import express from "express";
-const bodyparser = require("body-parser");
-const mongoose = require("mongoose");
-const _=require("lodash");
-const cookieParser = require("cookie-parser");
-const bcrypt = require("bcrypt");
+import bodyparser from "body-parser";
+import mongoose from "mongoose";
+import _ from "lodash";
+import cookieParser from "cookie-parser";
+import bcrypt from "bcrypt";
 import dotenv from 'dotenv'
-dotenv.config();
-const jsonwebtoken=require("jsonwebtoken");
-mongoose.set('strictQuery', false);
 
 
 const app = express();
+
+
+dotenv.config();
+const jsonwebtoken = require("jsonwebtoken");
+mongoose.set('strictQuery', false);
+
+
+
 app.use(cookieParser());
 
 app.set('view engine', 'ejs');
@@ -24,24 +29,24 @@ const password = 'oe3im3io2r3o2'
 const rounds = 10
 
 bcrypt.hash(password, rounds, (err, hash) => {
-  if (err) {
-    console.error(err)
-    return
-  }
-  console.log(hash)
+    if (err) {
+        console.error(err)
+        return
+    }
+    console.log(hash)
 })
 app.post("/", function (req, res) {
 
     res.send("POST Request Called");
-  
-  });
+
+});
 
 
 
-app.get("/",function(req,res){
+app.get("/", function (req, res) {
     res.send("GET Request Called");
 })
 
 app.listen(3000, function () {
-  console.log("server started at port 3000")
+    console.log("server started at port 3000")
 })
