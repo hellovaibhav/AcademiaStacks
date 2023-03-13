@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 const Feedback = () => {
   return (
-    <div className="min-h-[86.2vh] flex items-center justify-center ">
+    <div className="min-h-[85.4vh] flex items-center justify-center ">
       <div className="bg-red-300 h-[35rem] rounded-3xl w-[70rem]">
         <form
           action=""
