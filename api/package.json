@@ -1,0 +1,14 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "academia stacks backend files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hacktivators+",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^7.0.1"
+  }
+}
