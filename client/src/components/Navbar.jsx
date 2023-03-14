@@ -25,8 +25,7 @@ const Navbar = () => {
         </motion.p>
       </div>
       <motion.div className="w-[60vw] text-white h-[3.8rem] flex items-center justify-around rounded-bl-[5rem] pl-10  bg-blue-400"
-      initial={{x:100,scale:1}}
-      animate={{x:0,scale:1 ,transition:{duration:1 ,delay:1}}}
+      
       >
         <motion.p
           initial={{ y: -50, opacity: 0 }}
@@ -57,7 +56,7 @@ const Navbar = () => {
             opacity: 1,
             transition: {
               duration: 1,
-              delay: 0,
+              delay: 0.1,
               type: "spring",
               stiffness: 200,
             },
@@ -80,7 +79,7 @@ const Navbar = () => {
             opacity: 1,
             transition: {
               duration: 1,
-              delay: 0,
+              delay: 0.2,
               type: "spring",
               stiffness: 200,
             },
@@ -103,7 +102,7 @@ const Navbar = () => {
             opacity: 1,
             transition: {
               duration: 1,
-              delay: 0,
+              delay: 0.3,
               type: "spring",
               stiffness: 200,
             },
@@ -120,7 +119,7 @@ const Navbar = () => {
             opacity: 1,
             transition: {
               duration: 1,
-              delay: 0,
+              delay: 0.4,
               type: "spring",
               stiffness: 200,
             },
