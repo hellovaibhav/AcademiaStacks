@@ -1,52 +1,44 @@
 import express from "express";
-import bodyparser from "body-parser";
+import dotenv from "dotenv";
 import mongoose from "mongoose";
-import _ from "lodash";
-import cookieParser from "cookie-parser";
-import bcrypt from "bcrypt";
-import dotenv from 'dotenv'
 
+// route imports
+import authRoute from "./routes/auth.js"
+import usersRoute from "./routes/users.js"
+import materialsRoute from "./routes/materials.js"
+import feedbacksRoute from "./routes/feedbacks.js"
 
 const app = express();
 
-
 dotenv.config();
-const jsonwebtoken = require("jsonwebtoken");
-mongoose.set('strictQuery', false);
 
 
+// mongodb connection
 
-app.use(cookieParser());
-
-app.set('view engine', 'ejs');
-app.use(bodyparser.urlencoded({ extended: true }));
-app.use(express.static("public"));
-//mongoose.connect("mongodb+srv://NISHANT-KUMAR:Nishant@cluster0.inlg3l8.mongodb.net/todolistDB", { useNewUrlparser: true });
-
-
-//BCRYPT
-const password = 'oe3im3io2r3o2'
-const rounds = 10
-
-bcrypt.hash(password, rounds, (err, hash) => {
-    if (err) {
-        console.error(err)
-        return
+const connect = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO);
+        console.log("connected to Database");
+    } catch (error) {
+        throw error;
     }
-    console.log(hash)
-})
-app.post("/", function (req, res) {
+};
 
-    res.send("POST Request Called");
-
+mongoose.connection.on("disconnected", () => {
+    console.log("Database is disconnected");
 });
 
 
 
-app.get("/", function (req, res) {
-    res.send("GET Request Called");
-})
+// middlewares
 
-app.listen(3000, function () {
-    console.log("server started at port 3000")
-})
+app.use("/api/auth", authRoute);
+app.use("/api/users", usersRoute);
+app.use("/api/materials",materialsRoute);
+app.use("/api/feedbacks", feedbacksRoute);
+
+
+app.listen(8800, () => {
+    connect()
+    console.log("connected to backend")
+});
