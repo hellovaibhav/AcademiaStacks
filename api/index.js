@@ -41,7 +41,23 @@ app.use("/api/materials", materialsRoute);
 app.use("/api/feedbacks", feedbacksRoute);
 
 
+app.use((err,req,res,next)=>{
+
+    const errorStatus = err.status || 500;
+    const errorMessage = err.message || "Something went Wrong !";
+
+
+    return res.status(errorStatus).json({
+        "success":false,
+        "status":errorStatus,
+        "message":errorMessage,
+        "stack":err.stack
+
+    });
+});
+
+
 app.listen(8800, () => {
-    connect()
-    console.log("connected to backend")
+    connect();
+    console.log("connected to backend");
 });
