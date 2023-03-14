@@ -13,6 +13,92 @@
   outline-width: 2px;
   
 }
+.customBgColor{
+  height: 100vh;
+  width: auto;
+  animation : changeBg 10s linear infinite ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -3.8rem;
+}
+.customBgColor2{
+  height: 100vh;
+  width: auto;
+  animation : changeBg2 10s linear infinite ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -3.8rem;
+}
+@keyframes changeBg2{
+  100%{
+    background-color: rgb(244, 244, 150);
+  }
+  90%{
+    background-color: rgb(255, 255, 106);
+  }
+  80%{
+    background-color: rgb(252, 252, 54);
+  }
+  70%{
+    background-color: rgb(255, 255, 23);
+  }
+  60%{
+    background-color: rgb(252, 252, 8);
+  }
+  50%{
+    background-color: rgb(149, 249, 0);
+  }
+  40%{
+    background-color: rgb(167, 252, 38);
+  }
+  30%{
+    background-color: rgb(188, 255, 88);
+  }
+  20%{
+  }
+  10%{
+    background-color: rgb(252, 252, 54);
+  }
+  0%{
+    background-color: rgb(255, 255, 106);
+  }
+}
+@keyframes changeBg{
+  0%{
+    background-color: rgb(244, 244, 150);
+  }
+  10%{
+    background-color: rgb(255, 255, 106);
+  }
+  20%{
+    background-color: rgb(252, 252, 54);
+  }
+  30%{
+    background-color: rgb(255, 255, 23);
+  }
+  40%{
+    background-color: rgb(252, 252, 8);
+  }
+  50%{
+    background-color: rgb(149, 249, 0);
+  }
+  60%{
+    background-color: rgb(167, 252, 38);
+  }
+  70%{
+    background-color: rgb(188, 255, 88);
+  }
+  80%{
+  }
+  90%{
+    background-color: rgb(252, 252, 54);
+  }
+  100%{
+    background-color: rgb(255, 255, 106);
+  }
+}
 
 
 @tailwind base;

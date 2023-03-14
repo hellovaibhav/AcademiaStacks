@@ -24,9 +24,9 @@ const Navbar = () => {
           </Link>
         </motion.p>
       </div>
-      <motion.div className="w-[60vw] text-white h-[3.8rem] flex items-center justify-around rounded-bl-[5rem] pl-10  bg-[#22A39F]"
-      initial={{y:-10 , x:10}}
-      animate={{y:0 , x:0 ,transition:{duration:1}}}
+      <motion.div className="w-[60vw] text-white h-[3.8rem] flex items-center justify-around rounded-bl-[5rem] pl-10  bg-blue-400"
+      initial={{x:100,scale:1}}
+      animate={{x:0,scale:1 ,transition:{duration:1 ,delay:1}}}
       >
         <motion.p
           initial={{ y: -50, opacity: 0 }}
@@ -41,7 +41,7 @@ const Navbar = () => {
             },
           }}
           // whileHover={{ scale: 1.2, transition: { duration: 0.4 } }}
-          whileTap={{scale:0.9 , transition: { duration: 0.3 }}}
+          whileTap={{scale:0.7 , transition: { duration: 0.3 }}}
         >
           <NavLink
             to="/material"
@@ -63,7 +63,7 @@ const Navbar = () => {
             },
           }}
           // whileHover={{ scale: 1.2, transition: { duration: 0.4 } }}
-          whileTap={{scale:0.9 , transition: { duration: 0.3 }}}
+          whileTap={{scale:0.7 , transition: { duration: 0.3 }}}
 
         >
           <NavLink
@@ -86,7 +86,7 @@ const Navbar = () => {
             },
           }}
           // whileHover={{ scale: 1.2, transition: { duration: 0.4 } }}
-          whileTap={{scale:0.9 , transition: { duration: 0.3 }}}
+          whileTap={{scale:0.7 , transition: { duration: 0.3 }}}
 
         >
           <NavLink
@@ -109,7 +109,7 @@ const Navbar = () => {
             },
           }}
           // whileHover={{ scale: 1.2, transition: { duration: 0.4 } }}
-          whileTap={{scale:0.9 , transition: { duration: 0.3 }}}
+          whileTap={{scale:0.7 , transition: { duration: 0.3 }}}
 
         ></motion.p>
 
@@ -126,7 +126,7 @@ const Navbar = () => {
             },
           }}
           // whileHover={{ scale: 1.2, transition: { duration: 0.4 } }}
-          whileTap={{scale:0.9 , transition: { duration: 0.3 }}}
+          whileTap={{scale:0.7 , transition: { duration: 0.3 }}}
 
         >
           <NavLink
