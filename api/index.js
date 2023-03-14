@@ -32,9 +32,12 @@ mongoose.connection.on("disconnected", () => {
 
 // middlewares
 
+app.use(express.json());
+
+
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
-app.use("/api/materials",materialsRoute);
+app.use("/api/materials", materialsRoute);
 app.use("/api/feedbacks", feedbacksRoute);
 
 
