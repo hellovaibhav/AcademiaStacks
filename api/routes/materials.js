@@ -3,7 +3,11 @@ import Material from "../models/Material.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+
+// crete new material
+
+
+router.post("/", async (req, res) => {
 
     const newMaterial = new Material(req.body);
 
@@ -13,8 +17,59 @@ router.get("/", async (req, res) => {
     } catch (err) {
         res.status.json(err);
     }
-    
+
 });
 
+
+// update the uploaded material
+
+router.put("/:id", async (req, res) => {
+
+
+    try {
+        const updateMaterial = await Material.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
+        res.status(200).json(updateMaterial);
+    } catch (err) {
+        res.status.json(err);
+    }
+
+});
+
+// delete a selected material
+
+router.delete("/:id", async (req, res) => {
+
+    try {
+        await Material.findByIdAndDelete(req.params.id);
+        res.status(200).json("Material Deleted");
+    } catch (err) {
+        res.status.json(err);
+    }
+
+});
+
+// get a particular material
+
+router.get("/:id", async (req, res) => {
+
+
+    try {
+        const material = await Material.findById(req.params.id);
+        res.status(200).json(material);
+    } catch (err) {
+        res.status.json(err);
+    }
+});
+
+// get all material
+router.get("/", async (req, res) => {
+
+    try {
+        const materials = await Material.find();
+        res.status(200).json(materials);
+    } catch (err) {
+        res.status.json(err);
+    }
+});
 
 export default router
