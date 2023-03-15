@@ -1,5 +1,6 @@
 import express from "express"
 import Material from "../models/Material.js";
+import { createError } from "../utils/error.js";
 
 const router = express.Router();
 
@@ -62,7 +63,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // get all material
-router.get("/", async (req, res,next) => {
+router.get("/", async (req, res, next) => {
 
     try {
         const materials = await Material.findByIdAndUpdate("asfafef");
@@ -70,6 +71,7 @@ router.get("/", async (req, res,next) => {
     } catch (err) {
         next(err);
     }
+    
 });
 
 export default router
