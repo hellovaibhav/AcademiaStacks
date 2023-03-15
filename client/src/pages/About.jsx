@@ -11,116 +11,19 @@ const About = () => {
     <motion.div className="customBgColor flex-col justify-evenly ">
       <div className="drop-shadow-xl overflow-y-hidden flex justify-center items-center flex-col px-[3rem] py-[12rem] customBgColor2 rounded-2xl content w-[70%] h-[40%] mt-24">
         <AnimatePresence>
-          {vivek && (
-            <>
-              {" "}
-              <motion.div
-                className="parent  flex justify-evenly w-[100%] px-20 items-center"
-                initial={{ opacity: 0, y: -100 }}
-                animate={{ opacity: 1, y: 0, transition: { delay: 0.5 } }}
-                exit={{ opacity: 0, y: 100, type:"spring" }}
-              >
-                <div className="photo w-[40%]">
-                  <img
-                    src={img}
-                    alt="hat bkl"
-                    className="h-52 w-52 rounded-full drop-shadow-2xl"
-                  />
-                </div>
-                <div className="content w-[60%] flex flex-col items-center justify-center text-right">
-                  <p className="text-3xl font-medium text-gray-600 pb-2">
-                    Vivek Giri
-                  </p>
-                  <p className="text-xl font-normal pb-1">Dev</p>
-                  <p className="text-lg font-light ">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Optio itaque aliquid quod eaque quidem? Explicabo, nihil
-                    atque aliquid dolor minima deleniti odio adipisci iure nobis
-                    sed sunt numquam, fugiat porro officia molestias! In porro
-                    ratione ipsa ad. Ipsum, expedita necessitatibus.
-                  </p>
-                </div>
-              </motion.div>{" "}
-            </>
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {nishant && (
-            <>
-              {" "}
-              <motion.div
-                className="parent  flex justify-evenly w-[100%] px-20 items-center"
-                initial={{ opacity: 0, y: -100 }}
-                animate={{ opacity: 1, y: 0, transition: { delay: 0.5 } }}
-                exit={{ opacity: 0, y: 100, type:"spring" }}
-              >
-                <div className="photo w-[40%]">
-                  <img
-                    src={img}
-                    alt="hat bkl"
-                    className="h-52 w-52 rounded-full drop-shadow-2xl"
-                  />
-                </div>
-                <div className="content w-[60%] flex flex-col items-center justify-center text-right">
-                  <p className="text-3xl font-medium text-gray-600 pb-2">
-                    Nishant Kumar
-                  </p>
-                  <p className="text-xl font-normal pb-1">Dev</p>
-                  <p className="text-lg font-light ">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Optio itaque aliquid quod eaque quidem? Explicabo, nihil
-                    atque aliquid dolor minima deleniti odio adipisci iure nobis
-                    sed sunt numquam, fugiat porro officia molestias! In porro
-                    ratione ipsa ad. Ipsum, expedita necessitatibus.
-                  </p>
-                </div>
-              </motion.div>{" "}
-            </>
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {vaibhav && (
-            <>
-              {" "}
-              <motion.div
-                className="parent  flex justify-evenly w-[100%] px-20 items-center"
-                initial={{ opacity: 0, y: -100 }}
-                animate={{ opacity: 1, y: 0, transition: { delay: 0.5 } }}
-                exit={{ opacity: 0, y: 100 , type:"spring"}}
-              >
-                <div className="photo w-[40%]">
-                  <img
-                    src={img}
-                    alt="hat bkl"
-                    className="h-52 w-52 rounded-full drop-shadow-2xl"
-                  />
-                </div>
-                <div className="content w-[60%] flex flex-col items-center justify-center text-right">
-                  <p className="text-3xl font-medium text-gray-600 pb-2">
-                    Vaibhav Verma
-                  </p>
-                  <p className="text-xl font-normal pb-1">Dev</p>
-                  <p className="text-lg font-light ">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Optio itaque aliquid quod eaque quidem? Explicabo, nihil
-                    atque aliquid dolor minima deleniti odio adipisci iure nobis
-                    sed sunt numquam, fugiat porro officia molestias! In porro
-                    ratione ipsa ad. Ipsum, expedita necessitatibus.
-                  </p>
-                </div>
-              </motion.div>{" "}
-            </>
-          )}
-        </AnimatePresence>
-        <AnimatePresence>
           {saquib && (
             <>
               {" "}
               <motion.div
                 className="parent  flex justify-evenly w-[100%] px-20 items-center"
-                initial={{ opacity: 0, y: -100 }}
-                animate={{ opacity: 1, y: 0, transition: { delay: 0.5 } }}
-                exit={{ opacity: 0, y: 100 , type:"spring"}}
+                initial={{ opacity: 0, y: -100, scale: 0.5 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  transition: { delay: 0.5 },
+                }}
+                exit={{ opacity: 0, y: 100, type: "spring" }}
               >
                 <div className="photo w-[40%]">
                   <img
@@ -148,14 +51,138 @@ const About = () => {
           )}
         </AnimatePresence>
         <AnimatePresence>
+          {vaibhav && (
+            <>
+              {" "}
+              <motion.div
+                className="parent  flex justify-evenly w-[100%] px-20 items-center"
+                initial={{ opacity: 0, scale: 0.5, y: -100 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  transition: { delay: 0.5 },
+                }}
+                exit={{ opacity: 0, y: 100, type: "spring" }}
+              >
+                <div className="photo w-[40%]">
+                  <img
+                    src={img}
+                    alt="hat bkl"
+                    className="h-52 w-52 rounded-full drop-shadow-2xl"
+                  />
+                </div>
+                <div className="content w-[60%] flex flex-col items-center justify-center text-right">
+                  <p className="text-3xl font-medium text-gray-600 pb-2">
+                    Vaibhav Verma
+                  </p>
+                  <p className="text-xl font-normal pb-1">Dev</p>
+                  <p className="text-lg font-light ">
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Optio itaque aliquid quod eaque quidem? Explicabo, nihil
+                    atque aliquid dolor minima deleniti odio adipisci iure nobis
+                    sed sunt numquam, fugiat porro officia molestias! In porro
+                    ratione ipsa ad. Ipsum, expedita necessitatibus.
+                  </p>
+                </div>
+              </motion.div>{" "}
+            </>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {nishant && (
+            <>
+              {" "}
+              <motion.div
+                className="parent  flex justify-evenly w-[100%] px-20 items-center"
+                initial={{ opacity: 0, scale: 0.5, y: -100 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  transition: { delay: 0.5 },
+                }}
+                exit={{ opacity: 0, y: 100, type: "spring" }}
+              >
+                <div className="photo w-[40%]">
+                  <img
+                    src={img}
+                    alt="hat bkl"
+                    className="h-52 w-52 rounded-full drop-shadow-2xl"
+                  />
+                </div>
+                <div className="content w-[60%] flex flex-col items-center justify-center text-right">
+                  <p className="text-3xl font-medium text-gray-600 pb-2">
+                    Nishant Kumar
+                  </p>
+                  <p className="text-xl font-normal pb-1">Dev</p>
+                  <p className="text-lg font-light ">
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Optio itaque aliquid quod eaque quidem? Explicabo, nihil
+                    atque aliquid dolor minima deleniti odio adipisci iure nobis
+                    sed sunt numquam, fugiat porro officia molestias! In porro
+                    ratione ipsa ad. Ipsum, expedita necessitatibus.
+                  </p>
+                </div>
+              </motion.div>{" "}
+            </>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {vivek && (
+            <>
+              {" "}
+              <motion.div
+                className="parent  flex justify-evenly w-[100%] px-20 items-center"
+                initial={{ opacity: 0, scale: 0.5, y: -100 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  transition: { delay: 0.5 },
+                }}
+                exit={{ opacity: 0, y: 100, type: "spring" }}
+              >
+                <div className="photo w-[40%]">
+                  <img
+                    src={img}
+                    alt="hat bkl"
+                    className="h-52 w-52 rounded-full drop-shadow-2xl"
+                  />
+                </div>
+                <div className="content w-[60%] flex flex-col items-center justify-center text-right">
+                  <p className="text-3xl font-medium text-gray-600 pb-2">
+                    Vivek Giri
+                  </p>
+                  <p className="text-xl font-normal pb-1">Dev</p>
+                  <p className="text-lg font-light ">
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Optio itaque aliquid quod eaque quidem? Explicabo, nihil
+                    atque aliquid dolor minima deleniti odio adipisci iure nobis
+                    sed sunt numquam, fugiat porro officia molestias! In porro
+                    ratione ipsa ad. Ipsum, expedita necessitatibus.
+                  </p>
+                </div>
+              </motion.div>{" "}
+            </>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
           {provider && (
             <>
               {" "}
               <motion.div
                 className=" flex justify-evenly w-[100%] px-20 items-center"
-                initial={{ opacity: 0, y: -100 }}
-                animate={{ opacity: 1, y: 0, transition: { delay: 0.5 } }}
-                exit={{ opacity: 0, y: 100 , type:"spring"}}
+                initial={{ opacity: 0, scale: 0.5, y: -100 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: 0,
+                  transition: { delay: 0.5 },
+                }}
+                exit={{ opacity: 0, y: 100, type: "spring" }}
               >
                 <div className="w-[40%]">
                   <img
@@ -186,10 +213,10 @@ const About = () => {
         <motion.button
           className="bg-white w-[10rem] mx-6 px-6 py-2 text-xl hover:bg-blue-400 duration-300 hover:text-white hover:rounded-lg hover:drop-shadow-2xl"
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
-          whileHover={{ scale: 1.2, transition: { duration: 0.2 } }}
+          whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.1 }}
           onClick={() => {
             console.log("Saquib");
             setNishant(false);
@@ -203,11 +230,11 @@ const About = () => {
         </motion.button>
         <motion.button
           className="bg-white w-[10rem] mx-6 px-6 py-2 text-xl hover:bg-blue-400 duration-300 hover:text-white hover:rounded-lg hover:drop-shadow-2xl"
-          whileHover={{ scale: 1.2, transition: { duration: 0.2 } }}
+          whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.2, delay: 0.1 }}
+          transition={{ duration: 0.1, delay: 0.1 }}
           onClick={() => {
             console.log("vaibhav");
             setNishant(false);
@@ -221,11 +248,11 @@ const About = () => {
         </motion.button>
         <motion.button
           className="bg-white w-[10rem] mx-6 px-6 py-2 text-xl hover:bg-blue-400 duration-300 hover:text-white hover:rounded-lg hover:drop-shadow-2xl"
-          whileHover={{ scale: 1.2, transition: { duration: 0.2 } }}
+          whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.2, delay: 0.2 }}
+          transition={{ duration: 0.1, delay: 0.2 }}
           onClick={() => {
             console.log("nishant");
             setNishant(true);
@@ -239,11 +266,11 @@ const About = () => {
         </motion.button>
         <motion.button
           className="bg-white w-[10rem] mx-6 px-6 py-2 text-xl  hover:bg-blue-400 duration-300 hover:text-white hover:rounded-lg hover:drop-shadow-2xl"
-          whileHover={{ scale: 1.2, transition: { duration: 0.2 } }}
+          whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.2, delay: 0.3 }}
+          transition={{ duration: 0.1, delay: 0.3 }}
           onClick={() => {
             console.log("giri");
             setNishant(false);
@@ -257,11 +284,11 @@ const About = () => {
         </motion.button>
         <motion.button
           className="bg-white w-[10rem] mx-6 px-6 py-2 text-xl  hover:bg-blue-400 duration-300 hover:text-white hover:rounded-lg hover:drop-shadow-2xl"
-          whileHover={{ scale: 1.2, transition: { duration: 0.2 } }}
+          whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.2, delay: 0.4 }}
+          transition={{ duration: 0.1, delay: 0.4 }}
           onClick={() => {
             console.log("giri");
             setNishant(false);
