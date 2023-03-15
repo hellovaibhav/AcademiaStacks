@@ -30,7 +30,7 @@ router.put("/:id", async (req, res) => {
         const updateMaterial = await Material.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
         res.status(200).json(updateMaterial);
     } catch (err) {
-        res.status.json(err);
+        next(err);
     }
 
 });
@@ -43,7 +43,7 @@ router.delete("/:id", async (req, res) => {
         await Material.findByIdAndDelete(req.params.id);
         res.status(200).json("Material Deleted");
     } catch (err) {
-        res.status.json(err);
+        next(err);
     }
 
 });
@@ -57,18 +57,18 @@ router.get("/:id", async (req, res) => {
         const material = await Material.findById(req.params.id);
         res.status(200).json(material);
     } catch (err) {
-        res.status.json(err);
+        next(err);
     }
 });
 
 // get all material
-router.get("/", async (req, res) => {
+router.get("/", async (req, res,next) => {
 
     try {
-        const materials = await Material.find();
+        const materials = await Material.findByIdAndUpdate("asfafef");
         res.status(200).json(materials);
     } catch (err) {
-        res.status.json(err);
+        next(err);
     }
 });
 
