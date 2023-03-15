@@ -14,10 +14,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isAdmin: {
-        type: Boolean,
-        default: false
-    },
     branch: {
         type: String,
         required: true
@@ -25,8 +21,12 @@ const userSchema = new mongoose.Schema({
     batch: {
         type: Number,
         required: true
-    }
-}, { timestamp: true });
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
+}, { timestamps: true });
 
 
 export default mongoose.model("User", userSchema);
