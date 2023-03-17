@@ -11,8 +11,8 @@
 .active{
 padding: 0.65rem 2rem 0.65rem 2rem;
 border-radius: 0.75rem;
-color: white;
-background-color: rgb(96 165 250 );
+color: rgb(96 165 250 );
+background-color: white;
 }
 .customBgColor{
   width: auto;
