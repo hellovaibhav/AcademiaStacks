@@ -1,3 +1,4 @@
+
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import { createError } from "../utils/error.js";
@@ -56,4 +57,3 @@ export const login = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
