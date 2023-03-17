@@ -71,7 +71,7 @@ const About = () => {
               >
                 <div className="photo w-[60vw] md:w-[40vw]">
                   <img
-                    src="https://avatars.githubusercontent.com/u/82583704?v=4"
+                    src={img}
                     alt="hat bkl"
                     className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
                   />

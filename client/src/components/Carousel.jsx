@@ -21,7 +21,11 @@ const Carousel = () => {
   };
   return (
     <div className=" flex items-center justify-center w-[90vw] md:w-[60vw]">
-      <div className="content flex items-center justify-center  px-4 md:px-0">
+      <motion.div
+        className="content flex items-center justify-center  px-4 md:px-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { duration: 1 } }}
+      >
         <motion.button
           onClick={prevOne}
           className="relative left-[0.5rem] lg:h-[60vh] md:h-[40vh] w-[8vw] h-[26vh] flex items-center justify-center bg-blue-300 mx-2 py-1 rounded-l-lg"
@@ -30,7 +34,11 @@ const Carousel = () => {
         >
           <AiOutlineArrowLeft className="w-10 h-7" />
         </motion.button>
-        <img src={images[index]} alt="" className="md:h-[40vh] h-[26vh] lg:h-[60vh] w-[100vw] " />
+        <motion.img
+          src={images[index]}
+          alt=""
+          className="md:h-[40vh] h-[26vh] lg:h-[60vh] w-[100vw] bg-blue-400"
+        />
         <motion.button
           onClick={nextOne}
           className=" relative lg:h-[60vh] md:h-[40vh] w-[8vw] h-[26vh] right-[0.5rem] flex items-center justify-center bg-blue-300 mx-2 py-1 rounded-r-lg"
@@ -39,7 +47,7 @@ const Carousel = () => {
         >
           <AiOutlineArrowRight className="w-10 h-7" />
         </motion.button>
-      </div>
+      </motion.div>
     </div>
   );
 };
