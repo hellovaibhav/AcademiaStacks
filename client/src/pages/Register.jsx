@@ -31,35 +31,57 @@ const Register = () => {
         </h1>
         <form
           onSubmit={(e) => submit(e)}
-          action=""
-          method="get"
+          action="/auth/register"
+          method="POST"
           className="flex flex-col justify-evenly h-[80vh] px-10"
         >
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Saqeeb Olly"
             id="name"
+            name="name"
             value={data.name}
             onChange={(e) => handleChange(e)}
             className="min-h-[2rem] rounded p-2 focus:bg-sky-100 focus:text-blue-500 focus:font-base"
           />
           <input
-            type="text"
-            placeholder="Username"
-            id="username"
-            value={data.username}
+            type="email"
+            placeholder="saqeebolly@ollyfans.com"
+            id="email"
+            name="email"
+            value={data.email}
             onChange={(e) => handleChange(e)}
             className="min-h-[2rem] rounded p-2 focus:bg-sky-100 focus:text-blue-500 focus:font-base"
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="ollyfans@123"
             id="password"
+            name="password"
             autoComplete="true"
             value={data.password}
             onChange={(e) => handleChange(e)}
             className="min-h-[2rem] rounded p-2 focus:bg-sky-100 focus:text-blue-500 focus:font-base"
           />
+          <div className="flex justify-around items-center">
+            <select name="branch" id="branch" className="w-[45%]">
+              <option value="" disabled selected>Select Branch</option>
+              <option value="ECE">ECE</option>
+              <option value="ECE IOT">ECE Speclization</option>
+              <option value="CSE">CSE</option>
+              <option value="CSE AIDS">CSE AIDS</option>
+            </select>
+            <select name="batch" id="batch" className="w-[40%]">
+              <option value="" disabled selected>Select Batch</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
+              <option value="2017">2017</option>
+              <option value="2016">2016</option>
+            </select>
+          </div>
           <Link to="/login" className="text-blue-600 hover:text-blue-500 transition-all duration-300 inline text-sm font-semibold">
             Already have an Account
           </Link>
