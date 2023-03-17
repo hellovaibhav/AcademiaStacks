@@ -15,7 +15,6 @@ color: white;
 background-color: rgb(96 165 250 );
 }
 .customBgColor{
-  height: 100vh;
   width: auto;
   animation : changeBg 10s linear infinite ;
   display: flex;
@@ -34,74 +33,42 @@ background-color: rgb(96 165 250 );
 }
 @keyframes changeBg2{
   100%{
-    background-color: rgb(251, 251, 200);
+    background-color: rgb(193, 250, 248);
   }
-  /* 90%{
-    background-color: rgb(251, 251, 135);
-  } */
   80%{
-    background-color: rgb(251, 251, 180);
+    background-color: rgb(128, 245, 249);
   }
-  /* 70%{
-    background-color: rgb(251, 251, 65);
-  } */
   60%{
-    background-color: rgb(251, 251, 150);
+    background-color: rgb(161, 254, 210);
   }
-  /* 50%{
-    background-color: rgb(251, 251, 8);
-  } */
   40%{
-    background-color: rgb(251, 251, 90);
+    background-color: rgb(128, 245, 249);
   }
-  /* 30%{
-    background-color: rgb(251, 251, 65);
-  } */
   20%{
-    background-color: rgb(251, 251, 50);
+    background-color: rgb(5, 251, 255);
   }
-  /* 10%{
-    background-color: rgb(252, 252, 54);
-  } */
   0%{
-    background-color: rgb(251, 251, 10);
+    background-color: rgb(193, 250, 200);
   }
 }
 @keyframes changeBg{
   0%{
-    background-color: rgb(251, 251, 200);
+    background-color: rgb(193, 250, 248);
   }
-  /* 10%{
-    background-color: rgb(251, 251, 135);
-
-  } */
   20%{
-    background-color: rgb(252, 252, 180);
+    background-color: rgb(128, 245, 249);
   }
-  /* 30%{
-    background-color: rgb(251, 251, 95);
-
-  } */
   40%{
-    background-color: rgb(251, 251, 150);
+    background-color: rgb(161, 254, 249);
   }
-  /* 50%{
-    background-color: rgb(251, 251, 8);
-  } */
   60%{
-    background-color: rgb(251, 251, 90);
+    background-color: rgb(128, 245, 249);
   }
-  /* 70%{
-    background-color: rgb(251, 251, 65);
-  } */
   80%{
-    background-color: rgb(251, 251, 50);
+    background-color: rgb(5, 251, 255);
   }
-  /* 90%{
-    background-color: rgb(252, 252, 54);
-  } */
   100%{
-    background-color: rgb(251, 251, 10);
+    background-color: rgb(193, 250, 200);
   }
 }
 
