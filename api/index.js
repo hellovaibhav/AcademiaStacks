@@ -1,6 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import session from "express-session";
+import passport from "passport";
+import passportLocalMongoose from "passport-local-mongoose";
 
 // route imports
 import authRoute from "./routes/auth.js"
@@ -11,6 +14,16 @@ import feedbacksRoute from "./routes/feedbacks.js"
 const app = express();
 
 dotenv.config();
+
+app.use(session({
+    secret: 'Olly',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 // mongodb connection
@@ -41,17 +54,17 @@ app.use("/api/materials", materialsRoute);
 app.use("/api/feedbacks", feedbacksRoute);
 
 
-app.use((err,req,res,next)=>{
+app.use((err, req, res, next) => {
 
     const errorStatus = err.status || 500;
     const errorMessage = err.message || "Something went Wrong !";
 
 
     return res.status(errorStatus).json({
-        "success":false,
-        "status":errorStatus,
-        "message":errorMessage,
-        "stack":err.stack
+        "success": false,
+        "status": errorStatus,
+        "message": errorMessage,
+        "stack": err.stack
 
     });
 });
