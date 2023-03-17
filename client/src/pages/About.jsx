@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import img from "..//assets/profilePic.jpg";
+import AboutCarousel from "../components/AboutCarousel";
 const About = () => {
   const [provider, setProvider] = useState(true);
   const [saquib, setSaquib] = useState(false);
@@ -8,9 +9,13 @@ const About = () => {
   const [nishant, setNishant] = useState(false);
   const [vivek, setVivek] = useState(false);
   return (
-    <motion.div className="customBgColor flex flex-col justify-around  items-center py-40 ">
-    <div className="carousel flex md:hidden"> Hello</div>
-      <div className="drop-shadow-xl md:flex hidden justify-center items-center flex-col py-[10rem] customBgColor2 rounded-2xl content w-[90vw] h-[80vh]  md:w-[80vw] md:h-[50vh] md:mt-32 mt-64 ">
+    <motion.div className="md:bg-white bg-blue-400 h-auto md:h-[100vh] flex flex-col justify-around  items-center md:mt-10 ">
+      <div className="carousel flex md:hidden text-white">
+        {" "}
+        <AboutCarousel />{" "}
+      </div>
+
+      <div className="drop-shadow-xl bg-blue-400 text-white md:flex hidden justify-center items-center flex-col  rounded-2xl content w-[90vw] h-[70vh]  md:w-[80vw] md:h-[50vh] mt-14 ">
         <AnimatePresence>
           {saquib && (
             <>
@@ -30,15 +35,13 @@ const About = () => {
                   <img
                     src={img}
                     alt="hat bkl"
-                    className="h-52 w-52 rounded-full drop-shadow-2xl"
+                    className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
                   />
                 </div>
                 <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
-                  <p className="text-3xl font-medium text-gray-600 pb-2">
-                    Saquib Ali
-                  </p>
+                  <p className="text-3xl font-medium pb-2">Saquib Ali</p>
                   <p className="text-xl font-normal pb-1">Dev</p>
-                  <p className="text-lg font-light ">
+                  <p className="text-lg font-light border-t-4 border-b-4 border-white py-4 mt-2 ">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Sit cumque quo soluta! Assumenda, provident cum, id maiores
                     animi perferendis temporibus nihil voluptatem, magnam
@@ -56,29 +59,27 @@ const About = () => {
             <>
               {" "}
               <motion.div
-                className="parent  flex justify-evenly w-[100%] px-20 items-center"
-                initial={{ opacity: 0, scale: 0.5, y: -100 }}
+                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-40 items-center"
+                initial={{ opacity: 0, y: -100, scale: 0.5 }}
                 animate={{
                   opacity: 1,
-                  scale: 1,
                   y: 0,
+                  scale: 1,
                   transition: { delay: 0.5 },
                 }}
                 exit={{ opacity: 0, y: 100, type: "spring" }}
               >
-                <div className="photo w-[40%]">
+                <div className="photo w-[60vw] md:w-[40vw]">
                   <img
                     src={img}
                     alt="hat bkl"
-                    className="h-52 w-52 rounded-full drop-shadow-2xl"
+                    className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
                   />
                 </div>
-                <div className="content w-[90vw] flex flex-col items-center justify-center text-justify">
-                  <p className="text-3xl font-medium text-gray-600 pb-2">
-                    Vaibhav Verma
-                  </p>
+                <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
+                  <p className="text-3xl font-medium pb-2">Vaibhav Verma</p>
                   <p className="text-xl font-normal pb-1">Dev</p>
-                  <p className="text-lg font-light ">
+                  <p className="text-lg font-light border-t-4 border-b-4 border-white py-4 mt-2 ">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Optio itaque aliquid quod eaque quidem? Explicabo, nihil
                     atque aliquid dolor minima deleniti odio adipisci iure nobis
@@ -95,29 +96,27 @@ const About = () => {
             <>
               {" "}
               <motion.div
-                className="parent  flex justify-evenly w-[100%] px-20 items-center"
-                initial={{ opacity: 0, scale: 0.5, y: -100 }}
+                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-40 items-center"
+                initial={{ opacity: 0, y: -100, scale: 0.5 }}
                 animate={{
                   opacity: 1,
-                  scale: 1,
                   y: 0,
+                  scale: 1,
                   transition: { delay: 0.5 },
                 }}
                 exit={{ opacity: 0, y: 100, type: "spring" }}
               >
-                <div className="photo w-[40%]">
+                <div className="photo w-[60vw] md:w-[40vw]">
                   <img
                     src={img}
                     alt="hat bkl"
-                    className="h-52 w-52 rounded-full drop-shadow-2xl"
+                    className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
                   />
                 </div>
-                <div className="content w-[90vw] flex flex-col items-center justify-center text-justify">
-                  <p className="text-3xl font-medium text-gray-600 pb-2">
-                    Nishant Kumar
-                  </p>
+                <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
+                  <p className="text-3xl font-medium pb-2">Nishant Kumar</p>
                   <p className="text-xl font-normal pb-1">Dev</p>
-                  <p className="text-lg font-light ">
+                  <p className="text-lg font-light border-t-4 border-b-4 border-white py-4 mt-2 ">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Optio itaque aliquid quod eaque quidem? Explicabo, nihil
                     atque aliquid dolor minima deleniti odio adipisci iure nobis
@@ -135,29 +134,27 @@ const About = () => {
             <>
               {" "}
               <motion.div
-                className="parent  flex justify-evenly w-[100%] px-20 items-center"
-                initial={{ opacity: 0, scale: 0.5, y: -100 }}
+                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-40 items-center"
+                initial={{ opacity: 0, y: -100, scale: 0.5 }}
                 animate={{
                   opacity: 1,
-                  scale: 1,
                   y: 0,
+                  scale: 1,
                   transition: { delay: 0.5 },
                 }}
                 exit={{ opacity: 0, y: 100, type: "spring" }}
               >
-                <div className="photo w-[40%]">
+                <div className="photo w-[60vw] md:w-[40vw]">
                   <img
                     src={img}
                     alt="hat bkl"
-                    className="h-52 w-52 rounded-full drop-shadow-2xl"
+                    className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
                   />
                 </div>
-                <div className="content w-[90vw] flex flex-col items-center justify-center text-justify">
-                  <p className="text-3xl font-medium text-gray-600 pb-2">
-                    Vivek Giri
-                  </p>
+                <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
+                  <p className="text-3xl font-medium pb-2">Vivek Giri</p>
                   <p className="text-xl font-normal pb-1">Dev</p>
-                  <p className="text-lg font-light ">
+                  <p className="text-lg font-light border-t-4 border-b-4 border-white py-4 mt-2 ">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Optio itaque aliquid quod eaque quidem? Explicabo, nihil
                     atque aliquid dolor minima deleniti odio adipisci iure nobis
@@ -175,34 +172,22 @@ const About = () => {
             <>
               {" "}
               <motion.div
-                className=" flex justify-evenly w-[100%] px-20 items-center"
-                initial={{ opacity: 0, scale: 0.5, y: -100 }}
+                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-40 items-center"
+                initial={{ opacity: 0, y: -100, scale: 0.5 }}
                 animate={{
                   opacity: 1,
-                  scale: 1,
                   y: 0,
+                  scale: 1,
                   transition: { delay: 0.5 },
                 }}
                 exit={{ opacity: 0, y: 100, type: "spring" }}
               >
-                <div className="w-[40%]">
-                  <img
-                    src={img}
-                    alt="hat bkl"
-                    className="h-52 w-52 rounded-full drop-shadow-2xl"
-                  />
-                </div>
-                <div className="w-[90vw] flex flex-col items-center justify-center">
-                  <p className="text-3xl font-medium pb-4 text-gray-600">
+                <div className="w-[90vw] flex flex-col items-center justify-center px-10">
+                  <p className="text-5xl font-medium pb-4">
                     Note Providers
                   </p>
                   <p className="text-xl font-normal">
-                    GURUJI <br />
-                    SAQUIB
-                    <br />
-                    VIVEK <br />
-                    SUMIT
-                    <br />
+                    GURUJI , SAQUIB , VIVEK , SUMIT
                   </p>
                 </div>
               </motion.div>{" "}
@@ -210,9 +195,9 @@ const About = () => {
           )}
         </AnimatePresence>
       </div>
-      <div className="buttonsw w-[50%] hidden md:flex mt-10 mr-80 justify-between">
+      <div className="buttonsw w-[80vw] hidden md:flex flex-wrap justify-around">
         <motion.button
-          className="bg-white w-[10rem] mx-6 px-6 py-2 text-xl hover:bg-blue-400 duration-300 hover:text-white hover:rounded-lg hover:drop-shadow-2xl"
+          className="bg-white w-[10rem] border-4 border-blue-400 hover:border-none text-blue-400 hover:text-white mx-6 px-6 py-2 my-2 text-xl hover:bg-blue-400 duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
@@ -230,7 +215,7 @@ const About = () => {
           Saquib
         </motion.button>
         <motion.button
-          className="bg-white w-[10rem] mx-6 px-6 py-2 text-xl hover:bg-blue-400 duration-300 hover:text-white hover:rounded-lg hover:drop-shadow-2xl"
+          className="bg-white w-[10rem] border-4 border-blue-400 hover:border-none text-blue-400 hover:text-white mx-6 px-6 py-2 my-2 text-xl hover:bg-blue-400 duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
           whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
@@ -248,7 +233,7 @@ const About = () => {
           Vaibhav
         </motion.button>
         <motion.button
-          className="bg-white w-[10rem] mx-6 px-6 py-2 text-xl hover:bg-blue-400 duration-300 hover:text-white hover:rounded-lg hover:drop-shadow-2xl"
+          className="bg-white w-[10rem] border-4 border-blue-400 hover:border-none text-blue-400 hover:text-white mx-6 px-6 py-2 my-2 text-xl hover:bg-blue-400 duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
           whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
@@ -266,7 +251,7 @@ const About = () => {
           Nishant
         </motion.button>
         <motion.button
-          className="bg-white w-[10rem] mx-6 px-6 py-2 text-xl  hover:bg-blue-400 duration-300 hover:text-white hover:rounded-lg hover:drop-shadow-2xl"
+          className="bg-white w-[10rem] border-4 border-blue-400 hover:border-none text-blue-400 hover:text-white mx-6 px-6 py-2 my-2 text-xl  hover:bg-blue-400 duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
           whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
@@ -284,7 +269,7 @@ const About = () => {
           Vivek
         </motion.button>
         <motion.button
-          className="bg-white w-[10rem] mx-6 px-6 py-2 text-xl  hover:bg-blue-400 duration-300 hover:text-white hover:rounded-lg hover:drop-shadow-2xl"
+          className="bg-white w-[10rem] border-4 border-blue-400 hover:border-none text-blue-400 hover:text-white mx-6 px-6 py-2 my-2 text-xl  hover:bg-blue-400 duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
           whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
