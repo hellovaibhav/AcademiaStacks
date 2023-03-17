@@ -2,7 +2,7 @@ import React from 'react'
 
 const Material = () => {
   return (
-    <div className="min-h-[85.4vh] flex items-center justify-center ">Material</div>
+    <div className="min-h-[100vh] flex items-center justify-center ">Material</div>
   )
 }
 
