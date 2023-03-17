@@ -8,14 +8,15 @@ const About = () => {
   const [nishant, setNishant] = useState(false);
   const [vivek, setVivek] = useState(false);
   return (
-    <motion.div className="customBgColor flex-col justify-evenly ">
-      <div className="drop-shadow-xl overflow-y-hidden flex justify-center items-center flex-col px-[3rem] py-[12rem] customBgColor2 rounded-2xl content w-[70%] h-[40%] mt-24">
+    <motion.div className="customBgColor flex flex-col justify-around  items-center py-40 ">
+    <div className="carousel flex md:hidden"> Hello</div>
+      <div className="drop-shadow-xl md:flex hidden justify-center items-center flex-col py-[10rem] customBgColor2 rounded-2xl content w-[90vw] h-[80vh]  md:w-[80vw] md:h-[50vh] md:mt-32 mt-64 ">
         <AnimatePresence>
           {saquib && (
             <>
               {" "}
               <motion.div
-                className="parent  flex justify-evenly w-[100%] px-20 items-center"
+                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-40 items-center"
                 initial={{ opacity: 0, y: -100, scale: 0.5 }}
                 animate={{
                   opacity: 1,
@@ -25,14 +26,14 @@ const About = () => {
                 }}
                 exit={{ opacity: 0, y: 100, type: "spring" }}
               >
-                <div className="photo w-[40%]">
+                <div className="photo w-[60vw] md:w-[40vw]">
                   <img
                     src={img}
                     alt="hat bkl"
                     className="h-52 w-52 rounded-full drop-shadow-2xl"
                   />
                 </div>
-                <div className="content w-[60%] flex flex-col items-center justify-center text-right">
+                <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
                   <p className="text-3xl font-medium text-gray-600 pb-2">
                     Saquib Ali
                   </p>
@@ -72,7 +73,7 @@ const About = () => {
                     className="h-52 w-52 rounded-full drop-shadow-2xl"
                   />
                 </div>
-                <div className="content w-[60%] flex flex-col items-center justify-center text-right">
+                <div className="content w-[90vw] flex flex-col items-center justify-center text-justify">
                   <p className="text-3xl font-medium text-gray-600 pb-2">
                     Vaibhav Verma
                   </p>
@@ -111,7 +112,7 @@ const About = () => {
                     className="h-52 w-52 rounded-full drop-shadow-2xl"
                   />
                 </div>
-                <div className="content w-[60%] flex flex-col items-center justify-center text-right">
+                <div className="content w-[90vw] flex flex-col items-center justify-center text-justify">
                   <p className="text-3xl font-medium text-gray-600 pb-2">
                     Nishant Kumar
                   </p>
@@ -151,7 +152,7 @@ const About = () => {
                     className="h-52 w-52 rounded-full drop-shadow-2xl"
                   />
                 </div>
-                <div className="content w-[60%] flex flex-col items-center justify-center text-right">
+                <div className="content w-[90vw] flex flex-col items-center justify-center text-justify">
                   <p className="text-3xl font-medium text-gray-600 pb-2">
                     Vivek Giri
                   </p>
@@ -191,7 +192,7 @@ const About = () => {
                     className="h-52 w-52 rounded-full drop-shadow-2xl"
                   />
                 </div>
-                <div className="w-[60%] flex flex-col items-center justify-center">
+                <div className="w-[90vw] flex flex-col items-center justify-center">
                   <p className="text-3xl font-medium pb-4 text-gray-600">
                     Note Providers
                   </p>
@@ -209,7 +210,7 @@ const About = () => {
           )}
         </AnimatePresence>
       </div>
-      <div className="buttonsw w-[50%] mb-10 mr-10 flex justify-between">
+      <div className="buttonsw w-[50%] hidden md:flex mt-10 mr-80 justify-between">
         <motion.button
           className="bg-white w-[10rem] mx-6 px-6 py-2 text-xl hover:bg-blue-400 duration-300 hover:text-white hover:rounded-lg hover:drop-shadow-2xl"
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
