@@ -1,5 +1,4 @@
 import "./App.css";
-import Navbar from "./components/Navbar.jsx";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Footer from "./components/Footer.jsx";
 import Home from "./pages/Home.jsx";
@@ -11,6 +10,7 @@ import Login from "./pages/Login";
 import { useEffect, useState } from "react";
 import NavbarLogin from "./components/NavbarLogin";
 import Register from "./pages/Register";
+import NavbarHead from "./components/NavbarHead";
 function App() {
   const [isLoginPage, setIsLoginPage] = useState(false);
   const locationName = useLocation();
@@ -25,17 +25,17 @@ function App() {
 
   return (
     <div className="App overflow-hidden">
-      {!isLoginPage ? <Navbar /> : <NavbarLogin />}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/material" element={<Material />} />
-          <Route path="/feedback" element={<Feedback />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="*" element={<Error />} />
-        </Routes>
-        <Footer />
+      {!isLoginPage ? <NavbarHead /> : <NavbarLogin />}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/material" element={<Material />} />
+        <Route path="/feedback" element={<Feedback />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<Error />} />
+      </Routes>
+      <Footer />
     </div>
   );
 }
