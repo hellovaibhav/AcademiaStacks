@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import img from "..//assets/profilePic.jpg";
 import AboutCarousel from "../components/AboutCarousel";
 const About = () => {
   const [provider, setProvider] = useState(true);
@@ -8,6 +7,7 @@ const About = () => {
   const [vaibhav, setVaibhav] = useState(false);
   const [nishant, setNishant] = useState(false);
   const [vivek, setVivek] = useState(false);
+   
   return (
     <motion.div className="md:bg-white bg-blue-400 h-auto md:h-[100vh] flex flex-col justify-around  items-center md:mt-10 ">
       <div className="carousel flex md:hidden text-white">
@@ -33,7 +33,7 @@ const About = () => {
               >
                 <div className="photo w-[60vw] md:w-[40vw]">
                   <img
-                    src={img}
+                    src='https://avatars.githubusercontent.com/u/106366280?v=4'
                     alt="hat bkl"
                     className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
                   />
@@ -71,7 +71,7 @@ const About = () => {
               >
                 <div className="photo w-[60vw] md:w-[40vw]">
                   <img
-                    src={img}
+                    src='https://avatars.githubusercontent.com/u/82583704?v=4'
                     alt="hat bkl"
                     className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
                   />
@@ -108,7 +108,7 @@ const About = () => {
               >
                 <div className="photo w-[60vw] md:w-[40vw]">
                   <img
-                    src={img}
+                    src='https://avatars.githubusercontent.com/u/106348929?v=4'
                     alt="hat bkl"
                     className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
                   />
@@ -146,7 +146,7 @@ const About = () => {
               >
                 <div className="photo w-[60vw] md:w-[40vw]">
                   <img
-                    src={img}
+                    src='https://avatars.githubusercontent.com/u/96737391?v=4'
                     alt="hat bkl"
                     className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
                   />
