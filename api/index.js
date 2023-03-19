@@ -2,8 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import session from "express-session";
-import passport from "passport";
-import passportLocalMongoose from "passport-local-mongoose";
+import cors from "cors";
 
 // route imports
 import authRoute from "./routes/auth.js"
@@ -13,6 +12,7 @@ import feedbacksRoute from "./routes/feedbacks.js"
 import cookieParser from "cookie-parser";
 
 const app = express();
+app.use(cors());
 
 dotenv.config();
 
@@ -23,8 +23,6 @@ app.use(session({
     cookie: { secure: true }
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 
 // mongodb connection
