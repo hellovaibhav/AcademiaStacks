@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
 import Lottie from "lottie-react";
 import LoginAnimation from "../assets/Login.json";
 
 const Register = () => {
+  const navigate = useNavigate();
   //url to go to
   const url = "http://localhost:8800/api/auth/register";
   const [data, setdata] = useState({
@@ -31,6 +32,7 @@ const Register = () => {
         .then((res) => {
           console.log(res.data);
           alert("Info recived you have been registered");
+          navigate('/login')
         });
     }
     catch (err) {
