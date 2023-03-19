@@ -10,10 +10,13 @@ export const register = async (req, res, next) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
-    const newUser =  new User({
+    var str = req.body.email;
+    var name = str.split("@")[0];
+
+    const newUser = new User({
       name: req.body.name,
       email: req.body.email,
-      username: req.body.email,
+      username: name,
       password: hash,
       branch: req.body.branch,
       batch: req.body.batch,
