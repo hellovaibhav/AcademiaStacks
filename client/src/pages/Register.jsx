@@ -30,6 +30,7 @@ const Register = () => {
       const response = await axios.post(url, data)
         .then((res) => {
           console.log(res.data);
+          alert("Info recived you have been registered");
         });
     }
     catch (err) {
@@ -58,7 +59,7 @@ const Register = () => {
           >
             <motion.input
               type="text"
-              placeholder="Name"
+              placeholder="vimvek"
               id="name"
               value={data.name}
               onChange={(e) => handleChange(e)}
@@ -67,8 +68,8 @@ const Register = () => {
             />
             <motion.input
               type="text"
-              placeholder="Username"
-              id="username"
+              placeholder="vivekkeboobe@boobe.com"
+              id="email"
               value={data.username}
               onChange={(e) => handleChange(e)}
               className="min-h-[2rem] rounded p-2 focus:bg-sky-100 focus:text-blue-500 focus:font-base"
@@ -76,7 +77,7 @@ const Register = () => {
             />
             <motion.input
               type="password"
-              placeholder="Password"
+              placeholder="iluvboobve"
               id="password"
               autoComplete="true"
               value={data.password}
@@ -89,6 +90,8 @@ const Register = () => {
                 name="branch"
                 id="branch"
                 className="w-[46.5%] rounded-lg h-8 px-2 focus:bg-sky-100"
+                value={data.branch}
+                onChange={(e) => handleChange(e)}
               >
                 <option value="" disabled defaultValue>
                   Select Branch
@@ -102,6 +105,8 @@ const Register = () => {
                 name="batch"
                 id="batch"
                 className="w-[46.5%] rounded-lg h-8 px-2 focus:bg-sky-100"
+                value={data.batch}
+                onChange={(e) => handleChange(e)}
               >
                 <option value="" disabled defaultValue>
                   Select Batch
