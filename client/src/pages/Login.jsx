@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import Lottie from "lottie-react";
 import LoginAnimation from "../assets/Login2.json";
 const Login = () => {
   //url to go to
-  const url = "";
+  const url = "http://localhost:8800/api/auth/login";
   //useStates to hold input
   const [data, setdata] = useState({
     username: "",
@@ -19,11 +19,21 @@ const Login = () => {
     console.log(newdata);
   }
   //Function to handle submit
-  function submit(e) {
+  async function submit(e) {
+
     e.preventDefault();
-    axios.post(url, { data }).then((res) => {
-      console.log(res.data);
-    });
+
+    try {
+      const response = await axios.post(url, data)
+        .then((res) => {
+          console.log(res.data);
+          alert("You are logged in\n redirecting now...");
+          Navigate('/about')
+        });
+    }
+    catch (err) {
+      alert("invalid username or password");
+    }
   }
   return (
     <div className="min-h-[90vh] flex items-center justify-center">
@@ -44,10 +54,10 @@ const Login = () => {
           >
             <motion.input
               type="text"
-              id="username"
-              value={data.username}
+              id="email"
+              value={data.email}
               onChange={(e) => handleChange(e)}
-              placeholder="Username"
+              placeholder="Email"
               className="min-h-[2rem] w-64 rounded p-2 focus:bg-sky-100 focus:text-blue-500 focus:font-base "
               whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
             />
