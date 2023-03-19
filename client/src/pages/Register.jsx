@@ -59,7 +59,7 @@ const Register = () => {
           >
             <motion.input
               type="text"
-              placeholder="vimvek"
+              placeholder="Stewie Griffin"
               id="name"
               value={data.name}
               onChange={(e) => handleChange(e)}
@@ -68,7 +68,7 @@ const Register = () => {
             />
             <motion.input
               type="text"
-              placeholder="vivekkeboobe@boobe.com"
+              placeholder="stewie@gmail.com"
               id="email"
               value={data.username}
               onChange={(e) => handleChange(e)}
@@ -77,7 +77,7 @@ const Register = () => {
             />
             <motion.input
               type="password"
-              placeholder="iluvboobve"
+              placeholder="*****"
               id="password"
               autoComplete="true"
               value={data.password}
