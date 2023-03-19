@@ -13,6 +13,9 @@ export const register = async (req, res, next) => {
     var str = req.body.email;
     var name = str.split("@")[0];
 
+    var naming = req.body.name;
+    var firstname = naming.split(" ")[0];
+    
     const newUser = new User({
       name: req.body.name,
       email: req.body.email,
@@ -20,7 +23,8 @@ export const register = async (req, res, next) => {
       password: hash,
       branch: req.body.branch,
       batch: req.body.batch,
-      isAdmin: req.body.isAdmin
+      isAdmin: req.body.isAdmin,
+      fname:firstname
 
     });
 

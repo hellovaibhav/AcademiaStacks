@@ -31,7 +31,6 @@ const Register = () => {
       const response = await axios.post(url, data)
         .then((res) => {
           console.log(res.data);
-          alert("Info recived you have been registered");
           navigate('/login')
         });
     }
