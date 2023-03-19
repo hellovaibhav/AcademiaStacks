@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { AuthContext } from "../context/AuthContext";
 import Logo from "../assets/logo_website.png";
-import {motion} from "framer-motion"
+import { motion } from "framer-motion"
 const NavbarHead = () => {
+  const { user } = useContext(AuthContext);
   const [registered, setRegistered] = useState(true)
   let Links = [
-    { name: "Home",logo: "Home", link: "/" },
-    { name: "About",logo: "About", link: "/about" },
-    { name: "Material",logo: "Material", link: "/material" },
-    { name: "Feedback", logo: "Feedback",link: "/feedback" },
-    { name: "Login" , logo:`${registered ? 'Login':'Register'}` , link: `${registered ? '/login':'/register'}` },
+    { name: "Home", logo: "Home", link: "/" },
+    { name: "About", logo: "About", link: "/about" },
+    { name: "Material", logo: "Material", link: "/material" },
+    { name: "Feedback", logo: "Feedback", link: "/feedback" },
+    { name: "Login", logo: `${user ? "Hello " + user.username : 'Login'}`, link: `${registered ? '/login' : '/register'}` },
   ];
   const [open, setOpen] = useState(false);
   return (
@@ -43,17 +45,16 @@ const NavbarHead = () => {
         )}
 
         <ul
-          className={` ${
-            open ? "top-24" : "top-[-490px]"
-          } bg-white  md:bg-blue-400 drop-shadow-lg md:pl-16 pl-0 md:rounded-bl-full rounded-none h-auto md:h-16 md:flex md:items-center absolute md:static  w-full left-0 md:w-auto transition-all duration-500 ease-in`}
+          className={` ${open ? "top-24" : "top-[-490px]"
+            } bg-white  md:bg-blue-400 drop-shadow-lg md:pl-16 pl-0 md:rounded-bl-full rounded-none h-auto md:h-16 md:flex md:items-center absolute md:static  w-full left-0 md:w-auto transition-all duration-500 ease-in`}
         >
           {Links.map((link) => (
             <motion.li
               key={link.name}
               className="text-blue-400 hover:text-white md:text-white md:hover:text-blue-400 md:ml-8 mx-4 text-xl md:my-0 my-7 "
               whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
-            
-              >
+
+            >
               {" "}
               <NavLink
                 onClick={() => {
