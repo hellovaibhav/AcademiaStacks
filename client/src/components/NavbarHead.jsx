@@ -12,7 +12,7 @@ const NavbarHead = () => {
     { name: "About", logo: "About", link: "/about" },
     { name: "Material", logo: "Material", link: "/material" },
     { name: "Feedback", logo: "Feedback", link: "/feedback" },
-    { name: "Login", logo: `${user ? "Hello " + user.username : 'Login'}`, link: `${registered ? '/login' : '/register'}` },
+    { name: "Login", logo: `${user ? "Hello " + user.fname : 'Login'}`, link: `${registered ? '/login' : '/register'}` },
   ];
   const [open, setOpen] = useState(false);
   return (
