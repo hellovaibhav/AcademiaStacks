@@ -5,11 +5,12 @@ import { createError } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 
 export const register = async (req, res, next) => {
+
   try {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
-    const newUser = new User({
+    const newUser =  new User({
       name: req.body.name,
       email: req.body.email,
       username: req.body.email,
@@ -20,16 +21,9 @@ export const register = async (req, res, next) => {
 
     });
 
-    await newUser.save((err) => {
-      if (err) {
-        console.log(err);
-      }
-      else {
-        res.render("/login");
-      }
+    const saveduser = await newUser.save()
+    res.status(200).json(saveduser)
 
-    });
-    res.status(200).send("User has been created.");
 
 
   } catch (err) {

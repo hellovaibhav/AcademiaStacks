@@ -5,11 +5,13 @@ import axios from "axios";
 
 const Register = () => {
   //url to go to
-  const url = "";
+  const url = "http://localhost:8800/api/auth/register";
   const [data, setdata] = useState({
     name: "",
-    username: "",
+    email: "",
     password: "",
+    branch: "",
+    batch: ""
   });
   function handleChange(e) {
     const newdata = { ...data };
@@ -17,22 +19,30 @@ const Register = () => {
     setdata(newdata);
     console.log(newdata);
   }
-  function submit(e) {
+  async function submit(e) {
     e.preventDefault();
-    axios.post(url, { data }).then((res) => {
-      console.log(res.data);
-    });
+
+    try {
+      const response = await axios.post(url, data)
+        .then(data => {
+          if (response.status == 200) {
+            <Redirect to="../login" />
+          }
+        });
+    }
+    catch (err) {
+      alert(err);
+    }
   }
+
+
   return (
     <div className="min-h-[85.2vh] flex items-center justify-center ">
       <div className="bg-blue-200 flex flex-col justify-around w-[24rem] h-[28rem] py-10 rounded-lg drop-shadow-lg px-2">
         <h1 className="text-4xl font-bold text-center h-[20vh] pt-4 text-white">
           Register
         </h1>
-        <form
-          onSubmit="/auth/register"
-          action=""
-          method="POST"
+        <form method="POST" action="POST"
           className="flex flex-col justify-evenly h-[80vh] px-10"
         >
           <input
@@ -45,9 +55,9 @@ const Register = () => {
           />
           <input
             type="text"
-            placeholder="Username"
-            id="username"
-            value={data.username}
+            placeholder="Email"
+            id="email"
+            value={data.email}
             onChange={(e) => handleChange(e)}
             className="min-h-[2rem] rounded p-2 focus:bg-sky-100 focus:text-blue-500 focus:font-base"
           />
@@ -61,15 +71,17 @@ const Register = () => {
             className="min-h-[2rem] rounded p-2 focus:bg-sky-100 focus:text-blue-500 focus:font-base"
           />
           <div className="flex justify-around items-center">
-            <select name="branch" id="branch" className="w-[45%]">
-              <option value="" disabled selected>Select Branch</option>
+            <select name="branch" id="branch" className="w-[45%]" value={data.branch}
+              onChange={(e) => handleChange(e)}>
+              <option value="" disabled defaultValue>Select Branch</option>
               <option value="ECE">ECE</option>
               <option value="ECE IOT">ECE Speclization</option>
               <option value="CSE">CSE</option>
               <option value="CSE AIDS">CSE DSAI</option>
             </select>
-            <select name="batch" id="batch" className="w-[40%]">
-              <option value="" disabled selected>Select Batch</option>
+            <select name="batch" id="batch" className="w-[40%]" value={data.batch}
+              onChange={(e) => handleChange(e)}>
+              <option value="" disabled defaultValue>Select Batch</option>
               <option value="2022">2022</option>
               <option value="2021">2021</option>
               <option value="2020">2020</option>
@@ -94,6 +106,7 @@ const Register = () => {
                 scale: 0.9,
                 transition: { duration: 0.4, ease: "easeInOut" },
               }}
+              onClick={submit}
             >
               Submit
             </motion.button>
