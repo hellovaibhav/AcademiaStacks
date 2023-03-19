@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import NavbarLogin from "./components/NavbarLogin";
 import Register from "./pages/Register";
 import NavbarHead from "./components/NavbarHead";
+import Assignment from "./pages/Assignment";
 function App() {
   const [isLoginPage, setIsLoginPage] = useState(false);
   const locationName = useLocation();
@@ -30,6 +31,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/material" element={<Material />} />
+        <Route path="/assignment" element={<Assignment />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
