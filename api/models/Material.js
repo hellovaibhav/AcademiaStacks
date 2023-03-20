@@ -13,6 +13,10 @@ const materialSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    courseCode: {
+        type: String,
+        required: true
+    },
     materialLink:{
         type:String,
         required:true,
