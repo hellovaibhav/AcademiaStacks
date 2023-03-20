@@ -1,5 +1,5 @@
 import express from "express"
-import { createMaterial, deleteMaterial, getMaterial, getMaterials, updateMaterial } from "../controllers/material.js";
+import { createMaterial, deleteMaterial, getMaterial, getMaterials, getNotes, updateMaterial } from "../controllers/material.js";
 import Material from "../models/Material.js";
 import { createError } from "../utils/error.js";
 
@@ -13,17 +13,19 @@ router.post("/", createMaterial);
 
 // update the uploaded material
 
-router.put("/:id", updateMaterial);
+router.put("/:materialType/:id", updateMaterial);
 
 // delete a selected material
 
-router.delete("/:id", deleteMaterial);
+router.delete("/:materialType/:id", deleteMaterial);
 
 // get a particular material
 
-router.get("/:id", getMaterial);
+router.get("/:materialType/:id", getMaterial);
 
 // get all material
 router.get("/", getMaterials);
+
+router.get("/:materialType", getNotes);
 
 export default router;

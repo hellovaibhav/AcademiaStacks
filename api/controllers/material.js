@@ -2,10 +2,6 @@ import Material from "../models/Material.js";
 
 
 
-
-
-
-
 export const createMaterial = async (req, res, next) => {
 
     const newMaterial = new Material(req.body);
@@ -62,5 +58,17 @@ export const getMaterials = async (req, res, next) => {
         next(err);
     }
 
-}
+};
+
+export const getNotes = async (req, res, next) => {
+
+    try {
+
+        const materials = await Material.find({ materialType: req.params.materialType });
+        res.status(200).json(materials);
+    } catch (err) {
+        next(err);
+    }
+
+};
 
