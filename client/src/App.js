@@ -13,20 +13,18 @@ import Register from "./pages/Register";
 import NavbarHead from "./components/NavbarHead";
 import Assignment from "./pages/Assignment";
 import { AuthContext } from "./context/AuthContext";
-
-
+import Notes from "./pages/Notes";
+import PYQ from "./pages/PYQ";
 
 function App() {
-
   const ProtectedRoute = ({ children }) => {
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext);
 
     if (!user) {
-      return <Navigate to="/login" />
+      return <Navigate to="/login" />;
     }
 
     return children;
-
   };
 
   const [isLoginPage, setIsLoginPage] = useState(false);
@@ -35,7 +33,7 @@ function App() {
 
   useEffect(() => {
     locationName.pathname.split("/")[1] === "login" ||
-      locationName.pathname.split("/")[1] === "register"
+    locationName.pathname.split("/")[1] === "register"
       ? setIsLoginPage(true)
       : setIsLoginPage(false);
   }, [locationName]);
@@ -46,8 +44,32 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/material" element={<ProtectedRoute> <Material /> </ProtectedRoute>} />
-        <Route path="/assignment" element={<Assignment />} />
+        <Route path="/material" element={<Material />} />
+        <Route
+          path="/material/assignment"
+          element={
+            <ProtectedRoute>
+              <Assignment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/material/notes"
+          element={
+            <ProtectedRoute>
+              <Notes />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/material/pyq"
+          element={
+            <ProtectedRoute>
+              <PYQ />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
