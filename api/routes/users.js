@@ -21,16 +21,16 @@ router.get("/checkadmin/:id", verifyAdmin, (req,res,next)=>{
   res.send("hello admin, you are logged in and you can delete all accounts")
 })
 
-//UPDATE
+//UPDATE FOR BOTH USER AND ADMIN
 router.put("/:id", verifyUser, updateUser);
 
-//DELETE
+//DELETE FOR BOTH USER AND ADMIN
 router.delete("/:id", verifyUser, deleteUser);
 
-//GET
+//GET FOR BOTH USER AND ADMIN
 router.get("/:id", verifyUser, getUser);
 
-//GET ALL
+//GET ALL FOR  ADMIN ONLY
 router.get("/",verifyAdmin,  getUsers);
 
 export default router;
