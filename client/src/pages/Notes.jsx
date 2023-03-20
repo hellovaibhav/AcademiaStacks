@@ -1,9 +1,9 @@
-import { motion } from "framer-motion";
-import React,{useState} from "react";
+import React , {useState} from "react";
+import {motion} from "framer-motion"
 // import img from "../assets/pic1.png";
 import MaterialPage from "../assets/MaterialPageContent";
 
-const Assignment = () => {
+const Notes = () => {
   const [index, setIndex] = useState(7);
   const showMore = () => {
     if (index < MaterialPage.length - 1) {
@@ -48,4 +48,4 @@ const Assignment = () => {
   );
 };
 
-export default Assignment;
+export default Notes;
