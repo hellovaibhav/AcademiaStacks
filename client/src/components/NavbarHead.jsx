@@ -16,7 +16,7 @@ const NavbarHead = () => {
   ];
   const [open, setOpen] = useState(false);
   return (
-    <div className="z-10 drop-shadow-sm w-full fixed top-0 left-0">
+    <div className="z-10 drop-shadow-lg md:drop-shadow-sm w-full fixed top-0 left-0">
       <div className="md:flex md:items-center justify-between bg-white md:bg-transparent pt-4 md:h-auto h-24 md:py-0 md:pl-10 md:pr-0 px-7">
         <Link
           to="/"

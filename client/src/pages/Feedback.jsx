@@ -1,8 +1,8 @@
 import React from "react";
 const Feedback = () => {
   return (
-    <div className=" flex items-center justify-center" > 
-      Feedback
+    <div className=" border-4 border-pink-700 flex items-center justify-center mt-32" > 
+      div
     </div>
   );
 };
