@@ -9,7 +9,7 @@ const About = () => {
   const [vivek, setVivek] = useState(false);
    
   return (
-    <motion.div className="md:bg-white bg-blue-400 h-auto md:h-[100vh] flex flex-col justify-around  items-center md:mt-10 ">
+    <motion.div className="bg-white  h-auto md:h-[100vh] flex flex-col justify-around  items-center md:mt-10 ">
       <div className="carousel flex md:hidden text-white">
         {" "}
         <AboutCarousel />{" "}

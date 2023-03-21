@@ -48,9 +48,7 @@ function App() {
         <Route
           path="/material/assignment"
           element={
-            <ProtectedRoute>
               <Assignment />
-            </ProtectedRoute>
           }
         />
         <Route
