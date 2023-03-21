@@ -45,6 +45,10 @@ const materialSchema = new mongoose.Schema({
     thumbnail:{
         type:String,
         required:true
+    },
+    featured:{
+        type:Boolean,
+        default:false
     }
     
 }, { timestamp: true });
