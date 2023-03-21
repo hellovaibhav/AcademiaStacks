@@ -7,7 +7,7 @@ const About = () => {
   const [vaibhav, setVaibhav] = useState(false);
   const [nishant, setNishant] = useState(false);
   const [vivek, setVivek] = useState(false);
-   
+
   return (
     <motion.div className="bg-white  h-auto md:h-[100vh] flex flex-col justify-around  items-center md:mt-10 ">
       <div className="carousel flex md:hidden text-white">
@@ -71,8 +71,7 @@ const About = () => {
               >
                 <div className="photo w-[60vw] md:w-[40vw]">
                   <img
-                    src='https://avatars.githubusercontent.com/u/82583704?v=4'
-                    alt="hat bkl"
+                    src="https://avatars.githubusercontent.com/u/82583704?v=4" alt="legendary developer"
                     className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
                   />
                 </div>
