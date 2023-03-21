@@ -4,7 +4,22 @@ import Material from "../models/Material.js";
 
 export const createMaterial = async (req, res, next) => {
 
-    const newMaterial = new Material(req.body);
+    var naming = req.body.thumbnail;
+    var link = "https://drive.google.com/uc?export=view&id="+naming.split("/")[5];
+
+    const newMaterial = new Material({
+        subject: req.body.subject,
+        semester: req.body.semester,
+        instructorName: req.body.instructorName,
+        courseCode: req.body.courseCode,
+        materialLink: req.body.materialLink,
+        desc: req.body.desc,
+        yearOfWriting: req.body.yearOfWriting,
+        branch: req.body.branch,
+        materialType: req.body.materialType,
+        thumbnail: link,
+        featured: req.body.featured
+    });
 
     try {
         const savedMaterial = await newMaterial.save();
