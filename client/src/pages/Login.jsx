@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 import axios from "axios";
 import Lottie from "lottie-react";
 import LoginAnimation from "../assets/Login2.json";
