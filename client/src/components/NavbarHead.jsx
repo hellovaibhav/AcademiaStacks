@@ -1,12 +1,21 @@
-import React, { useContext, useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { AuthContext } from "../context/AuthContext";
 import Logo from "../assets/logo_website.png";
 import { motion } from "framer-motion";
 const NavbarHead = () => {
+  const Navigate = useNavigate();
+  // const [loggedIn, setLoggedIn] = useState(false);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("user");
+  //   if (token) {
+  //     setLoggedIn(true);
+  //     console.log("The state of loggedIn is : " + loggedIn);
+  //   }
+  // }, []);
   const { user } = useContext(AuthContext);
-  const [registered, setRegistered] = useState(true);
+  // const [registered, setRegistered] = useState(true);
   let Links = [
     { name: "Home", logo: "Home", link: "/" },
     { name: "About", logo: "About", link: "/about" },
@@ -15,7 +24,7 @@ const NavbarHead = () => {
     {
       name: "Login",
       logo: `${user ? "Hello " + user.fname : "Login"}`,
-      link: `${registered ? "/login" : "/register"}`,
+      link: `${user ? "/user/" + JSON.parse(localStorage.getItem("user")).name : "/login"}`,
     },
   ];
   const [open, setOpen] = useState(false);
