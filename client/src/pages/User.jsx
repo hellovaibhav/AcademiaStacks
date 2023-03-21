@@ -1,7 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const User = () => {
  
+  const Navigate = useNavigate()
+
   return (
     <div className="mt-32 min-h-[85vh] flex flex-col items-center justify-center text-center">
       <p className="m-2 p-2">
@@ -18,7 +21,8 @@ const User = () => {
         whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
         onClick={() => {
           localStorage.clear();
-          window.location.reload(false);
+          Navigate("/");
+          
         }}
       >
         Logout
