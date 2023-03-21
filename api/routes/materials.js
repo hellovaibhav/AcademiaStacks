@@ -1,5 +1,5 @@
 import express from "express"
-import { createMaterial, deleteMaterial, getMaterial, getMaterials, getNotes, updateMaterial } from "../controllers/material.js";
+import { createMaterial, deleteMaterial, getMaterial, getMaterialByType, getMaterials, updateMaterial } from "../controllers/material.js";
 import Material from "../models/Material.js";
 import { createError } from "../utils/error.js";
 
@@ -26,6 +26,6 @@ router.get("/:materialType/:id", getMaterial);
 // get all material
 router.get("/", getMaterials);
 
-router.get("/:materialType", getNotes);
+router.get("/:materialType", getMaterialByType);
 
 export default router;
