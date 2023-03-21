@@ -12,7 +12,12 @@ import feedbacksRoute from "./routes/feedbacks.js"
 import cookieParser from "cookie-parser";
 
 const app = express();
-app.use(cors());
+
+const options = {
+    origin : 'http://localhost:3000',
+    useSuccessStatus : true
+}
+app.use(cors(options));
 
 dotenv.config();
 
@@ -29,7 +34,7 @@ app.use(session({
 
 const connect = async () => {
     try {
-        await mongoose.connect(process.env.MONGO);
+        mongoose.connect(process.env.MONGO);
         console.log("connected to Database");
     } catch (error) {
         throw error;

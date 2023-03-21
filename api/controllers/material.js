@@ -60,7 +60,7 @@ export const getMaterials = async (req, res, next) => {
 
 };
 
-export const getNotes = async (req, res, next) => {
+export const getMaterialByType = async (req, res, next) => {
 
     try {
 
