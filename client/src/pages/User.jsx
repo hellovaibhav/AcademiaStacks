@@ -21,6 +21,7 @@ const User = () => {
         whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
         onClick={() => {
           localStorage.clear();
+          window.location.reload(false);
           Navigate("/");
           
         }}
