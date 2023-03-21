@@ -18,8 +18,8 @@ const NavbarHead = () => {
   // const [registered, setRegistered] = useState(true);
   let Links = [
     { name: "Home", logo: "Home", link: "/" },
-    { name: "About", logo: "About", link: "/about" },
     { name: "Material", logo: "Material", link: "/material" },
+    { name: "About", logo: "About Us", link: "/about" },
     { name: "Feedback", logo: "Feedback", link: "/feedback" },
     {
       name: "Login",
