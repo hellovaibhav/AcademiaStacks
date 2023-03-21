@@ -18,6 +18,7 @@ export const createMaterial = async (req, res, next) => {
         branch: req.body.branch,
         materialType: req.body.materialType,
         thumbnail: link,
+        author:req.body.author,
         featured: req.body.featured
     });
 
