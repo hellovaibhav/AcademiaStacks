@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 // import img from "../assets/pic1.png";
 // import MaterialPage from "../assets/MaterialPageContent";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Notes = () => {
   const [index, setIndex] = useState(7);
@@ -19,35 +20,42 @@ const Notes = () => {
   };
 
   const fetchNotes = async () => {
+    const headers = {
+      "Access-Control-Allow-Origin": "*",
+    };
     const { data } = await axios.get(
-      "http://localhost:8800/api/materials/Notes"
+      "http://localhost:8800/api/materials/Notes",
+      headers
     );
-    console.log(data);
+    console.log(data[0].thumbnail);
     setData(data);
   };
   useEffect(() => {
     fetchNotes();
   }, []);
   return (
-    <div className="min-h-[100vh]  flex items-center justify-around mt-16 md:mt-24 pl-0 sm:pl-[2rem] lg:pl-[25rem] md:pl-[10rem] xl:pl-[30rem] ">
-      <div className="leftFilter fixed top-52 left-14 h-40 hidden lg:block border-4 border-black w-[20vw]">
+    <div className="min-h-[100vh]  flex items-center justify-center mt-16 md:mt-24  ">
+      {/* <div className="leftFilter fixed top-52 left-14 h-40 hidden lg:block border-4 border-black w-[20vw]">
         Notes Filter Here
-      </div>
-      <div className="flex flex-col items-center justify-around pb-10">
-        <div className="rightContent w-[80vw] flex flex-wrap mt-14 lg:mt-0">
+      </div> */}
+
+      <div className="flex max-w-[80vw] flex-col items-center justify-center pb-10">
+        <div className="rightContent  flex flex-wrap mt-14 lg:mt-0">
           {data.slice(0, index + 1).map((material) => (
             <motion.div
-              className="parent flex flex-col h-60 w-[100vw] md:w-56 bg-red-100 m-8 rounded-xl drop-shadow-md"
+              className="parent flex flex-col h-60 w-[50vw] md:w-56 bg-red-100 m-8 rounded-xl drop-shadow-md"
               whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
               initial={{ y: 150, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.4 }}
             >
-              <img
-                src={material.image}
-                alt="Not available"
-                className="h-[12rem] w-auto"
-              />
+              <Link to={material.materialLink}>
+                <img
+                  src={material.thumbnail}
+                  alt="Not available"
+                  className="h-[12rem] w-auto"
+                />
+              </Link>
               <div className="descriptionChild p-2">{material.subject}</div>
             </motion.div>
           ))}
