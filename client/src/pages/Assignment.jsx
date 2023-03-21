@@ -22,14 +22,13 @@ const Assignment = () => {
     const { data } = await axios.get(
       "http://localhost:8800/api/materials/Notes"
     );
-    console.log(data);
     setData(data);
   };
   useEffect(() => {
     fetchNotes();
   }, []);
   return (
-    <div className="min-h-[100vh]  flex items-center justify-around mt-16 md:mt-24 pl-0 sm:pl-[2rem] lg:pl-[25rem] md:pl-[10rem] xl:pl-[30rem] ">
+    <div className="min-h-[100vh]   flex items-center justify-center mt-16 md:mt-24 pl-[15%] sm:pl-[25%] lg:pl-[25rem] md:pl-[20%] xl:pl-[30rem]  ">
       <div className="leftFilter fixed top-52 left-14 h-40 hidden lg:block border-4 border-black w-[20vw]">
         Notes Filter Here
       </div>
@@ -37,7 +36,8 @@ const Assignment = () => {
         <div className="rightContent w-[80vw] flex flex-wrap mt-14 lg:mt-0">
           {MaterialPage.slice(0, index + 1).map((material) => (
             <motion.div
-              className="parent flex flex-col h-60 w-[100vw] md:w-56 bg-red-100 m-8 rounded-xl drop-shadow-md"
+              key={material._id}
+              className="parent flex flex-col h-60 w-[50vw] md:w-56 bg-red-100 m-8 rounded-xl drop-shadow-md"
               whileTap={{
                 scale: 0.9,
                 transition: { duration: 0.5 },
@@ -62,7 +62,7 @@ const Assignment = () => {
           <motion.button
             whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
             onClick={showMore}
-            className="h-10 bg-blue-400 p-2 rounded-lg drop-shadow-md hover:bg-blue-200 mb-4 2xl:mr-10 xl:mr-[15rem]  "
+            className="h-auto sm:h-10 bg-blue-400 p-2 rounded-lg drop-shadow-md hover:bg-blue-200 mb-4 mr-[25%] xl:mr-[10%] 2xl:mr-10  "
           >
             Show More
           </motion.button>
@@ -75,7 +75,7 @@ const Assignment = () => {
               transition: { duration: 0.1 },
             }}
             onClick={null}
-            className="h-10 bg-rose-400 p-2 rounded-lg drop-shadow-md  mb-4 2xl:mr-10 xl:mr-[15rem]  "
+            className="h-auto sm:h-10 bg-rose-400 p-2 rounded-lg drop-shadow-md  mb-4 mr-[25%] xl:mr-[10%] 2xl:mr-10  "
           >
             Thank You See You Later
           </motion.button>

@@ -15,6 +15,7 @@ import Assignment from "./pages/Assignment";
 import { AuthContext } from "./context/AuthContext";
 import Notes from "./pages/Notes";
 import PYQ from "./pages/PYQ";
+import User from "./pages/User";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -48,7 +49,9 @@ function App() {
         <Route
           path="/material/assignment"
           element={
+            <ProtectedRoute>
               <Assignment />
+            </ProtectedRoute>
           }
         />
         <Route
@@ -64,6 +67,14 @@ function App() {
           element={
             <ProtectedRoute>
               <PYQ />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={"/user/" + JSON.parse(localStorage.getItem("user")).name}
+          element={
+            <ProtectedRoute>
+              <User />
             </ProtectedRoute>
           }
         />
