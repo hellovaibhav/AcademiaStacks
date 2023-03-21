@@ -44,7 +44,7 @@ const Notes = () => {
               transition={{ duration: 0.4, delay: 0.4 }}
             >
               <img
-                src={material.image}
+                src={material.thumbnail}
                 alt="Not available"
                 className="h-[12rem] w-auto"
               />
