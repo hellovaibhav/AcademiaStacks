@@ -13,7 +13,7 @@ const Material = () => {
     { navigate: "handouts", text: "Handout", image: AssignmentPic },
   ];
   return (
-    <div className="min-h-[100vh] flex flex-wrap flex-col md:flex-row mt-32 md:mt-0 items-center justify-center">
+    <div className="min-h-[100vh] flex flex-wrap flex-col md:flex-row mt-32 md:mt-24 items-center justify-center">
       {items.map((item) => (
         <motion.button
           key={item.navigate}
