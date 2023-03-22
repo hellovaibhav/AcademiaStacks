@@ -46,7 +46,7 @@ export const register = async (req, res, next) => {
       otp: otpCode
     });
 
-    newUser.index({ "lastModifiedDate": 1 }, { expireAfterSeconds: 20, partialFilterExpression: { isVerified: false } });
+    // newUser.index({ "lastModifiedDate": 1 }, { expireAfterSeconds: 20, partialFilterExpression: { isVerified: false } });
 
     var mailOptions = {
       from: senderMail,
@@ -55,13 +55,19 @@ export const register = async (req, res, next) => {
       text: "We are happy to see that you want to join Academia Stacks and boost up your academic skills here is your otp : " + otpCode + " please do fill this within 24-hours to activate your account."
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email sent: ' + info.response);
-      }
-    });
+    const checkUser = await User.findOne({ email: req.body.email });
+
+    if (!checkUser) {
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+    } else {
+      console.log("The account associated with this email address already exists");
+    }
 
     const saveduser = await newUser.save();
     res.status(200).json(saveduser);
