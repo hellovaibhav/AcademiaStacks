@@ -42,21 +42,26 @@ const Notes = () => {
         <div className="rightContent  flex flex-wrap mt-14 lg:mt-0">
           {data.slice(0, index + 1).map((material) => (
             <motion.div
+            
               key={material._id}
-              className="parent flex flex-col h-60 w-[50vw] md:w-56 bg-red-100 m-8 rounded-xl drop-shadow-md"
+              className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-blue-100 m-8 rounded-xl drop-shadow-md :hover-hidden"
               whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
               initial={{ y: 150, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.4 }}
             >
-              <Link to={material.materialLink}>
+              <Link to={material.materialLink} target="_blank">
                 <img
                   src={material.thumbnail}
                   alt="Not available"
                   className="h-[12rem] w-auto"
                 />
               </Link>
-              <div className="descriptionChild p-2">{material.subject}</div>
+              <div className="descriptionChild p-2 flex flex-col justify-center items-center text-center">
+              <p className=" text-lg text-blue-500"> {material.subject} <span className="font-semibold text-lg"> {material.instructorName} </span></p>
+              <p>Written by  <span  className="font-semibold text-lg"> {material.author} </span> Year of Writting {material.yearOfWriting}</p>
+              
+              </div>
             </motion.div>
           ))}
         </div>

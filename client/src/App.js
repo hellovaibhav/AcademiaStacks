@@ -16,6 +16,7 @@ import { AuthContext } from "./context/AuthContext";
 import Notes from "./pages/Notes";
 import PYQ from "./pages/PYQ";
 import User from "./pages/User";
+import Handouts from "./pages/Handouts";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -67,6 +68,14 @@ function App() {
           element={
             <ProtectedRoute>
               <PYQ />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/material/handouts"
+          element={
+            <ProtectedRoute>
+              <Handouts />
             </ProtectedRoute>
           }
         />

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 // import img from "../assets/pic1.png";
 // import MaterialPage from "../assets/MaterialPageContent";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const PYQ = () => {
   const [index, setIndex] = useState(7);
@@ -36,20 +37,30 @@ const PYQ = () => {
         <div className="rightContent w-[80vw] flex flex-wrap mt-14 lg:mt-0">
           {data.slice(0, index + 1).map((material) => (
             <motion.div
-            
               key={material._id}
-              className="parent flex flex-col h-60 w-[50vw] md:w-56 bg-red-100 m-8 rounded-xl drop-shadow-md"
+              className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-red-100 m-8 rounded-xl drop-shadow-md"
               whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
               initial={{ y: 150, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.4 }}
             >
-              <img
-                src={material.images}
-                alt="Not available"
-                className="h-[12rem] w-auto"
-              />
-              <div className="descriptionChild p-2">{material.subject}</div>
+              <Link to={material.materialLink} target="_blank">
+                <img
+                  src={material.thumbnail}
+                  alt="Not available"
+                  className="h-[12rem] w-auto"
+                />
+              </Link>
+              <div className="descriptionChild p-2 flex flex-col justify-center items-center text-center">
+              <p><span className="font-semibold text-lg">Subject : </span>{material.subject}</p>
+              <p><span className="font-semibold text-lg">Author : </span>{material.author} <span className="font-semibold text-lg">Branch : </span>{material.branch}</p>
+              <p><span className="font-semibold text-lg">Year of Writting : </span>{material.yearOfWriting} <br /><span className="font-semibold text-lg">Instructor Name : </span>{material.instructorName}</p>
+              {
+                  material.desc && (
+                    <p><span className="font-semibold text-lg">Description : </span>{material.desc}</p>
+                  )
+              }
+              </div>
             </motion.div>
           ))}
         </div>
