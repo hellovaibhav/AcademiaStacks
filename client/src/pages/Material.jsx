@@ -10,9 +10,10 @@ const Material = () => {
     { navigate: "pyq", text: "Previous Year Question", image: PyqPic },
     { navigate: "notes", text: "Notes", image: NotesPic },
     { navigate: "assignment", text: "Assignment", image: AssignmentPic },
+    { navigate: "handouts", text: "Handout", image: AssignmentPic },
   ];
   return (
-    <div className="min-h-[100vh] flex flex-col md:flex-row mt-32 md:mt-0 items-center justify-center">
+    <div className="min-h-[100vh] flex flex-wrap flex-col md:flex-row mt-32 md:mt-0 items-center justify-center">
       {items.map((item) => (
         <motion.button
           key={item.navigate}
