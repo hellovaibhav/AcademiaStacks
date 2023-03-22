@@ -14,11 +14,11 @@ export const createMaterial = async (req, res, next) => {
         courseCode: req.body.courseCode,
         materialLink: req.body.materialLink,
         desc: req.body.desc,
+        author:req.body.author,
         yearOfWriting: req.body.yearOfWriting,
         branch: req.body.branch,
         materialType: req.body.materialType,
         thumbnail: link,
-        author:req.body.author,
         featured: req.body.featured
     });
 
