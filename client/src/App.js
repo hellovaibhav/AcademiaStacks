@@ -71,7 +71,7 @@ function App() {
           }
         />
         <Route
-          path={"/user/" + JSON.parse(localStorage.getItem("user")).name}
+          path={"/user"}
           element={
             <ProtectedRoute>
               <User />

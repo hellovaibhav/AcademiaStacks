@@ -24,7 +24,7 @@ const NavbarHead = () => {
     {
       name: "Login",
       logo: `${user ? "Hello " + user.fname : "Login"}`,
-      link: `${user ? "/user/" + JSON.parse(localStorage.getItem("user")).name : "/login"}`,
+      link: `${user ? "/user": "/login"}`,
     },
   ];
   const [open, setOpen] = useState(false);
