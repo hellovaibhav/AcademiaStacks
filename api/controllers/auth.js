@@ -46,13 +46,13 @@ export const register = async (req, res, next) => {
       otp: otpCode
     });
 
-
+    newUser.index({ "lastModifiedDate": 1 }, { expireAfterSeconds: 20, partialFilterExpression: { isVerified: false } });
 
     var mailOptions = {
       from: senderMail,
       to: req.body.email,
       subject: "Academia Stacks One Time Password ",
-      text: "We are happy to see that you want to join Academia Stacks and boost up your academic skills here is your otp : "+otpCode+ " please do fill this within 24-hours to activate your account."
+      text: "We are happy to see that you want to join Academia Stacks and boost up your academic skills here is your otp : " + otpCode + " please do fill this within 24-hours to activate your account."
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
