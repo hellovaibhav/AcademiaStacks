@@ -1,73 +1,84 @@
-*{
+* {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  
+
 }
-.{
-  background-color: #F3EFE0 ; 
-  
+
+.active {
+  padding: 0.65rem 2rem 0.65rem 2rem;
+  border-radius: 0.75rem;
+  color: rgb(96 165 250);
+  background-color: white;
 }
-.active{
-padding: 0.65rem 2rem 0.65rem 2rem;
-border-radius: 0.75rem;
-color: rgb(96 165 250 );
-background-color: white;
-}
-.customBgColor{
+
+.customBgColor {
   width: auto;
-  animation : changeBg 10s linear infinite ;
+  animation: changeBg 10s linear infinite;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: -3.8rem;
 }
-.customBgColor2{
+
+.customBgColor2 {
   height: 100vh;
   width: auto;
-  animation : changeBg2 10s linear infinite ;
+  animation: changeBg2 10s linear infinite;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: -3.8rem;
 }
-@keyframes changeBg2{
-  100%{
+
+@keyframes changeBg2 {
+  100% {
     background-color: rgb(193, 250, 248);
   }
-  80%{
+
+  80% {
     background-color: rgb(128, 245, 249);
   }
-  60%{
+
+  60% {
     background-color: rgb(161, 254, 210);
   }
-  40%{
+
+  40% {
     background-color: rgb(128, 245, 249);
   }
-  20%{
+
+  20% {
     background-color: rgb(5, 251, 255);
   }
-  0%{
+
+  0% {
     background-color: rgb(193, 250, 200);
   }
 }
-@keyframes changeBg{
-  0%{
+
+@keyframes changeBg {
+  0% {
     background-color: rgb(193, 250, 248);
   }
-  20%{
+
+  20% {
     background-color: rgb(128, 245, 249);
   }
-  40%{
+
+  40% {
     background-color: rgb(161, 254, 249);
   }
-  60%{
+
+  60% {
     background-color: rgb(128, 245, 249);
   }
-  80%{
+
+  80% {
     background-color: rgb(5, 251, 255);
   }
-  100%{
+
+  100% {
     background-color: rgb(193, 250, 200);
   }
 }
@@ -77,66 +88,81 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.active{
-padding: 0.65rem 2rem 0.65rem 2rem;
-border-radius: 0.75rem;
-color: rgb(96 165 250 );
-background-color: white;
+
+.active {
+  padding: 0.65rem 2rem 0.65rem 2rem;
+  border-radius: 0.75rem;
+  color: rgb(96 165 250);
+  background-color: white;
 }
-.customBgColor{
+
+.customBgColor {
   width: auto;
-  animation : changeBg 10s linear infinite ;
+  animation: changeBg 10s linear infinite;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: -3.8rem;
 }
-.customBgColor2{
+
+.customBgColor2 {
   height: 100vh;
   width: auto;
-  animation : changeBg2 10s linear infinite ;
+  animation: changeBg2 10s linear infinite;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: -3.8rem;
 }
-@keyframes changeBg2{
-  100%{
+
+@keyframes changeBg2 {
+  100% {
     background-color: rgb(193, 250, 248);
   }
-  80%{
+
+  80% {
     background-color: rgb(128, 245, 249);
   }
-  60%{
+
+  60% {
     background-color: rgb(161, 254, 210);
   }
-  40%{
+
+  40% {
     background-color: rgb(128, 245, 249);
   }
-  20%{
+
+  20% {
     background-color: rgb(5, 251, 255);
   }
-  0%{
+
+  0% {
     background-color: rgb(193, 250, 200);
   }
 }
-@keyframes changeBg{
-  0%{
+
+@keyframes changeBg {
+  0% {
     background-color: rgb(193, 250, 248);
   }
-  20%{
+
+  20% {
     background-color: rgb(128, 245, 249);
   }
-  40%{
+
+  40% {
     background-color: rgb(161, 254, 249);
   }
-  60%{
+
+  60% {
     background-color: rgb(128, 245, 249);
   }
-  80%{
+
+  80% {
     background-color: rgb(5, 251, 255);
   }
-  100%{
+
+  100% {
     background-color: rgb(193, 250, 200);
   }
 }
