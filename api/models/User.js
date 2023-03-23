@@ -10,10 +10,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    username: { 
-        type: String, 
-        require: true, 
-        unique:true,    
+    username: {
+        type: String,
+        require: true,
+        unique: true,
     },
     email: {
         type: String,
@@ -35,6 +35,13 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    otp: {
+        type: Number
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 

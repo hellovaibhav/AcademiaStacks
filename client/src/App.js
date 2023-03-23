@@ -16,6 +16,8 @@ import { AuthContext } from "./context/AuthContext";
 import Notes from "./pages/Notes";
 import PYQ from "./pages/PYQ";
 import User from "./pages/User";
+import Handouts from "./pages/Handouts";
+import OtpVerification from "./pages/OtpVerification";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -71,11 +73,25 @@ function App() {
           }
         />
         <Route
-          path={"/user/" + JSON.parse(localStorage.getItem("user")).name}
+          path="/material/handouts"
+          element={
+            <ProtectedRoute>
+              <Handouts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={"/user/"}
           element={
             <ProtectedRoute>
               <User />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path={"/verification"}
+          element={
+              <OtpVerification />
           }
         />
 
