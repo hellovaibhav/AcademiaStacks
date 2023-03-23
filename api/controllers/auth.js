@@ -88,9 +88,9 @@ export const registerVerify = async (req, res, next) => {
     if (req.body.otp != user.otp) {
       return next(createError(400, "Wrong OTP!"));
     } else {
-      User.findByIdAndUpdate(user._id, { isVerified: true });
+      const doc = await User.findOneAndUpdate({ email: req.body.email }, { isVerified: true }, { new: true });
+      res.status(200).json(doc.name + " is now verified " + doc.isVerified);
     }
-
 
   } catch (err) {
     next(err);
