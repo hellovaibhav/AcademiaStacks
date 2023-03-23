@@ -5,7 +5,10 @@ import axios from "axios";
 import Lottie from "lottie-react";
 import LoginAnimation from "../assets/Login2.json";
 import { AuthContext } from "../context/AuthContext";
+<<<<<<< HEAD
 import Loader from "../components/Loader";
+=======
+>>>>>>> OTPVerification
 const Login = () => {
 
   const navigate = useNavigate();
