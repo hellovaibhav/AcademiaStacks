@@ -79,10 +79,29 @@ export const register = async (req, res, next) => {
 };
 
 
+export const registerVerify = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return next(createError(404, "User not found!"));
+
+
+    if (req.body.otp != user.otp) {
+      return next(createError(400, "Wrong OTP!"));
+    } else {
+      User.findByIdAndUpdate(user._id, { isVerified: true });
+    }
+
+
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) return next(createError(404, "User not found!"));
+    if (user.isVerified == false) return next(createError(401, "User not verified please input otp"));
 
     const isPasswordCorrect = await bcrypt.compare(
       req.body.password,
