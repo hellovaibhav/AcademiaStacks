@@ -22,15 +22,13 @@ const Notes = () => {
   const [loading, setLoading] = useState(false);
   const fetchNotes = async () => {
     setLoading(true);
-    const headers = {
-      "Access-Control-Allow-Origin": "*",
-    };
+    setTimeout(() => {
+      setLoading(false);
+    }, 1200);
     const { data } = await axios.get(
-      "http://localhost:8800/api/materials/Notes",
-      headers
+      "http://localhost:8800/api/materials/Notes"
     );
     setData(data);
-    setLoading(false);
   };
   useEffect(() => {
     fetchNotes();
@@ -38,8 +36,8 @@ const Notes = () => {
   return (
     <>
       {loading ? (
-        <div className="min-h-[100vh]  flex items-center justify-center mt-16 md:mt-24 pl-[15%] sm:pl-[25%] lg:pl-[25rem] md:pl-[20%] xl:pl-[30rem]  ">
-        <Loader />
+        <div className="min-h-[100vh]  flex items-center justify-center ">
+          <Loader />
         </div>
       ) : (
         <div className="min-h-[100vh]  flex items-center justify-center mt-16 md:mt-24 pl-[15%] sm:pl-[25%] lg:pl-[25rem] md:pl-[20%] xl:pl-[30rem]  ">
@@ -75,12 +73,12 @@ const Notes = () => {
                       </span>
                     </p>
                     <p>
-                      Written by{" "}
+                       by{" "}
                       <span className="font-semibold text-lg">
                         {" "}
                         {material.author}{" "}
                       </span>{" "}
-                      Year of Writting {material.yearOfWriting}
+                      in {material.yearOfWriting}
                     </p>
                   </div>
                 </motion.div>
