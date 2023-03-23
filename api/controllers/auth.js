@@ -46,13 +46,13 @@ export const register = async (req, res, next) => {
       otp: otpCode
     });
 
-
+    // newUser.index({ "lastModifiedDate": 1 }, { expireAfterSeconds: 20, partialFilterExpression: { isVerified: false } });
 
     var mailOptions = {
       from: senderMail,
       to: req.body.email,
       subject: "Academia Stacks One Time Password ",
-      text: "We are happy to see that you want to join Academia Stacks and boost up your academic skills here is your otp : "+otpCode+ " please do fill this within 24-hours to activate your account."
+      text: "We are happy to see that you want to join Academia Stacks and boost up your academic skills here is your otp : " + otpCode + " please do fill this within 24-hours to activate your account."
     };
 
     const checkUser = await User.findOne({ email: req.body.email });
@@ -69,7 +69,6 @@ export const register = async (req, res, next) => {
       console.log("The account associated with this email address already exists");
     }
 
-
     const saveduser = await newUser.save();
     res.status(200).json(saveduser);
 
@@ -80,10 +79,29 @@ export const register = async (req, res, next) => {
 };
 
 
+export const registerVerify = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return next(createError(404, "User not found!"));
+
+
+    if (req.body.otp != user.otp) {
+      return next(createError(400, "Wrong OTP!"));
+    } else {
+      const doc = await User.findOneAndUpdate({ email: req.body.email }, { isVerified: true }, { new: true });
+      res.status(200).json(doc.name + " is now verified " + doc.isVerified);
+    }
+
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) return next(createError(404, "User not found!"));
+    if (user.isVerified == false) return next(createError(401, "User not verified please input otp"));
 
     const isPasswordCorrect = await bcrypt.compare(
       req.body.password,
