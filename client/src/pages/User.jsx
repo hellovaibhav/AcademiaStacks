@@ -17,11 +17,11 @@ const User = () => {
         Email : {JSON.parse(localStorage.getItem("user")).email}
       </p>
       <p
-        className="pr-5 bg-rose-200 cursor-pointer text-red-600 hover:bg-red-600 duration-500 font-bold hover:text-white  md:ml-8 mx-4 text-3xl md:my-0 my-7 px-5 py-2 rounded-xl "
+        className="pr-5 bg-rose-200 cursor-pointer text-red-600 hover:bg-red-600 duration-500 font-bold hover:text-white md:ml-8 mx-4 text-3xl md:my-0 my-7 px-5 py-2 rounded-xl "
         onClick={() => {
           localStorage.clear();
           window.location.reload(false);
-          Navigate("/");
+          Navigate("/login");
           
         }}
       >
