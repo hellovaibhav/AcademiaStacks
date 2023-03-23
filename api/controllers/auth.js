@@ -3,8 +3,24 @@ import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import { createError } from "../utils/error.js";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+
+
 
 export const register = async (req, res, next) => {
+
+  const senderMail = process.env.MAILID;
+  const senderPass = process.env.MAILPASS;
+
+  var transporter = nodemailer.createTransport({
+    host: 'smtp.zoho.in',
+    port: 465,
+    secure: true, //ssl
+    auth: {
+      user: senderMail,
+      pass: senderPass
+    }
+  });
 
   try {
     const salt = bcrypt.genSaltSync(10);
@@ -15,7 +31,9 @@ export const register = async (req, res, next) => {
 
     var naming = req.body.name;
     var firstname = naming.split(" ")[0];
-    
+
+    var otpCode = Math.floor(100000 + Math.random() * 900000);
+
     const newUser = new User({
       name: req.body.name,
       email: req.body.email,
@@ -24,13 +42,36 @@ export const register = async (req, res, next) => {
       branch: req.body.branch,
       batch: req.body.batch,
       isAdmin: req.body.isAdmin,
-      fname:firstname
-
+      fname: firstname,
+      otp: otpCode
     });
 
-    const saveduser = await newUser.save()
-    res.status(200).json(saveduser)
 
+
+    var mailOptions = {
+      from: senderMail,
+      to: req.body.email,
+      subject: "Academia Stacks One Time Password ",
+      text: "We are happy to see that you want to join Academia Stacks and boost up your academic skills here is your otp : "+otpCode+ " please do fill this within 24-hours to activate your account."
+    };
+
+    const checkUser = await User.findOne({ email: req.body.email });
+
+    if (!checkUser) {
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+    } else {
+      console.log("The account associated with this email address already exists");
+    }
+
+
+    const saveduser = await newUser.save();
+    res.status(200).json(saveduser);
 
 
   } catch (err) {

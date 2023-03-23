@@ -18,13 +18,13 @@ const NavbarHead = () => {
   // const [registered, setRegistered] = useState(true);
   let Links = [
     { name: "Home", logo: "Home", link: "/" },
-    { name: "About", logo: "About", link: "/about" },
     { name: "Material", logo: "Material", link: "/material" },
+    { name: "About", logo: "About Us", link: "/about" },
     { name: "Feedback", logo: "Feedback", link: "/feedback" },
     {
       name: "Login",
       logo: `${user ? "Hello " + user.fname : "Login"}`,
-      link: `${user ? "/user/" + JSON.parse(localStorage.getItem("user")).name : "/login"}`,
+      link: `${user ? "/user": "/login"}`,
     },
   ];
   const [open, setOpen] = useState(false);
@@ -61,10 +61,11 @@ const NavbarHead = () => {
         <ul
           className={` ${
             open ? "top-24" : "top-[-490px]"
-          } bg-white  md:bg-blue-400 drop-shadow-lg md:pl-16 pl-0 md:rounded-bl-full rounded-none h-auto md:h-16 md:flex md:items-center absolute md:static  w-full left-0 md:w-auto transition-all duration-500 ease-in`}
+          } bg-white opacity-[0.85] md:opacity-100  md:bg-blue-400 drop-shadow-lg md:pl-16 pl-0 md:rounded-bl-full rounded-none h-auto md:h-16 md:flex md:items-center absolute md:static  w-full left-0 md:w-auto transition-all duration-500 ease-in`}
         >
           {Links.map((link) => (
             <motion.li
+            
               key={link.name}
               className="text-blue-400 hover:text-white md:text-white md:hover:text-blue-400 md:ml-8 mx-4 text-xl md:my-0 my-7 "
               whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}

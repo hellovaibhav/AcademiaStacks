@@ -31,7 +31,7 @@ const Register = () => {
       const response = await axios.post(url, data)
         .then((res) => {
           console.log(res.data);
-          navigate('/login')
+          navigate('/verification')
         });
     }
     catch (err) {
