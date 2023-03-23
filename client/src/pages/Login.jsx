@@ -5,6 +5,7 @@ import axios from "axios";
 import Lottie from "lottie-react";
 import LoginAnimation from "../assets/Login2.json";
 import { AuthContext } from "../context/AuthContext";
+import Loader from "../components/Loader";
 const Login = () => {
 
   const navigate = useNavigate();
@@ -27,21 +28,31 @@ const Login = () => {
     console.log(newdata);
   }
   //Function to handle submit
+  const [load, setLoading] = useState(false);
   async function submit(e) {
 
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
+      setTimeout(() => {
+        setLoading(true);
+      }, 1000);
       const res = await axios.post(url, data);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details })
       navigate("/material")
     } catch (err) {
       dispatch({ type: "LOGIN_FAILURE", payload: err.res.data })
     }
+    
   };
 
   return (
-    <div className="min-h-[90vh] flex items-center justify-center">
+
+    <>
+      {
+        load ? (<div className="min-h-[100vh]  flex items-center justify-center mt-16 md:mt-24   ">
+          <Loader />
+        </div>) : (<div className="min-h-[90vh] flex items-center justify-center">
       <div className="bg-blue-200 flex flex-col justify-around md:w-[50rem] w-[24rem] h-[28rem] md:h-auto  py-10 px-2 rounded-lg drop-shadow-lg">
         <h1 className="text-4xl font-bold text-center h-[20vh] pt-4 text-white">
           Login
@@ -99,7 +110,9 @@ const Login = () => {
           </form>
         </div>
       </div>
-    </div>
+    </div>)
+      }
+    </>
   );
 };
 

@@ -17,6 +17,7 @@ import Notes from "./pages/Notes";
 import PYQ from "./pages/PYQ";
 import User from "./pages/User";
 import Handouts from "./pages/Handouts";
+import OtpVerification from "./pages/OtpVerification";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -88,6 +89,7 @@ function App() {
           }
         />
 
+        <Route path="/verification" element={<OtpVerification />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
