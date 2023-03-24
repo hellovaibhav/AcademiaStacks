@@ -10,7 +10,7 @@ router.get("/register", cors(), (req, res) => {
 
 
 router.post("/register", register);
-router.post("/register/verify", registerVerify);
+router.post("/verification", registerVerify);
 router.post("/login", login);
 
 export default router;

@@ -1,17 +1,48 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
-const OtpVerification = ({ email }) => {
-  const arr = [
-    { type: "number" },
-    { type: "number" },
-    { type: "number" },
-    { type: "number" },
-    { type: "number" },
-    { type: "number" },
-  ];
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
+
+const OtpVerification = () => {
+
+  const navigate = useNavigate();
+  //url to go to
+  const url = "http://localhost:8800/api/auth/verification";
+
+  //useStates to hold input
+  const [data, setdata] = useState({
+    username: "",
+    otp: "",
+  });
+
+  const { loading, error, dispatch } = useContext(AuthContext);
+
+  function handleChange(e) {
+    const newdata = { ...data };
+    newdata[e.target.id] = e.target.value;
+
+    setdata(newdata);
+    console.log(newdata);
+  }
   //Function to handle submit
-  const submit = (e) => {
+  const [load, setLoading] = useState(false);
+  async function submit(e) {
+
     e.preventDefault();
+    dispatch({ type: "LOGIN_START" });
+    try {
+      setTimeout(() => {
+        setLoading(true);
+      }, 1000);
+      const res = await axios.post(url, data);
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details })
+      navigate("/login")
+    } catch (err) {
+      dispatch({ type: "LOGIN_FAILURE", payload: err.res.data })
+      navigate("/verification");
+    }
+
   };
 
   return (
@@ -19,26 +50,30 @@ const OtpVerification = ({ email }) => {
       <form
         onSubmit={(e) => submit(e)}
         action=""
-        method="get"
+        method="POST"
         className="flex flex-col justify-around items-center min-h-[30vh]"
       >
-      <div>
-        <span>Email</span>
-        <input type="text" placeholder="Enter Your Email" className="ml-4 p-2 bg-gray-200 rounded-lg" />
-      </div>
+        <div>
+          <span>Email</span>
+          <input type="text"
+            id="email"
+            value={data.email} onChange={(e) => handleChange(e)} placeholder="Enter Your Email" className="ml-4 p-2 bg-gray-200 rounded-lg" />
+        </div>
         <div>
           <span className="px-2 text-left text-2xl font-semibold text-blue-600">
-            OTP :{" "}
+            OTP
           </span>
-          {arr.map((item) => {
-            return (
-              <input
-                key={item.type}
-                type={item.type}
-                className="h-16 w-14 mx-2 bg-gray-300 border-2 border-black drop-shadow-lg p-2 text-4xl text-center"
-              />
-            );
-          })}
+
+          <input
+
+            type="number"
+            onChange={(e) => handleChange(e)}
+            id="otp"
+            value={data.otp}
+            placeholder="123456"
+            className="h-16 w-40 mx-2 bg-gray-300 border-2 border-black drop-shadow-lg p-2 text-4xl text-center"
+          />
+
         </div>
         <motion.button
           type="submit"
@@ -48,6 +83,7 @@ const OtpVerification = ({ email }) => {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.1, delay: 0.4 }}
+          disabled={loading}
         >
           Submit
         </motion.button>
@@ -55,5 +91,6 @@ const OtpVerification = ({ email }) => {
     </div>
   );
 };
+
 
 export default OtpVerification;
