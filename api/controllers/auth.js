@@ -52,7 +52,7 @@ export const register = async (req, res, next) => {
       from: senderMail,
       to: req.body.email,
       subject: "Academia Stacks One Time Password ",
-      text: "We are happy to see that you want to join Academia Stacks and boost up your academic skills here is your otp : " + otpCode + " please do fill this within 24-hours to activate your account."
+      html: "<html><body align=\"center\" bgcolor=\"#EDF1D6\"><p>We are happy to see that you want to join Academia Stacks and dig deep into the ocean of knowledge</p><br><h3> Here is your OTP </h3><br><h1>" + otpCode + " </h1><p>Please enter this within 24-hours to activate your account.</p></body></html>"
     };
 
     const checkUser = await User.findOne({ email: req.body.email });
@@ -62,7 +62,7 @@ export const register = async (req, res, next) => {
         if (error) {
           console.log(error);
         } else {
-          console.log('Email sent: ' + info.response);
+          console.log('Email Sent');
         }
       });
     } else {
