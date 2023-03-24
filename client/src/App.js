@@ -18,7 +18,6 @@ import PYQ from "./pages/PYQ";
 import User from "./pages/User";
 import Handouts from "./pages/Handouts";
 import OtpVerification from "./pages/OtpVerification";
-
 function App() {
   const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);

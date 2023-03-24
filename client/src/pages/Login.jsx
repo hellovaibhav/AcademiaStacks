@@ -7,14 +7,12 @@ import { AuthContext } from "../context/AuthContext";
 import Loader from "../components/Loader";
 import ErrorBoundary from "../components/ErrorBoundary";
 const Login = () => {
-
   const navigate = useNavigate();
   //url to go to
   const url = "http://localhost:8800/api/auth/login";
 
   //useStates to hold input
   const [data, setdata] = useState({
-    
     email: "",
     password: "",
   });
@@ -31,7 +29,6 @@ const Login = () => {
   //Function to handle submit
   const [load, setLoading] = useState(false);
   async function submit(e) {
-
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
@@ -39,24 +36,24 @@ const Login = () => {
         setLoading(true);
       }, 1000);
       const res = await axios.post(url, data);
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details })
-      navigate("/material")
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+      navigate("/material");
     } catch (err) {
       alert("User not registered or wrong mail id or password");
-      dispatch({ type: "LOGIN_FAILURE", payload: err.res.data })
+      dispatch({ type: "LOGIN_FAILURE", payload: err.res.data });
     }
-
-  };
+  }
 
   return (
-
     <>
-      {
-        load ? (<div className="min-h-[100vh]  flex items-center justify-center mt-16 md:mt-24   ">
+      {load ? (
+        <div className="min-h-[100vh]  flex items-center justify-center mt-16 md:mt-10   ">
           <Loader />
-        </div>) : (<div className="min-h-[90vh] flex items-center justify-center">
-          <div className="bg-blue-200 flex flex-col justify-around md:w-[50rem] w-[24rem] h-[28rem] md:h-auto  py-10 px-2 rounded-lg drop-shadow-lg">
-            <h1 className="text-4xl font-bold text-center h-[20vh] pt-4 text-white">
+        </div>
+      ) : (
+        <div className="min-h-[90vh] flex items-center justify-center">
+          <div className="bg-blue-200 flex flex-col justify-around md:w-[25rem] w-[20rem] h-[28rem] md:h-auto  py-10 px-2 rounded-lg drop-shadow-lg">
+            <h1 className="text-4xl font-bold text-center h-[10vh] pt-4 text-white">
               Login
             </h1>
             <div className="flex items-center justify-around">
@@ -79,7 +76,7 @@ const Login = () => {
                   value={data.email}
                   onChange={(e) => handleChange(e)}
                   placeholder="Email"
-                  className="min-h-[2rem] w-64 rounded p-2 focus:bg-sky-100 focus:text-blue-500 focus:font-base "
+                  className="min-h-[2rem] w-50 md:w-64 rounded p-2 focus:bg-sky-100 focus:text-blue-500 focus:font-base "
                   whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
                 />
                 <motion.input
@@ -89,7 +86,7 @@ const Login = () => {
                   id="password"
                   value={data.password}
                   onChange={(e) => handleChange(e)}
-                  className="min-h-[2rem] w-64 rounded p-2 focus:bg-sky-100 focus:text-blue-500 focus:font-base"
+                  className="min-h-[2rem] w-50 md:w-64 rounded p-2 focus:bg-sky-100 focus:text-blue-500 focus:font-base"
                   whileTap={{ scale: 0.98, transition: { duration: 0.1 } }}
                 />
                 <Link
@@ -114,8 +111,8 @@ const Login = () => {
               </form>
             </div>
           </div>
-        </div>)
-      }
+        </div>
+      )}
     </>
   );
 };
