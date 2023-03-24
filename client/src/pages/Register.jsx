@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import LoginAnimation from "../assets/Login.json";
 import ErrorBoundary from "../components/ErrorBoundary";
+import Cookies from 'js-cookie'
 
 const Register = () => {
   const navigate = useNavigate();
@@ -20,12 +21,14 @@ const Register = () => {
     const newdata = { ...data };
     newdata[e.target.id] = e.target.value;
     setdata(newdata);
+    Cookies.set('email',data.email)
     console.log(newdata);
+
   }
 
   async function submit(e) {
     e.preventDefault();
-
+    
     try {
       const response = await axios.post(url, data).then((res) => {
         console.log(res.data);
@@ -38,8 +41,8 @@ const Register = () => {
 
   return (
     <div className="min-h-[85.2vh] flex items-center justify-center ">
-      <div className="bg-blue-200 flex flex-col justify-around md:w-[50rem] w-[24rem] h-[28rem] md:h-auto py-10 rounded-lg drop-shadow-lg px-2">
-        <h1 className="text-4xl font-bold text-center h-[20vh] md:pt-0 pt-4 text-white">
+      <div className="bg-blue-200 flex flex-col justify-around md:w-[30rem] w-[24rem] h-[28rem] md:h-auto py-10 rounded-lg drop-shadow-lg px-2">
+        <h1 className="text-4xl font-bold text-center h-[10vh] md:pt-0 pt-4 text-white">
           Register
         </h1>
         <div className="flex items-center justify-around">

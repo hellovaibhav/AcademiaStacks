@@ -38,7 +38,7 @@ const Register = () => {
 
   return (
     <div className="min-h-[94vh] flex items-center justify-center ">
-      <div className="bg-blue-200 flex flex-col justify-around md:w-[50rem] w-[24rem] h-[28rem] md:h-auto py-10 rounded-lg drop-shadow-lg px-2">
+      <div className="bg-blue-200 flex flex-col justify-around md:w-[40rem] w-[24rem] h-[28rem] md:h-auto py-10 rounded-lg drop-shadow-lg px-2">
         <h1 className="text-4xl font-bold text-center h-[10vh] md:pt-0 pt-4 text-white">
           Feedback
         </h1>
@@ -54,7 +54,7 @@ const Register = () => {
             onSubmit={(e) => submit(e)}
             action=""
             method="POST"
-            className="flex flex-col justify-evenly h-auto md:h-[25rem] px-10 w-[100%] md:w-[50%]"
+            className="flex flex-col justify-evenly h-auto md:h-[25rem] px-10 w-[100%] md:w-[75%]"
           >
           <label htmlFor="0">Name</label>
             <motion.input
