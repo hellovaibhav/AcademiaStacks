@@ -84,8 +84,6 @@ export const registerVerify = async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user) return next(createError(404, "User not found!"));
 
-    console.log(req.body.email);
-    console.log(req.body.otp);
 
     if (req.body.otp != user.otp) {
       return next(createError(400, "Wrong OTP!"));
