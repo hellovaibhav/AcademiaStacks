@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Lottie from "lottie-react";
 import LoginAnimation from "../assets/Login2.json";
 import { AuthContext } from "../context/AuthContext";
 import Loader from "../components/Loader";
@@ -60,13 +59,13 @@ const Login = () => {
               Login
             </h1>
             <div className="flex items-center justify-around">
-              <ErrorBoundary>
+              {/* <ErrorBoundary>
 
                 <Lottie
                   animationData={LoginAnimation}
                   className="h-80 hidden md:block"
                 />
-              </ErrorBoundary>
+              </ErrorBoundary> */}
               <form
                 onSubmit={(e) => submit(e)}
                 action=""

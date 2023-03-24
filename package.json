@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "lottie-react": "^2.4.0"
-  }
-}

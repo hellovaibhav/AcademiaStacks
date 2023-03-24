@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
-import Lottie from "lottie-react";
 import LoginAnimation from "../assets/Login.json";
 import ErrorBoundary from "../components/ErrorBoundary";
 
@@ -44,12 +43,12 @@ const Register = () => {
           Register
         </h1>
         <div className="flex items-center justify-around">
-          <ErrorBoundary>
+          {/* <ErrorBoundary>
             <Lottie
               animationData={LoginAnimation}
               className="h-80 hidden md:block"
             />
-          </ErrorBoundary>
+          </ErrorBoundary> */}
 
           <form
             onSubmit={(e) => submit(e)}
