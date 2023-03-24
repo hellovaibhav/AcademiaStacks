@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
 import Lottie from "lottie-react";
 import LoginAnimation from "../assets/Login.json";
+import ErrorBoundary from "../components/ErrorBoundary";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Register = () => {
     email: "",
     password: "",
     branch: "",
-    batch: ""
+    batch: "",
   });
   function handleChange(e) {
     const newdata = { ...data };
@@ -23,22 +24,18 @@ const Register = () => {
     console.log(newdata);
   }
 
-
   async function submit(e) {
     e.preventDefault();
 
     try {
-      const response = await axios.post(url, data)
-        .then((res) => {
-          console.log(res.data);
-          navigate('/verification')
-        });
-    }
-    catch (err) {
+      const response = await axios.post(url, data).then((res) => {
+        console.log(res.data);
+        navigate("/verification");
+      });
+    } catch (err) {
       alert(err);
     }
   }
-
 
   return (
     <div className="min-h-[85.2vh] flex items-center justify-center ">
@@ -47,10 +44,12 @@ const Register = () => {
           Register
         </h1>
         <div className="flex items-center justify-around">
-          <Lottie
-            animationData={LoginAnimation}
-            className="h-80 hidden md:block"
-          />
+          <ErrorBoundary>
+            <Lottie
+              animationData={LoginAnimation}
+              className="h-80 hidden md:block"
+            />
+          </ErrorBoundary>
 
           <form
             onSubmit={(e) => submit(e)}
@@ -136,7 +135,6 @@ const Register = () => {
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.1, delay: 0.4 }}
-
               >
                 Submit
               </motion.button>
@@ -145,7 +143,7 @@ const Register = () => {
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 export default Register;

@@ -6,6 +6,7 @@ import Lottie from "lottie-react";
 import LoginAnimation from "../assets/Login2.json";
 import { AuthContext } from "../context/AuthContext";
 import Loader from "../components/Loader";
+import ErrorBoundary from "../components/ErrorBoundary";
 const Login = () => {
 
   const navigate = useNavigate();
@@ -58,10 +59,13 @@ const Login = () => {
           Login
         </h1>
         <div className="flex items-center justify-around">
+        <ErrorBoundary>
+          
           <Lottie
             animationData={LoginAnimation}
             className="h-80 hidden md:block"
           />
+        </ErrorBoundary>
           <form
             onSubmit={(e) => submit(e)}
             action=""
