@@ -14,7 +14,8 @@ const Login = () => {
 
   //useStates to hold input
   const [data, setdata] = useState({
-    username: "",
+    
+    email: "",
     password: "",
   });
 
