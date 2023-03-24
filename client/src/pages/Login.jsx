@@ -15,7 +15,8 @@ const Login = () => {
 
   //useStates to hold input
   const [data, setdata] = useState({
-    username: "",
+    
+    email: "",
     password: "",
   });
 
@@ -60,13 +61,13 @@ const Login = () => {
               Login
             </h1>
             <div className="flex items-center justify-around">
-              <ErrorBoundary>
+              {/* <ErrorBoundary>
 
                 <Lottie
                   animationData={LoginAnimation}
                   className="h-80 hidden md:block"
                 />
-              </ErrorBoundary>
+              </ErrorBoundary> */}
               <form
                 onSubmit={(e) => submit(e)}
                 action=""
