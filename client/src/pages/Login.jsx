@@ -107,7 +107,6 @@ const Login = () => {
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.1, delay: 0.4 }}
-                    disabled={loading}
                   >
                     Submit
                   </motion.button>
