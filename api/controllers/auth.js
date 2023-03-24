@@ -13,7 +13,7 @@ export const register = async (req, res, next) => {
   const senderPass = process.env.MAILPASS;
 
   var transporter = nodemailer.createTransport({
-    host: 'smtp.zoho.in',
+    host: 'smtp.gmail.com',
     port: 465,
     secure: true, //ssl
     auth: {
