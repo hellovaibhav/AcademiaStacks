@@ -8,14 +8,10 @@ const Home = () => {
         <Carousel />
         <div className=" flex flex-col justify-center items-center ">
           <p className="text-lg hidden lg:flex lg:text-4xl pr-4 bg-blue-100 my-10 lg:my-8 h-[10rem] w-[15rem] lg:w-[20rem] text-center items-center justify-center px-5 rounded-lg">
-            The Notes You Need in Your life
+            The Quality you should TRUST on
           </p>
           <p className="w-[70vw] xl:w-[20vw] my-10 lg:my-0 text-justify ">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis
-            quo sequi odit laborum voluptate ullam harum alias provident itaque
-            neque? Maxime debitis odit, dolorem quo perferendis repellendus
-            exercitationem vero ipsa voluptate itaque excepturi architecto
-            deserunt minus ducimus soluta at officiis!
+           You might have gone through many handwritten or printed materials which don't contain the Quality content you need to study for. You might have faced the issue of lack of proper study material in your life till now, but that won't be the case anymore as Academia Stacks brings for you the best notes and best study material you might have ever seen. All our materials have been verified by subject experts you can also go through PYQs and Handouts which are directly submitted by extremely qualified and experienced professor. We can wait to see you understand your concepts as clear as a crystal.
           </p>
         </div>
       </div>
