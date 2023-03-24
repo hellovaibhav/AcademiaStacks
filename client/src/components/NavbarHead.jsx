@@ -67,7 +67,7 @@ const NavbarHead = () => {
             <motion.li
             
               key={link.name}
-              className="text-blue-400 hover:text-white md:text-white md:hover:text-blue-400 md:ml-8 mx-4 text-xl md:my-0 my-7 "
+              className="text-blue-400 hover:text-white text-center md:text-right md:text-white md:hover:text-blue-400 md:ml-8 mx-4 text-xl md:my-0 my-7 "
               whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
             >
               {" "}
