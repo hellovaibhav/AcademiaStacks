@@ -105,7 +105,7 @@ export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
 
-    const cutoffDate = new Date(Date.now() - 24 * 60 * 60 * 1000); // 24 hours ago
+    const cutoffDate = new Date(Date.now() - 0.5 * 60 * 60 * 1000); // 24 hours ago
     const unverifiedUsers = await User.find({ isVerified: false, createdAt: { $lt: cutoffDate } });
 
     console.log("Deleting unverified users " + unverifiedUsers);
