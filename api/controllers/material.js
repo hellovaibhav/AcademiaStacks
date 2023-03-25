@@ -1,11 +1,12 @@
 import Material from "../models/Material.js";
+import User from "../models/User.js";
 
 
 
 export const createMaterial = async (req, res, next) => {
 
     var naming = req.body.thumbnail;
-    var link = "https://drive.google.com/uc?export=view&id="+naming.split("/")[5];
+    var link = "https://drive.google.com/uc?export=view&id=" + naming.split("/")[5];
 
     const newMaterial = new Material({
         subject: req.body.subject,
@@ -14,7 +15,7 @@ export const createMaterial = async (req, res, next) => {
         courseCode: req.body.courseCode,
         materialLink: req.body.materialLink,
         desc: req.body.desc,
-        author:req.body.author,
+        author: req.body.author,
         yearOfWriting: req.body.yearOfWriting,
         branch: req.body.branch,
         materialType: req.body.materialType,
@@ -82,6 +83,26 @@ export const getMaterialByType = async (req, res, next) => {
 
         const materials = await Material.find({ materialType: req.params.materialType });
         res.status(200).json(materials);
+    } catch (err) {
+        next(err);
+    }
+
+};
+
+export const upvoteMaterial = async (req, res, next) => {
+
+    try {
+
+        const user = User.findOne({ email: req.body.email });
+
+        if (!user) {
+            const updateMaterial = await Material.findOneAndUpdate({ email: req.body.email }, { $push: { upvotes: req.body.userid } }, { new: true });
+            res.status(200).json(updateMaterial);
+        } else {
+            const updateMaterial = await Material.findOneAndUpdate({ email: req.body.email }, { $pull: { upvotes: req.body.userid } }, { new: true });
+            res.status(200).json(updateMaterial);
+        }
+
     } catch (err) {
         next(err);
     }

@@ -1,5 +1,5 @@
 import express from "express"
-import { createMaterial, deleteMaterial, getMaterial, getMaterialByType, getMaterials, updateMaterial } from "../controllers/material.js";
+import { createMaterial, deleteMaterial, getMaterial, getMaterialByType, getMaterials, updateMaterial, upvoteMaterial } from "../controllers/material.js";
 import Material from "../models/Material.js";
 import { createError } from "../utils/error.js";
 
@@ -27,5 +27,9 @@ router.get("/:materialType/:id", getMaterial);
 router.get("/", getMaterials);
 
 router.get("/:materialType", getMaterialByType);
+
+// upvote counts
+
+router.post("/upvote" , upvoteMaterial);
 
 export default router;
