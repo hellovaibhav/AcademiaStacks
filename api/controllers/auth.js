@@ -46,13 +46,17 @@ export const register = async (req, res, next) => {
       otp: otpCode
     });
 
-    // newUser.index({ "lastModifiedDate": 1 }, { expireAfterSeconds: 20, partialFilterExpression: { isVerified: false } });
 
     var mailOptions = {
       from: senderMail,
       to: req.body.email,
       subject: "Academia Stacks One Time Password ",
-      html: "<html><body align=\"center\" bgcolor=\"#EDF1D6\"><p>We are happy to see that you want to join Academia Stacks and dig deep into the ocean of knowledge</p><br><h3> Here is your OTP </h3><br><h1>" + otpCode + " </h1><p>Please enter this within 24-hours to activate your account.</p></body></html>"
+      attachments: [{
+        filename: "mailimg.png",
+        path: "https://drive.google.com/uc?export=view&id=1uUbwEhZMf1Z-B6lRhV3QrB9qxIzQ_0Hu",
+        cid: "logo"
+      }],
+      html: "<html><body align=\"center\" bgcolor=\"#EDF1D6\"><p>We are happy to see that you want to join Academia Stacks and dig deep into the ocean of knowledge</p><br><h3> Here is your OTP </h3><br><h1>" + otpCode + " </h1><br><p>Please enter this within 24-hours to activate your account.</p> <br><br><p align=\"left\"> This is a system generated email. Please do not reply to this message. </p> <br><br><div align=\"left\"><img src=\"cid:logo\" alt=\"Logo\" width=\"70px\" height=\"70px\"><h4>Academia Stacks</h4><h5>Verification Mail | Hacktivators<br>hacktivators.iiit@gmail.com<br></h5><h6>IIIT Ranchi, JUPMI Campus, Ranchi, Jharkhand</h6></div></body></html>"
     };
 
     const checkUser = await User.findOne({ email: req.body.email });
@@ -88,7 +92,7 @@ export const registerVerify = async (req, res, next) => {
     if (req.body.otp != user.otp) {
       return next(createError(400, "Wrong OTP!"));
     } else {
-      const doc = await User.findOneAndUpdate({ email: req.body.email }, { isVerified: true, otp:null }, { new: true });
+      const doc = await User.findOneAndUpdate({ email: req.body.email }, { isVerified: true, otp: null }, { new: true });
       res.status(200).json(doc.name + " is now verified " + doc.isVerified);
     }
 
@@ -100,6 +104,19 @@ export const registerVerify = async (req, res, next) => {
 export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
+
+    const cutoffDate = new Date(Date.now() - 24 * 60 * 60 * 1000); // 24 hours ago
+    const unverifiedUsers = await User.find({ isVerified: false, createdAt: { $lt: cutoffDate } });
+
+    console.log("Deleting unverified users " + unverifiedUsers);
+
+    for (const user of unverifiedUsers) {
+      console.log(`Deleting user ${user._id}`);
+      await User.deleteOne({ _id: user._id });
+    }
+
+    console.log('Done');
+
     if (!user) return next(createError(404, "User not found!"));
     if (user.isVerified == false) return next(createError(401, "User not verified please input otp"));
 
