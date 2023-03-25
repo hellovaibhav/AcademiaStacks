@@ -56,7 +56,7 @@ export const register = async (req, res, next) => {
         path: "https://drive.google.com/uc?export=view&id=1uUbwEhZMf1Z-B6lRhV3QrB9qxIzQ_0Hu",
         cid: "logo"
       }],
-      html: "<html><body align=\"center\" bgcolor=\"#EDF1D6\"><p>We are happy to see that you want to join Academia Stacks and dig deep into the ocean of knowledge</p><br><h3> Here is your OTP </h3><br><h1>" + otpCode + " </h1><br><p>Please enter this within 24-hours to activate your account.</p> <br><br><p align=\"left\"> This is a system generated email. Please do not reply to this message. </p> <br><br><div align=\"left\"><img src=\"cid:logo\" alt=\"Logo\" width=\"70px\" height=\"70px\"><h4>Academia Stacks</h4><h5>Verification Mail | Hacktivators<br>hacktivators.iiit@gmail.com<br></h5><h6>IIIT Ranchi, JUPMI Campus, Ranchi, Jharkhand</h6></div></body></html>"
+      html: "<html><body align=\"center\" bgcolor=\"#EDF1D6\"><p>We are happy to see that you want to join Academia Stacks and dig deep into the ocean of knowledge</p><br><h3> Here is your OTP </h3><br><h1>" + otpCode + " </h1><br><p>Please enter this within 30-Minutes to activate your account.</p> <br><br><p align=\"left\"> This is a system generated email. Please do not reply to this message. </p> <br><br><div align=\"left\"><img src=\"cid:logo\" alt=\"Logo\" width=\"70px\" height=\"70px\"><h4>Academia Stacks</h4><h5>Verification Mail | Hacktivators<br>hacktivators.iiit@gmail.com<br></h5><h6>IIIT Ranchi, JUPMI Campus, Ranchi, Jharkhand</h6></div></body></html>"
     };
 
     const checkUser = await User.findOne({ email: req.body.email });
@@ -105,7 +105,7 @@ export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
 
-    const cutoffDate = new Date(Date.now() - 0.5 * 60 * 60 * 1000); // 24 hours ago
+    const cutoffDate = new Date(Date.now() - 0.5 * 60 * 60 * 1000); // 30 mins verification time
     const unverifiedUsers = await User.find({ isVerified: false, createdAt: { $lt: cutoffDate } });
 
     console.log("Deleting unverified users " + unverifiedUsers);
