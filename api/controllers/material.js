@@ -92,14 +92,21 @@ export const getMaterialByType = async (req, res, next) => {
 export const upvoteMaterial = async (req, res, next) => {
 
     try {
+        const material = await Material.findById(req.body.materialId);
 
-        const user = User.findOne({ email: req.body.email });
+        console.log(material.upvotes);
 
-        if (!user) {
-            const updateMaterial = await Material.findOneAndUpdate({ email: req.body.email }, { $push: { upvotes: req.body.userid } }, { new: true });
+        var foundUser=material.upvotes.find(function (element) {
+            return element ==req.body.email;
+        });
+
+        console.log(foundUser);
+
+        if (!foundUser) {
+            const updateMaterial = await Material.findByIdAndUpdate(req.body.materialId, { $push: { upvotes: req.body.email } }, { new: true });
             res.status(200).json(updateMaterial);
         } else {
-            const updateMaterial = await Material.findOneAndUpdate({ email: req.body.email }, { $pull: { upvotes: req.body.userid } }, { new: true });
+            const updateMaterial = await Material.findByIdAndUpdate(req.body.materialId, { $pull: { upvotes: req.body.email } }, { new: true });
             res.status(200).json(updateMaterial);
         }
 

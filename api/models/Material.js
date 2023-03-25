@@ -52,6 +52,7 @@ const materialSchema = new mongoose.Schema({
     },
     upvotes:[{
         type:String,
+        default:'0'
     }]
     
 }, { timestamp: true });

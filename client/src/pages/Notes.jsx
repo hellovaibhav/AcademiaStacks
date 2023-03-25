@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import { BiUpvote, BiDownvote } from "react-icons/bi";
+import Cookies from "js-cookie";
 
 const Notes = () => {
   const [index, setIndex] = useState(7);
@@ -33,23 +34,13 @@ const Notes = () => {
   };
   useEffect(() => {
     fetchNotes();
-  }, []);
+  }, [data]);
 
   const [countUp, setCountUp] = useState(0);
-  const handleUpvote = () => {
-    setCountUp(countUp + 1);
-  };
-  const [countDown, setCountDown] = useState(0);
-  const handleDownvote = () => {
-    setCountDown(countDown + 1);
-  };
+
   return (
     <>
-      {loading ? (
-        <div className="min-h-[100vh]  flex items-center justify-center ">
-          <Loader />
-        </div>
-      ) : (
+      { (
         <div className="min-h-[100vh]  flex items-center justify-center mt-16 md:mt-24 pl-[15%] sm:pl-[25%] lg:pl-[25rem] md:pl-[20%] xl:pl-[30rem]  ">
           <div className="leftFilter fixed top-52 left-14 h-40 hidden lg:block border-4 border-black w-[20vw]">
             Notes Filter Here
@@ -91,15 +82,35 @@ const Notes = () => {
                       in {material.yearOfWriting}
                     </p>
                   </div>
-                  <div
-                    className="h-10 flex text-center justify-center items-center cursor-pointer"
-                    
-                  >
-                    <p onClick={handleUpvote} className="flex items-center justify-center">
-                      <BiUpvote /> <span> {countUp}</span>
-                    </p>
-                    <p onClick={handleDownvote} className="flex items-center justify-center">
-                      <BiDownvote /> <span> {countDown}</span>
+                  <div className="h-10 flex text-center justify-center items-center cursor-pointer">
+                    <p
+                      onClick={async () => {
+                        console.log();
+                        let email = Cookies.get("email");
+                        let materialId = material._id
+                        try {
+                          const res = await axios.post('http://localhost:8800/api/materials/upvote',{ materialId, email});
+                        } catch (err) {
+                          alert(
+                            "Error Posting Vote"
+                          );
+                        }
+                        if (material.upvotes.length === 1) {
+                          setCountUp(countUp - 1);
+                        } else {
+                          setCountUp(countUp + 1);
+                        }
+
+                      }}
+                      className="flex items-center justify-center "
+                    >
+                      <BiUpvote className={`h-6 w-6 m-2 text-white ${(material.upvotes[material.upvotes.length - 1] === Cookies.get('email')) ? " bg-rose-500  rounded-full":"  bg-gray-300 text-black rounded-full " }`} />{" "}
+                      <span className="text-xl">
+                        {" "}
+                        {material.upvotes.length <= 0
+                          ? "0"
+                          : material.upvotes.length}
+                      </span>
                     </p>
                   </div>
                 </motion.div>
