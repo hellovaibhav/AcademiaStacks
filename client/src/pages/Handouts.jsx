@@ -5,6 +5,7 @@ import MaterialPage from "../assets/MaterialPageContent";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
+import { BiUpvote, BiDownvote } from "react-icons/bi";
 const Handouts = () => {
   const [index, setIndex] = useState(7);
   const [data, setData] = useState([]);
@@ -33,6 +34,14 @@ const Handouts = () => {
   useEffect(() => {
     fetchNotes();
   }, []);
+  const [countUp, setCountUp] = useState(0);
+  const handleUpvote = () => {
+    setCountUp(countUp + 1);
+  };
+  const [countDown, setCountDown] = useState(0);
+  const handleDownvote = () => {
+    setCountDown(countDown + 1);
+  };
   return (
     <>
       {loading ? (
@@ -91,6 +100,20 @@ const Handouts = () => {
                         {material.desc}
                       </p>
                     )}
+                  </div>
+                  <div className="h-10 flex text-center justify-center items-center cursor-pointer">
+                    <p
+                      onClick={handleUpvote}
+                      className="flex items-center justify-center"
+                    >
+                      <BiUpvote /> <span> {countUp}</span>
+                    </p>
+                    <p
+                      onClick={handleDownvote}
+                      className="flex items-center justify-center"
+                    >
+                      <BiDownvote /> <span> {countDown}</span>
+                    </p>
                   </div>
                 </motion.div>
               ))}

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
+import { BiUpvote, BiDownvote } from "react-icons/bi";
 
 const Notes = () => {
   const [index, setIndex] = useState(7);
@@ -33,6 +34,15 @@ const Notes = () => {
   useEffect(() => {
     fetchNotes();
   }, []);
+
+  const [countUp, setCountUp] = useState(0);
+  const handleUpvote = () => {
+    setCountUp(countUp + 1);
+  };
+  const [countDown, setCountDown] = useState(0);
+  const handleDownvote = () => {
+    setCountDown(countDown + 1);
+  };
   return (
     <>
       {loading ? (
@@ -51,10 +61,10 @@ const Notes = () => {
                 <motion.div
                   key={material._id}
                   className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-blue-100 m-8 rounded-xl drop-shadow-md :hover-hidden"
-                  whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
-                  initial={{ y: 150, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.4, delay: 0.4 }}
+                  // whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
+                  // initial={{ y: 150, opacity: 0 }}
+                  // animate={{ y: 0, opacity: 1 }}
+                  // transition={{ duration: 0.4, delay: 0.4 }}
                 >
                   <Link to={material.materialLink} target="_blank">
                     <img
@@ -73,12 +83,23 @@ const Notes = () => {
                       </span>
                     </p>
                     <p>
-                       by{" "}
+                      by{" "}
                       <span className="font-semibold text-lg">
                         {" "}
                         {material.author}{" "}
                       </span>{" "}
                       in {material.yearOfWriting}
+                    </p>
+                  </div>
+                  <div
+                    className="h-10 flex text-center justify-center items-center cursor-pointer"
+                    
+                  >
+                    <p onClick={handleUpvote} className="flex items-center justify-center">
+                      <BiUpvote /> <span> {countUp}</span>
+                    </p>
+                    <p onClick={handleDownvote} className="flex items-center justify-center">
+                      <BiDownvote /> <span> {countDown}</span>
                     </p>
                   </div>
                 </motion.div>
