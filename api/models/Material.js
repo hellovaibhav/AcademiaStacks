@@ -49,7 +49,10 @@ const materialSchema = new mongoose.Schema({
     featured:{
         type:Boolean,
         default:false
-    }
+    },
+    upvotes:[{
+        type:String,
+    }]
     
 }, { timestamp: true });
 
