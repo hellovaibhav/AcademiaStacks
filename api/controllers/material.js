@@ -96,18 +96,22 @@ export const upvoteMaterial = async (req, res, next) => {
 
         console.log(material.upvotes);
 
-        var foundUser=material.upvotes.find(function (element) {
-            return element ==req.body.email;
+        var foundUser = material.upvotes.find(function (element) {
+            return element == req.body.email;
         });
 
         console.log(foundUser);
 
-        if (!foundUser) {
-            const updateMaterial = await Material.findByIdAndUpdate(req.body.materialId, { $push: { upvotes: req.body.email } }, { new: true });
-            res.status(200).json(updateMaterial);
+        if (foundUser != "") {
+            if (!foundUser) {
+                const updateMaterial = await Material.findByIdAndUpdate(req.body.materialId, { $push: { upvotes: req.body.email } }, { new: true });
+                res.status(200).json(updateMaterial);
+            } else {
+                const updateMaterial = await Material.findByIdAndUpdate(req.body.materialId, { $pull: { upvotes: req.body.email } }, { new: true });
+                res.status(200).json(updateMaterial);
+            }
         } else {
-            const updateMaterial = await Material.findByIdAndUpdate(req.body.materialId, { $pull: { upvotes: req.body.email } }, { new: true });
-            res.status(200).json(updateMaterial);
+            console.log("Please login again !");
         }
 
     } catch (err) {
