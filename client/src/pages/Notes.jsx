@@ -37,84 +37,275 @@ const Notes = () => {
   }, [data]);
 
   const [countUp, setCountUp] = useState(0);
+  const [filters, setFilters] = useState({
+    branch: "",
+    semester: "",
+    featured: false,
+  });
+  const handleFilterChange = (event) => {
+    const { name, value } = event.target;
+    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+  };
 
   return (
     <>
-      { (
+      {
         <div className="min-h-[100vh]  flex items-center justify-center mt-16 md:mt-24 pl-[15%] sm:pl-[25%] lg:pl-[25rem] md:pl-[20%] xl:pl-[30rem]  ">
-          <div className="leftFilter fixed top-52 left-14 h-40 hidden lg:block border-4 border-black w-[20vw]">
-            Notes Filter Here
+          <div className="leftFilter fixed top-52 left-14 hidden lg:block w-[20vw]">
+            <div className="flex h-80 flex-col items-center py-2 justify-center rounded-xl px-4 xl:px-10 2xl:px-20 lg:px-6 bg-blue-100">
+              <p className="text-3xl font-bold m-2">Filters</p>
+              <div>
+                <label className="font-semibold text-right">Semester :</label>
+                <select
+                  className="h-12 border-2 p-1 border-blue-500 bg-blue-200 w-40 m-1"
+                  name="semester"
+                  value={filters.semester}
+                  onChange={handleFilterChange}
+                >
+                  <option value="">All Semesters</option>
+                  <option value="1">Semester 1</option>
+                  <option value="2">Semester 2</option>
+                  <option value="3">Semester 3</option>
+                  <option value="4">Semester 4</option>
+                  <option value="5">Semester 5</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-semibold text-right">Featured :</label>
+                <select
+                  className="h-12 border-2 p-1 border-blue-500 bg-blue-200 w-40 m-1"
+                  name="featured"
+                  value={filters.featured}
+                  onChange={handleFilterChange}
+                >
+                  <option value="">All</option>
+                  <option value="true">Featured</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-semibold text-right">Branch :</label>
+                <select
+                  className="h-12 border-2 p-1 border-blue-500 bg-blue-200 w-40 m-1"
+                  name="branch"
+                  value={filters.branch}
+                  onChange={handleFilterChange}
+                >
+                  <option value="">All Branches</option>
+                  <option value="ECE">ECE</option>
+                  <option value="CSE">CSE</option>
+                </select>
+              </div>
+            </div>
           </div>
+          <button className="flex items-center justify-evenly lg:hidden fixed top-24 h-14 md:top-16 left-0 w-[100vw] z-20 bg-white">
+            <div>
+              <select
+                className="h-7 border-2 px-1 border-blue-500 bg-blue-200 w-32 mx-1"
+                name="semester"
+                value={filters.semester}
+                onChange={handleFilterChange}
+              >
+                <option value="">All Semesters</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+              </select>
+            </div>
+            <div>
+              <select
+                className="h-7 border-2 px-1 border-blue-500 bg-blue-200 w-32 mx-1"
+                name="featured"
+                value={filters.featured}
+                onChange={handleFilterChange}
+              >
+                <option value="">All</option>
+                <option value="true">Featured</option>
+              </select>
+            </div>
+            <div>
+              <select
+                className="h-7 border-2 px-1 border-blue-500 bg-blue-200 w-32 mx-1"
+                name="branch"
+                value={filters.branch}
+                onChange={handleFilterChange}
+              >
+                <option value="">All Branches</option>
+                <option value="ECE">ECE</option>
+                <option value="CSE">CSE</option>
+              </select>
+            </div>
+          </button>
 
           <div className="flex max-w-[80vw] flex-col items-center justify-center pb-10">
             <div className="rightContent  flex flex-wrap mt-14 lg:mt-0">
-              {data.slice(0, index + 1).map((material) => (
-                <motion.div
-                  key={material._id}
-                  className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-blue-100 m-8 rounded-xl drop-shadow-md :hover-hidden"
-                  // whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
-                  // initial={{ y: 150, opacity: 0 }}
-                  // animate={{ y: 0, opacity: 1 }}
-                  // transition={{ duration: 0.4, delay: 0.4 }}
-                >
-                  <Link to={material.materialLink} target="_blank">
-                    <img
-                      src={material.thumbnail}
-                      alt="Not available"
-                      className="h-[12rem] w-auto"
-                    />
-                  </Link>
-                  <div className="descriptionChild p-2 flex flex-col justify-center items-center text-center">
-                    <p className=" text-lg text-blue-500">
-                      {" "}
-                      {material.subject}{" "}
-                      <span className="font-semibold text-lg">
-                        {" "}
-                        {material.instructorName}{" "}
-                      </span>
-                    </p>
-                    <p>
-                      by{" "}
-                      <span className="font-semibold text-lg">
-                        {" "}
-                        {material.author}{" "}
-                      </span>{" "}
-                      in {material.yearOfWriting}
-                    </p>
-                  </div>
-                  <div className="h-10 flex text-center justify-center items-center cursor-pointer">
-                    <p
-                      onClick={async () => {
-                        console.log();
-                        let email = Cookies.get("email");
-                        let materialId = material._id
-                        try {
-                          const res = await axios.post('http://localhost:8800/api/materials/upvote',{ materialId, email});
-                        } catch (err) {
-                          alert(
-                            "Error Posting Vote"
-                          );
-                        }
-                        if (material.upvotes.length === 1) {
-                          setCountUp(countUp - 1);
-                        } else {
-                          setCountUp(countUp + 1);
-                        }
-
-                      }}
-                      className="flex items-center justify-center "
+              {filters.branch === "" &&
+              filters.semester === "" &&
+              filters.instructorName === ""
+                ? data.slice(0, index + 1).map((material) => (
+                    <motion.div
+                      key={material._id}
+                      className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-blue-100 m-8 rounded-xl drop-shadow-md :hover-hidden"
+                      // whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
+                      // initial={{ y: 150, opacity: 0 }}
+                      // animate={{ y: 0, opacity: 1 }}
+                      // transition={{ duration: 0.4, delay: 0.4 }}
                     >
-                      <BiUpvote className={`h-6 w-6 m-2 text-white ${(material.upvotes[material.upvotes.length - 1] === Cookies.get('email')) ? " bg-rose-500  rounded-full":"  bg-gray-300 text-black rounded-full " }`} />{" "}
-                      <span className="text-xl">
-                        {" "}
-                        {material.upvotes.length <= 0
-                          ? "0"
-                          : material.upvotes.length}
-                      </span>
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
+                      <Link to={material.materialLink} target="_blank">
+                        <img
+                          src={material.thumbnail}
+                          alt="Not available"
+                          className="h-[12rem] w-auto"
+                        />
+                      </Link>
+                      <div className="descriptionChild p-2 flex flex-col justify-center items-center text-center">
+                        <p className=" text-lg text-blue-500">
+                          {" "}
+                          {material.subject}{" "}
+                          <span className="font-semibold text-lg">
+                            {" "}
+                            {material.instructorName}{" "}
+                          </span>
+                        </p>
+                        <p>
+                          by{" "}
+                          <span className="font-semibold text-lg">
+                            {" "}
+                            {material.author}{" "}
+                          </span>{" "}
+                          in {material.yearOfWriting}
+                        </p>
+                      </div>
+                      <div className="h-10 flex text-center justify-center items-center cursor-pointer">
+                        <p
+                          onClick={async () => {
+                            console.log();
+                            let email = Cookies.get("email");
+                            let materialId = material._id;
+                            try {
+                              const res = await axios.post(
+                                "http://localhost:8800/api/materials/upvote",
+                                { materialId, email }
+                              );
+                            } catch (err) {
+                              alert("Error Posting Vote");
+                            }
+                            if (material.upvotes.length === 1) {
+                              setCountUp(countUp - 1);
+                            } else {
+                              setCountUp(countUp + 1);
+                            }
+                          }}
+                          className="flex items-center justify-center "
+                        >
+                          <BiUpvote
+                            className={`h-6 w-6 m-1 text-white ${
+                              material.upvotes[material.upvotes.length - 1] ===
+                              Cookies.get("email")
+                                ? " bg-rose-500  rounded-full"
+                                : "  bg-gray-300 text-black rounded-full "
+                            }`}
+                          />{" "}
+                          <span className="text-xl">
+                            {" "}
+                            {material.upvotes.length <= 0
+                              ? "0"
+                              : material.upvotes.length}
+                          </span>
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))
+                : data
+                    .slice(0, index + 1)
+                    .filter(
+                      (item) =>
+                        (filters.semester
+                          ? Number(item.semester) === Number(filters.semester)
+                          : true) &&
+                        (filters.branch
+                          ? item.branch === filters.branch
+                          : true) &&
+                        (filters.featured
+                          ? item.featured === (filters.featured === "true")
+                          : true)
+                    )
+                    .map((material) => (
+                      <motion.div
+                        key={material._id}
+                        className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-blue-100 m-8 rounded-xl drop-shadow-md :hover-hidden"
+                        // whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
+                        // initial={{ y: 150, opacity: 0 }}
+                        // animate={{ y: 0, opacity: 1 }}
+                        // transition={{ duration: 0.4, delay: 0.4 }}
+                      >
+                        <Link to={material.materialLink} target="_blank">
+                          <img
+                            src={material.thumbnail}
+                            alt="Not available"
+                            className="h-[12rem] w-auto"
+                          />
+                        </Link>
+                        <div className="descriptionChild p-2 flex flex-col justify-center items-center text-center">
+                          <p className=" text-lg text-blue-500">
+                            {" "}
+                            {material.subject}{" "}
+                            <span className="font-semibold text-lg">
+                              {" "}
+                              {material.instructorName}{" "}
+                            </span>
+                          </p>
+                          <p>
+                            by{" "}
+                            <span className="font-semibold text-lg">
+                              {" "}
+                              {material.author}{" "}
+                            </span>{" "}
+                            in {material.yearOfWriting}
+                          </p>
+                        </div>
+                        <div className="h-10 flex text-center justify-center items-center cursor-pointer">
+                          <p
+                            onClick={async () => {
+                              console.log();
+                              let email = Cookies.get("email");
+                              let materialId = material._id;
+                              try {
+                                const res = await axios.post(
+                                  "http://localhost:8800/api/materials/upvote",
+                                  { materialId, email }
+                                );
+                              } catch (err) {
+                                alert("Error Posting Vote");
+                              }
+                              if (material.upvotes.length === 1) {
+                                setCountUp(countUp - 1);
+                              } else {
+                                setCountUp(countUp + 1);
+                              }
+                            }}
+                            className="flex items-center justify-center "
+                          >
+                            <BiUpvote
+                              className={`h-6 w-6 m-1 text-white ${
+                                material.upvotes[
+                                  material.upvotes.length - 1
+                                ] === Cookies.get("email")
+                                  ? " bg-rose-500  rounded-full"
+                                  : "  bg-gray-300 text-black rounded-full "
+                              }`}
+                            />{" "}
+                            <span className="text-xl">
+                              {" "}
+                              {material.upvotes.length <= 0
+                                ? "0"
+                                : material.upvotes.length}
+                            </span>
+                          </p>
+                        </div>
+                      </motion.div>
+                    ))}
             </div>
             {index < data.length - 1 ? (
               <motion.button
@@ -140,7 +331,7 @@ const Notes = () => {
             )}
           </div>
         </div>
-      )}
+      }
     </>
   );
 };
