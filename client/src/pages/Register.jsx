@@ -40,8 +40,8 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-[85.2vh] flex items-center justify-center ">
-      <div className="bg-blue-200 flex flex-col justify-around md:w-[30rem] w-[24rem] h-[28rem] md:h-auto py-10 rounded-lg drop-shadow-lg px-2">
+    <div className="min-h-[85.2vh] flex items-center bg-[#F3EFE0] justify-center ">
+      <div className="bg-[rgb(34,163,159,0.7)] flex flex-col justify-around md:w-[30rem] w-[24rem] h-[28rem] md:h-auto py-10 rounded-lg drop-shadow-lg px-2">
         <h1 className="text-4xl font-bold text-center h-[10vh] md:pt-0 pt-4 text-white">
           Register
         </h1>
@@ -124,7 +124,7 @@ const Register = () => {
             </div>
             <Link
               to="/login"
-              className="text-blue-600 hover:text-blue-500 transition-all duration-300 inline text-sm font-semibold"
+              className="text-blue-600 hover:text-blue-500 transition-all duration-300 inline text-xl font-medium"
             >
               Already have an Account
             </Link>

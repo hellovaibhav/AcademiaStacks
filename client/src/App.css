@@ -10,7 +10,7 @@
 .active {
   padding: 0.65rem 2rem 0.65rem 2rem;
   border-radius: 0.75rem;
-  color: rgb(96 165 250);
+  color: #1b7875;
   background-color: white;
 }
 
@@ -91,12 +91,6 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.active {
-  padding: 0.65rem 2rem 0.65rem 2rem;
-  border-radius: 0.75rem;
-  color: rgb(96 165 250);
-  background-color: white;
-}
 
 .customBgColor {
   width: auto;

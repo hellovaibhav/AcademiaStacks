@@ -47,12 +47,12 @@ const Login = () => {
   return (
     <>
       {load ? (
-        <div className="min-h-[100vh]  flex items-center justify-center mt-16 md:mt-10   ">
+        <div className="min-h-[100vh]  flex items-center  justify-center pt-16 md:pt-10   ">
           <Loader />
         </div>
       ) : (
-        <div className="min-h-[90vh] flex items-center justify-center">
-          <div className="bg-blue-200 flex flex-col justify-around md:w-[25rem] w-[20rem] h-[28rem] md:h-auto  py-10 px-2 rounded-lg drop-shadow-lg">
+        <div className="min-h-[90vh] flex items-center bg-[#F3EFE0] justify-center">
+          <div className="bg-[rgb(34,163,159,0.7)] flex flex-col justify-around md:w-[25rem] w-[20rem] h-[28rem] md:h-auto  py-10 px-2 rounded-lg drop-shadow-lg">
             <h1 className="text-4xl font-bold text-center h-[10vh] pt-4 text-white">
               Login
             </h1>
@@ -91,7 +91,7 @@ const Login = () => {
                 />
                 <Link
                   to="/register"
-                  className="text-blue-600 hover:text-blue-500 transition-all duration-300 inline text-sm mx-3 font-semibold"
+                  className="text-blue-600 hover:text-blue-500 transition-all duration-300 inline text-xl mx-3 font-medium"
                 >
                   Register
                 </Link>

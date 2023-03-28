@@ -37,8 +37,8 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-[94vh] flex items-center justify-center ">
-      <div className="bg-blue-200 flex flex-col justify-around md:w-[40rem] w-[24rem] h-[28rem] md:h-auto py-10 rounded-lg drop-shadow-lg px-2">
+    <div className="min-h-[95vh] md:min-h-[94vh] bg-[#F3EFE0] flex items-center justify-center ">
+      <div className="bg-[rgb(34,163,159,0.5)] flex flex-col justify-around md:w-[40rem] w-[24rem] h-[28rem] md:h-auto py-10 rounded-lg drop-shadow-lg px-2">
         <h1 className="text-4xl font-bold text-center h-[10vh] md:pt-0 pt-4 text-white">
           Feedback
         </h1>
