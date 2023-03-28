@@ -48,7 +48,7 @@ mongoose.connection.on("disconnected", () => {
     console.log("Database is disconnected");
 });
 
-
+connect();
 
 // middlewares
 
@@ -79,6 +79,6 @@ app.use((err, req, res, next) => {
 
 
 app.listen(port, () => {
-    connect();
+    
     console.log("connected to backend");
 });
