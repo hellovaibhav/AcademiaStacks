@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import AssignmentPic from "../assets/assignmentPic.jpg";
 import NotesPic from "../assets/notesPic.png";
 import PyqPic from "../assets/pyqPic.jpg";
+import handouts from "../assets/handouts.png"
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
@@ -16,7 +17,7 @@ const Material = () => {
     { navigate: "pyq", text: "Previous Year Question", image: PyqPic },
     { navigate: "notes", text: "Notes", image: NotesPic },
     { navigate: "assignment", text: "Assignment", image: AssignmentPic },
-    { navigate: "handouts", text: "Handout", image: AssignmentPic },
+    { navigate: "handouts", text: "Handout", image: handouts },
   ];
 
   // Loading Settings 
