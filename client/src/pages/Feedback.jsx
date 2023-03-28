@@ -9,7 +9,7 @@ import ErrorBoundary from "../components/ErrorBoundary";
 const Register = () => {
   const navigate = useNavigate();
   //url to go to
-  const url = "http://localhost:8800/api/feedbacks";
+  const url = "https://academia-stacks-server.vercel.app/api/feedbacks";
   const [data, setdata] = useState({
     name: "",
     email: "",

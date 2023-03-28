@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 const OtpVerification = () => {
   const navigate = useNavigate();
   //url to go to
-  const url = "http://localhost:8800/api/auth/verification";
+  const url = "https://academia-stacks-server.vercel.app/api/auth/verification";
   //useStates to hold input
   const [data, setdata] = useState({
     email: "",

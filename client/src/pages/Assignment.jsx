@@ -28,7 +28,7 @@ const Notes = () => {
       setLoading(false);
     }, 1200);
     const { data } = await axios.get(
-      "http://localhost:8800/api/materials/Handouts"
+      "https://academia-stacks-server.vercel.app/api/materials/Notes"
     );
     setData(data);
   };
