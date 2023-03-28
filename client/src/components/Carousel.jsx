@@ -28,7 +28,7 @@ const Carousel = () => {
       >
         <motion.button
           onClick={prevOne}
-          className="relative left-[0.5rem] lg:h-[60vh] md:h-[40vh] w-[8vw] h-[26vh] flex items-center justify-center bg-blue-300 mx-2 py-1 rounded-l-lg"
+          className="relative left-[0.5rem] lg:h-[60vh] md:h-[40vh] w-[8vw] h-[26vh] flex items-center justify-center bg-[#22A39F] mx-2 py-1 rounded-l-lg"
           whileHover={{ scale: 1 }}
           whileTap={{ scale: 0.9, opacity: 0.5, transition: { duration: 0.3 } }}
         >
@@ -36,12 +36,12 @@ const Carousel = () => {
         </motion.button>
         <motion.img
           src={images[index]}
-          alt=""
-          className="md:h-[40vh] h-[26vh] lg:h-[60vh] w-[100vw] bg-blue-400"
+          alt="Carousel Image Loading ..."
+          className="md:h-[40vh] h-[26vh] lg:h-[60vh] w-[100vw] bg-white"
         />
         <motion.button
           onClick={nextOne}
-          className=" relative lg:h-[60vh] md:h-[40vh] w-[8vw] h-[26vh] right-[0.5rem] flex items-center justify-center bg-blue-300 mx-2 py-1 rounded-r-lg"
+          className=" relative lg:h-[60vh] md:h-[40vh] w-[8vw] h-[26vh] right-[0.5rem] flex items-center justify-center bg-[#22A39F] mx-2 py-1 rounded-r-lg"
           whileHover={{ scale: 1 }}
           whileTap={{ scale: 0.9, opacity: 0.5, transition: { duration: 0.3 } }}
         >

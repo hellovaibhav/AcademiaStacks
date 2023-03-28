@@ -5,7 +5,7 @@ const User = () => {
   const Navigate = useNavigate();
 
   return (
-    <div className="mt-20 min-h-[90vh] flex flex-col items-center justify-center text-cente">
+    <div className="pt-36 bg-[#F3EFE0] min-h-[90vh] flex flex-col items-center justify-center text-cente">
       <HiUserCircle className="h-44 w-60 text-sky-400" />
       <p className="m-2 p-2 text-center">
         <span className="font-semibold text-xl">Name</span>:{" "}

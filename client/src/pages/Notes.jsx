@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
-import { BiUpvote, BiDownvote } from "react-icons/bi";
+import { BiUpvote } from "react-icons/bi";
 import Cookies from "js-cookie";
 
 const Notes = () => {
@@ -50,14 +50,14 @@ const Notes = () => {
   return (
     <>
       {
-        <div className="min-h-[100vh]  flex items-center justify-center mt-16 md:mt-24 pl-[15%] sm:pl-[25%] lg:pl-[25rem] md:pl-[20%] xl:pl-[30rem]  ">
-          <div className="leftFilter fixed top-52 left-14 hidden lg:block w-[20vw]">
-            <div className="flex h-80 flex-col items-center py-2 justify-center rounded-xl px-4 xl:px-10 2xl:px-20 lg:px-6 bg-blue-100">
+        <div className="min-h-[100vh] bg-[#F3EFE0] flex items-center justify-center pt-[5rem] md:pt-24 pl-[15%] sm:pl-[25%] lg:pl-[25rem] md:pl-[20%] xl:pl-[30rem]  ">
+          <div className="leftFilter fixed top-52 left-14 hidden md:block w-[20vw]">
+            <div className="flex text-white h-96 flex-col items-center py-2 justify-center rounded-xl px-4 xl:px-10 2xl:px-20 lg:px-6 bg-[rgb(34,163,159,0.4)]">
               <p className="text-3xl font-bold m-2">Filters</p>
               <div>
                 <label className="font-semibold text-right">Semester :</label>
                 <select
-                  className="h-12 border-2 p-1 border-blue-500 bg-blue-200 w-40 m-1"
+                  className="h-12 border-2 p-1 border-[#feffff] bg-[#2ddad4] md:w-32 lg:w-40 m-1"
                   name="semester"
                   value={filters.semester}
                   onChange={handleFilterChange}
@@ -73,7 +73,7 @@ const Notes = () => {
               <div>
                 <label className="font-semibold text-right">Featured :</label>
                 <select
-                  className="h-12 border-2 p-1 border-blue-500 bg-blue-200 w-40 m-1"
+                  className="h-12 border-2 p-1 border-[#feffff] bg-[#2ddad4] md:w-32 lg:w-40 m-1"
                   name="featured"
                   value={filters.featured}
                   onChange={handleFilterChange}
@@ -85,7 +85,7 @@ const Notes = () => {
               <div>
                 <label className="font-semibold text-right">Branch :</label>
                 <select
-                  className="h-12 border-2 p-1 border-blue-500 bg-blue-200 w-40 m-1"
+                  className="h-12 border-2 p-1 border-[#feffff] bg-[#2ddad4] md:w-32 lg:w-40 m-1"
                   name="branch"
                   value={filters.branch}
                   onChange={handleFilterChange}
@@ -97,15 +97,15 @@ const Notes = () => {
               </div>
             </div>
           </div>
-          <button className="flex items-center justify-evenly lg:hidden fixed top-24 h-14 md:top-16 left-0 w-[100vw] z-20 bg-white">
+          <button className="flex items-center justify-evenly md:hidden fixed top-24 h-14 md:top-16 left-0 w-[100vw] bg-[#F3EFE0] drop-shadow-md z-40">
             <div>
               <select
-                className="h-7 border-2 px-1 border-blue-500 bg-blue-200 w-32 mx-1"
+                className="h-10 text-sm border-2 px-1 border-[#22A39F] bg-[rgb(34,163,159,0.5)] w-28 sm:w-32 mx-1"
                 name="semester"
                 value={filters.semester}
                 onChange={handleFilterChange}
               >
-                <option value="">All Semesters</option>
+                <option value="">All Sem</option>
                 <option value="1">Semester 1</option>
                 <option value="2">Semester 2</option>
                 <option value="3">Semester 3</option>
@@ -115,7 +115,7 @@ const Notes = () => {
             </div>
             <div>
               <select
-                className="h-7 border-2 px-1 border-blue-500 bg-blue-200 w-32 mx-1"
+                className="h-10 text-sm border-2 px-1 border-[#22A39F] bg-[rgb(34,163,159,0.5)] w-[5.7rem] sm:w-32 mx-1"
                 name="featured"
                 value={filters.featured}
                 onChange={handleFilterChange}
@@ -126,19 +126,20 @@ const Notes = () => {
             </div>
             <div>
               <select
-                className="h-7 border-2 px-1 border-blue-500 bg-blue-200 w-32 mx-1"
+                className="h-10 text-sm border-2 px-1 border-[#22A39F] bg-[rgb(34,163,159,0.5)] w-24 sm:w-32 mx-1"
                 name="branch"
                 value={filters.branch}
                 onChange={handleFilterChange}
               >
-                <option value="">All Branches</option>
+                <option value="">All Branch</option>
                 <option value="ECE">ECE</option>
                 <option value="CSE">CSE</option>
               </select>
             </div>
           </button>
+          
 
-          <div className="flex max-w-[80vw] flex-col items-center justify-center pb-10">
+          <div className="flex max-w-[80vw] flex-col items-center justify-center md:ml-[10vw] pb-10">
             <div className="rightContent  flex flex-wrap mt-14 lg:mt-0">
               {filters.branch === "" &&
               filters.semester === "" &&
@@ -146,7 +147,7 @@ const Notes = () => {
                 ? data.slice(0, index + 1).map((material) => (
                     <motion.div
                       key={material._id}
-                      className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-blue-100 m-8 rounded-xl drop-shadow-md :hover-hidden"
+                      className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-[#22A39F] m-8 rounded-xl drop-shadow-md :hover-hidden"
                       // whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
                       // initial={{ y: 150, opacity: 0 }}
                       // animate={{ y: 0, opacity: 1 }}
@@ -159,8 +160,8 @@ const Notes = () => {
                           className="h-[12rem] w-auto"
                         />
                       </Link>
-                      <div className="descriptionChild p-2 flex flex-col justify-center items-center text-center">
-                        <p className=" text-lg text-blue-500">
+                      <div className="descriptionChild text-white p-2 flex flex-col justify-center items-center text-center">
+                        <p className=" text-lg ">
                           {" "}
                           {material.subject}{" "}
                           <span className="font-semibold text-lg">
@@ -234,7 +235,7 @@ const Notes = () => {
                     .map((material) => (
                       <motion.div
                         key={material._id}
-                        className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-blue-100 m-8 rounded-xl drop-shadow-md :hover-hidden"
+                        className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-[rgb(34,163,159,0.3)] m-8 rounded-xl drop-shadow-md :hover-hidden"
                         // whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
                         // initial={{ y: 150, opacity: 0 }}
                         // animate={{ y: 0, opacity: 1 }}
@@ -247,8 +248,8 @@ const Notes = () => {
                             className="h-[12rem] w-auto"
                           />
                         </Link>
-                        <div className="descriptionChild p-2 flex flex-col justify-center items-center text-center">
-                          <p className=" text-lg text-blue-500">
+                        <div className="descriptionChild text-white p-2 flex flex-col justify-center items-center text-center">
+                          <p className=" text-lg ">
                             {" "}
                             {material.subject}{" "}
                             <span className="font-semibold text-lg">

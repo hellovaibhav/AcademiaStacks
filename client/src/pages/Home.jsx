@@ -1,13 +1,14 @@
+// Imports 
 import React from "react";
 import Carousel from "../components/Carousel";
-
+// Main Function
 const Home = () => {
   return (
-    <div className="min-h-[95vh] px-10 sm:px-0 md:my-32 my-28 flex flex-col justify-between items-center py-[2rem]">
+    <div className="min-h-[95vh] bg-[#F3EFE0] px-10 sm:px-0 md:py-32 py-28 flex flex-col justify-between items-center ">
       <div className="flex flex-col xl:flex-row justify-between items-center">
         <Carousel />
         <div className=" flex flex-col justify-center items-center ">
-          <p className="text-lg hidden lg:flex lg:text-4xl pr-4 bg-blue-100 my-10 lg:my-8 h-[10rem] w-[15rem] lg:w-[20rem] text-center items-center justify-center px-5 rounded-lg">
+          <p className="text-lg text-white hidden lg:flex lg:text-4xl pr-4 bg-[rgb(34,163,159,0.4)] my-10 lg:my-8 h-[10rem] w-[15rem] lg:w-[20rem] text-center items-center justify-center px-5 rounded-lg">
             The Quality you should TRUST on
           </p>
           <p className="w-[70vw] xl:w-[20vw] my-10 lg:my-0 text-justify ">

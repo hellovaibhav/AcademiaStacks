@@ -10,18 +10,18 @@ const About = () => {
 
   return (
     <motion.div className="bg-white  h-auto md:h-[100vh] flex flex-col justify-around  items-center md:mt-10 ">
-      <div className="carousel flex md:hidden text-white">
+      <div className="carousel flex md:hidden text-[#22A39F]">
         {" "}
         <AboutCarousel />{" "}
       </div>
 
-      <div className="drop-shadow-xl bg-blue-400 text-white md:flex hidden justify-center items-center flex-col  rounded-2xl content w-[90vw] h-[70vh]  md:w-[80vw] md:h-[50vh] mt-14 ">
+      <div className="drop-shadow-xl bg-[#F3EFE0] text-[#22A39F] md:flex hidden justify-center items-center flex-col  rounded-2xl content w-[90vw] h-[70vh]  md:w-[80vw] md:h-[50vh] mt-14 ">
         <AnimatePresence>
           {saquib && (
             <>
               {" "}
               <motion.div
-                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-40 items-center"
+                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-[10vw] items-center"
                 initial={{ opacity: 0, y: -100, scale: 0.5 }}
                 animate={{
                   opacity: 1,
@@ -35,13 +35,13 @@ const About = () => {
                   <img
                     src='https://avatars.githubusercontent.com/u/106366280?v=4'
                     alt="hat bkl"
-                    className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
+                    className="h-52 w-52 rounded-full border-4 border-[#22A39F] drop-shadow-2xl"
                   />
                 </div>
                 <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
                   <p className="text-3xl font-medium pb-2">Saquib Ali</p>
                   <p className="text-xl font-normal pb-1">Dev</p>
-                  <p className="text-lg font-light border-t-4 border-b-4 border-white py-4 mt-2 ">
+                  <p className="text-lg font-light border-t-4 border-b-4 border-[#22A39F] py-4 mt-2 ">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Sit cumque quo soluta! Assumenda, provident cum, id maiores
                     animi perferendis temporibus nihil voluptatem, magnam
@@ -59,7 +59,7 @@ const About = () => {
             <>
               {" "}
               <motion.div
-                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-40 items-center"
+                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-[10vw] items-center"
                 initial={{ opacity: 0, y: -100, scale: 0.5 }}
                 animate={{
                   opacity: 1,
@@ -72,13 +72,13 @@ const About = () => {
                 <div className="photo w-[60vw] md:w-[40vw]">
                   <img
                     src="https://avatars.githubusercontent.com/u/82583704?v=4" alt="legendary developer"
-                    className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
+                    className="h-52 w-52 rounded-full border-4 border-[#22A39F] drop-shadow-2xl"
                   />
                 </div>
                 <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
                   <p className="text-3xl font-medium pb-2">Vaibhav Verma</p>
                   <p className="text-xl font-normal pb-1">Dev</p>
-                  <p className="text-lg font-light border-t-4 border-b-4 border-white py-4 mt-2 ">
+                  <p className="text-lg font-light border-t-4 border-b-4 border-[#22A39F] py-4 mt-2 ">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Optio itaque aliquid quod eaque quidem? Explicabo, nihil
                     atque aliquid dolor minima deleniti odio adipisci iure nobis
@@ -95,7 +95,7 @@ const About = () => {
             <>
               {" "}
               <motion.div
-                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-40 items-center"
+                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-[10vw] items-center"
                 initial={{ opacity: 0, y: -100, scale: 0.5 }}
                 animate={{
                   opacity: 1,
@@ -109,13 +109,13 @@ const About = () => {
                   <img
                     src='https://avatars.githubusercontent.com/u/106348929?v=4'
                     alt="hat bkl"
-                    className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
+                    className="h-52 w-52 rounded-full border-4 border-[#22A39F] drop-shadow-2xl"
                   />
                 </div>
                 <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
                   <p className="text-3xl font-medium pb-2">Nishant Kumar</p>
                   <p className="text-xl font-normal pb-1">Dev</p>
-                  <p className="text-lg font-light border-t-4 border-b-4 border-white py-4 mt-2 ">
+                  <p className="text-lg font-light border-t-4 border-b-4 border-[#22A39F] py-4 mt-2 ">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Optio itaque aliquid quod eaque quidem? Explicabo, nihil
                     atque aliquid dolor minima deleniti odio adipisci iure nobis
@@ -133,7 +133,7 @@ const About = () => {
             <>
               {" "}
               <motion.div
-                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-40 items-center"
+                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-[10vw] items-center"
                 initial={{ opacity: 0, y: -100, scale: 0.5 }}
                 animate={{
                   opacity: 1,
@@ -147,13 +147,13 @@ const About = () => {
                   <img
                     src='https://avatars.githubusercontent.com/u/96737391?v=4'
                     alt="hat bkl"
-                    className="h-52 w-52 rounded-full border-4 border-white drop-shadow-2xl"
+                    className="h-52 w-52 rounded-full border-4 border-[#22A39F] drop-shadow-2xl"
                   />
                 </div>
                 <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
                   <p className="text-3xl font-medium pb-2">Vivek Giri</p>
                   <p className="text-xl font-normal pb-1">Dev</p>
-                  <p className="text-lg font-light border-t-4 border-b-4 border-white py-4 mt-2 ">
+                  <p className="text-lg font-light border-t-4 border-b-4 border-[#22A39F] py-4 mt-2 ">
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Optio itaque aliquid quod eaque quidem? Explicabo, nihil
                     atque aliquid dolor minima deleniti odio adipisci iure nobis
@@ -171,7 +171,7 @@ const About = () => {
             <>
               {" "}
               <motion.div
-                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-40 items-center"
+                className="parent flex flex-col md:flex-row justify-evenly w-[90vw] h-[90vh] md:h-[20vh] px-10 md:px-[10vw] items-center"
                 initial={{ opacity: 0, y: -100, scale: 0.5 }}
                 animate={{
                   opacity: 1,
@@ -196,7 +196,7 @@ const About = () => {
       </div>
       <div className="buttonsw w-[80vw] hidden md:flex flex-wrap justify-around">
         <motion.button
-          className="bg-white w-[10rem] border-4 border-blue-400 hover:border-none text-blue-400 hover:text-white mx-6 px-6 py-2 my-2 text-xl hover:bg-blue-400 duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
+          className="bg-white w-[10rem] border-4 border-[#F3EFE0] hover:border-none text-[#22A39F] hover:text-[#22A39F] mx-6 px-6 py-2 my-2 text-xl hover:bg-[#F3EFE0] duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
@@ -214,7 +214,7 @@ const About = () => {
           Saquib
         </motion.button>
         <motion.button
-          className="bg-white w-[10rem] border-4 border-blue-400 hover:border-none text-blue-400 hover:text-white mx-6 px-6 py-2 my-2 text-xl hover:bg-blue-400 duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
+          className="bg-white w-[10rem] border-4 border-[#F3EFE0] hover:border-none text-[#22A39F] hover:text-[#22A39F] mx-6 px-6 py-2 my-2 text-xl hover:bg-[#F3EFE0] duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
           whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
@@ -232,7 +232,7 @@ const About = () => {
           Vaibhav
         </motion.button>
         <motion.button
-          className="bg-white w-[10rem] border-4 border-blue-400 hover:border-none text-blue-400 hover:text-white mx-6 px-6 py-2 my-2 text-xl hover:bg-blue-400 duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
+          className="bg-white w-[10rem] border-4 border-[#F3EFE0] hover:border-none text-[#22A39F] hover:text-[#22A39F] mx-6 px-6 py-2 my-2 text-xl hover:bg-[#F3EFE0] duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
           whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
@@ -250,7 +250,7 @@ const About = () => {
           Nishant
         </motion.button>
         <motion.button
-          className="bg-white w-[10rem] border-4 border-blue-400 hover:border-none text-blue-400 hover:text-white mx-6 px-6 py-2 my-2 text-xl  hover:bg-blue-400 duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
+          className="bg-white w-[10rem] border-4 border-[#F3EFE0] hover:border-none text-[#22A39F] hover:text-[#22A39F] mx-6 px-6 py-2 my-2 text-xl  hover:bg-[#F3EFE0] duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
           whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
@@ -268,7 +268,7 @@ const About = () => {
           Vivek
         </motion.button>
         <motion.button
-          className="bg-white w-[10rem] border-4 border-blue-400 hover:border-none text-blue-400 hover:text-white mx-6 px-6 py-2 my-2 text-xl  hover:bg-blue-400 duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
+          className="bg-white w-[10rem] border-4 border-[#F3EFE0] hover:border-none text-[#22A39F] hover:text-[#22A39F] mx-6 px-6 py-2 my-2 text-xl  hover:bg-[#F3EFE0] duration-300 hover: hover:rounded-lg hover:drop-shadow-2xl"
           whileHover={{ scale: 1.2, transition: { duration: 0.1 } }}
           whileTap={{ scale: 0.7, transition: { duration: 0.1 } }}
           initial={{ y: 50, opacity: 0 }}
