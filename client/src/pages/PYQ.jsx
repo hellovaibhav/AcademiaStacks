@@ -273,7 +273,7 @@ const Notes = () => {
                               let materialId = material._id;
                               try {
                                 const res = await axios.post(
-                                  "http://localhost:8800/api/materials/upvote",
+                                  "https://academia-stacks-server.vercel.app/api/materials/upvote",
                                   { materialId, email }
                                 );
                               } catch (err) {
