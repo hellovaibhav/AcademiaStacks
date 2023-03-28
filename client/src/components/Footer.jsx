@@ -23,8 +23,8 @@ const Footer = () => {
         <div className="1 w-[15%]">
           <div className="flex flex-col items-center justify-center">
             <p className="text-xl font-semibold pb-2">Connect</p>
-            <p>LinkedIn</p>
-            <p>GitHub</p>
+            <a href="https://www.linkedin.com/in/saquib-ali-4a3235219/" target="_blank" className="hover:text-[#22a39fb3]">LinkedIn</a>
+            <a href="https://github.com/hellovaibhav/AcademiaStacks" target="_blank" className="hover:text-[#22a39fb3]">GitHub</a>
           </div>
         </div>
         <div className="1 w-[15%]">
