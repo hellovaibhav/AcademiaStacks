@@ -61,7 +61,7 @@ const NavbarHead = () => {
         <ul
           className={` ${
             open ? "top-24" : "top-[-490px]"
-          } bg-[#F3EFE0] opacity-[0.95]  border-b-[10px] border-[#22A39F] md:opacity-100  md:bg-[#22A39F] drop-shadow-lg md:pl-16 pl-0 md:rounded-bl-full rounded-b-3xl h-auto md:h-16 md:flex md:items-center absolute md:static  w-full left-0 md:w-auto transition-all duration-[600ms] ease-in`}
+          } bg-[#F3EFE0] opacity-[0.95]  border-b-[10px] border-[#22A39F] md:opacity-100  md:bg-[#22A39F] drop-shadow-lg pt-0 md:pt-3 md:pl-16 pl-0 md:rounded-bl-full rounded-b-3xl h-auto md:h-16 md:flex md:items-center absolute md:static  w-full left-0 md:w-auto transition-all duration-[600ms] ease-in`}
         >
           {Links.map((link) => (
             <motion.li
