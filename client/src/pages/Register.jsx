@@ -9,7 +9,7 @@ import Cookies from 'js-cookie'
 const Register = () => {
   const navigate = useNavigate();
   //url to go to
-  const url = "http://localhost:8800/api/auth/register";
+  const url = "https://academia-stacks-server.vercel.app/api/auth/register";
   const [data, setdata] = useState({
     name: "",
     email: "",
