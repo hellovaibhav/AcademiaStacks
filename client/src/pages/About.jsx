@@ -40,14 +40,9 @@ const About = () => {
                 </div>
                 <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
                   <p className="text-3xl font-medium pb-2">Saquib Ali</p>
-                  <p className="text-xl font-normal pb-1">Dev</p>
+                  <p className="text-xl font-normal pb-1">Frontend Developer</p>
                   <p className="text-lg font-light border-t-4 border-b-4 border-[#22A39F] py-4 mt-2 ">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Sit cumque quo soluta! Assumenda, provident cum, id maiores
-                    animi perferendis temporibus nihil voluptatem, magnam
-                    praesentium dolorum sit? Architecto qui velit corporis quas
-                    doloribus adipisci facere necessitatibus unde eius magni, a
-                    iusto!
+                    Worked as the lead frontend developer for this site
                   </p>
                 </div>
               </motion.div>{" "}
@@ -77,13 +72,9 @@ const About = () => {
                 </div>
                 <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
                   <p className="text-3xl font-medium pb-2">Vaibhav Verma</p>
-                  <p className="text-xl font-normal pb-1">Dev</p>
+                  <p className="text-xl font-normal pb-1">Backend Developer</p>
                   <p className="text-lg font-light border-t-4 border-b-4 border-[#22A39F] py-4 mt-2 ">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Optio itaque aliquid quod eaque quidem? Explicabo, nihil
-                    atque aliquid dolor minima deleniti odio adipisci iure nobis
-                    sed sunt numquam, fugiat porro officia molestias! In porro
-                    ratione ipsa ad. Ipsum, expedita necessitatibus.
+                    Worked as The lead backend developer for this site
                   </p>
                 </div>
               </motion.div>{" "}
@@ -114,13 +105,9 @@ const About = () => {
                 </div>
                 <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
                   <p className="text-3xl font-medium pb-2">Nishant Kumar</p>
-                  <p className="text-xl font-normal pb-1">Dev</p>
+                  <p className="text-xl font-normal pb-1">Backend Developer</p>
                   <p className="text-lg font-light border-t-4 border-b-4 border-[#22A39F] py-4 mt-2 ">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Optio itaque aliquid quod eaque quidem? Explicabo, nihil
-                    atque aliquid dolor minima deleniti odio adipisci iure nobis
-                    sed sunt numquam, fugiat porro officia molestias! In porro
-                    ratione ipsa ad. Ipsum, expedita necessitatibus.
+                    Worked as supporting backend developer, and fixed issues related to backend.
                   </p>
                 </div>
               </motion.div>{" "}
@@ -152,13 +139,9 @@ const About = () => {
                 </div>
                 <div className="content w-[90vw] flex flex-col items-center justify-center text-justify px-10">
                   <p className="text-3xl font-medium pb-2">Vivek Giri</p>
-                  <p className="text-xl font-normal pb-1">Dev</p>
+                  <p className="text-xl font-normal pb-1">Frontend Dev</p>
                   <p className="text-lg font-light border-t-4 border-b-4 border-[#22A39F] py-4 mt-2 ">
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    Optio itaque aliquid quod eaque quidem? Explicabo, nihil
-                    atque aliquid dolor minima deleniti odio adipisci iure nobis
-                    sed sunt numquam, fugiat porro officia molestias! In porro
-                    ratione ipsa ad. Ipsum, expedita necessitatibus.
+                    Worked as supporting frontend developer on this project, fixed issues related to frontend and provided data.
                   </p>
                 </div>
               </motion.div>{" "}
