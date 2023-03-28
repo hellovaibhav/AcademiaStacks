@@ -17,7 +17,7 @@ const app = express();
 const port = process.env.PORT || 8800;
 
 const options = {
-    origin : 'http://localhost:3000',
+    origin : 'https://academia-stacks.vercel.app',
     useSuccessStatus : true
 }
 app.use(cors(options));
