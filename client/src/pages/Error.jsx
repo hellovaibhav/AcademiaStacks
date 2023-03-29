@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import OhShit from "../assets/OhShit.gif";
 const Error = () => {
   return (
-    <div className="min-h-[100vh]  mt-10 flex flex-col items-center justify-center ">
+    <div className="min-h-[100vh] bg-[#F3EFE0] pt-10 flex flex-col items-center justify-center ">
       <span className="text-xl sm:text-2xl md:text-4xl">
         Oh Shit ! <span className="text-rose-500 text-4xl md:text-7xl ml-2 md:ml-10"> 404</span>{" "}
       </span>
