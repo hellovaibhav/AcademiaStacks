@@ -5,7 +5,7 @@ import Carousel from "../components/Carousel";
 const Home = () => {
   return (
     <div className="min-h-[95vh] bg-[#F3EFE0] px-10 sm:px-0 md:py-32 py-28 flex flex-col justify-between items-center ">
-      <div className="flex flex-col xl:flex-row justify-between items-center">
+      <div className="flex flex-col w-screen xl:flex-row justify-around items-center">
         <Carousel />
         <div className=" flex flex-col justify-center items-center ">
           <p className="text-lg text-white hidden lg:flex lg:text-4xl pr-4 bg-[rgb(34,163,159,0.4)] my-10 lg:my-8 h-[10rem] w-[15rem] lg:w-[20rem] text-center items-center justify-center px-5 rounded-lg">

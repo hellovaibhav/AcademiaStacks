@@ -51,13 +51,13 @@ const Notes = () => {
     <>
       {
         <div className="min-h-[100vh] bg-[#F3EFE0] flex items-center justify-center pt-[5rem] md:pt-24 pl-[15%] sm:pl-[25%] lg:pl-[25rem] md:pl-[20%] xl:pl-[30rem]  ">
-          <div className="leftFilter fixed top-52 left-14 hidden md:block w-[20vw]">
-            <div className="flex text-white h-96 flex-col items-center py-2 justify-center rounded-xl px-4 xl:px-10 2xl:px-20 lg:px-6 bg-[rgb(34,163,159,0.4)]">
+          <div className="leftFilter fixed top-[15vh] left-14 hidden md:block w-[20vw]">
+            <div className="flex text-white h-80 flex-col flex-wrap items-center py-2 justify-center rounded-xl px-4 xl:px-10 2xl:px-20 lg:px-6 bg-[rgb(34,163,159,0.4)]">
               <p className="text-3xl font-bold m-2">Filters</p>
               <div>
                 <label className="font-semibold text-right">Semester :</label>
                 <select
-                  className="h-12 border-2 p-1 border-[#feffff] bg-[#2ddad4] md:w-32 lg:w-40 m-1"
+                  className="h-12 border-2 p-1 border-[#feffff] bg-[rgb(34,158,154,0.4)] md:w-32 lg:w-40 m-1"
                   name="semester"
                   value={filters.semester}
                   onChange={handleFilterChange}
@@ -73,7 +73,7 @@ const Notes = () => {
               <div>
                 <label className="font-semibold text-right">Featured :</label>
                 <select
-                  className="h-12 border-2 p-1 border-[#feffff] bg-[#2ddad4] md:w-32 lg:w-40 m-1"
+                  className="h-12 border-2 p-1 border-[#feffff] bg-[rgb(34,158,154,0.4)] md:w-32 lg:w-40 m-1"
                   name="featured"
                   value={filters.featured}
                   onChange={handleFilterChange}
@@ -85,7 +85,7 @@ const Notes = () => {
               <div>
                 <label className="font-semibold text-right">Branch :</label>
                 <select
-                  className="h-12 border-2 p-1 border-[#feffff] bg-[#2ddad4] md:w-32 lg:w-40 m-1"
+                  className="h-12 border-2 p-1 border-[#feffff] bg-[rgb(34,158,154,0.4)] md:w-32 lg:w-40 m-1"
                   name="branch"
                   value={filters.branch}
                   onChange={handleFilterChange}
@@ -325,9 +325,9 @@ const Notes = () => {
                   transition: { duration: 0.1 },
                 }}
                 onClick={null}
-                className="h-auto sm:h-10 bg-rose-400 p-2 rounded-lg drop-shadow-md  mb-4 mr-[25%] xl:mr-[10%] 2xl:mr-10 "
+                className="h-auto sm:h-10 w-40 bg-rose-400 p-2 rounded-lg drop-shadow-md  mb-4 mr-[25%] xl:mr-[10%] 2xl:mr-10 "
               >
-                Thank You See You Later
+                Soon...
               </motion.button>
             )}
           </div>

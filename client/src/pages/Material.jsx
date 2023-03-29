@@ -39,7 +39,7 @@ const Material = () => {
           {items.map((item) => (
             <motion.button
               key={item.navigate}
-              className="bg-[rgb(34,163,159,0.6)] m-10 p-2 rounded-xl h-56 w-64 sm:w-96 md:h-80 md:w-96 flex flex-col items-center justify-around"
+              className="bg-[rgb(34,163,159,0.6)] m-10 p-2 rounded-xl h-64 w-72 sm:h-72 sm:w-96 md:h-80 md:w-96 flex flex-col items-center justify-around"
               onClick={() => {
                 navigate(item.navigate);
               }}
@@ -51,9 +51,9 @@ const Material = () => {
               <img
                 src={item.image}
                 alt="Loading...."
-                className="h-[80%] flex items-center justify-center"
+                className="h-[60%] flex items-center justify-center"
               />
-              <p>{item.text}</p>
+              <p className="text-xl"> {item.text}</p>
             </motion.button>
           ))}
         </div>
