@@ -6,10 +6,11 @@ import LoginAnimation from "../assets/Login.json";
 import ErrorBoundary from "../components/ErrorBoundary";
 import Cookies from 'js-cookie'
 
+
 const Register = () => {
   const navigate = useNavigate();
   //url to go to
-  const url = "https://academia-stacks-server.vercel.app/api/auth/register";
+  const url = process.env.REACT_APP_REGISTER;
   const [data, setdata] = useState({
     name: "",
     email: "",

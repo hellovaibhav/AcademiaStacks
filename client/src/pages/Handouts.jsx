@@ -28,7 +28,7 @@ const Notes = () => {
       setLoading(false);
     }, 1200);
     const { data } = await axios.get(
-      "https://academia-stacks-server.vercel.app/api/materials/Handouts"
+      process.env.REACT_APP_HANDOUT
     );
     setData(data);
   };
@@ -186,7 +186,7 @@ const Notes = () => {
                             let materialId = material._id;
                             try {
                               const res = await axios.post(
-                                "https://academia-stacks-server.vercel.app/api/materials/upvote",
+                                process.env.REACT_APP_UPVOTE,
                                 { materialId, email }
                               );
                             } catch (err) {
@@ -274,7 +274,7 @@ const Notes = () => {
                               let materialId = material._id;
                               try {
                                 const res = await axios.post(
-                                  "https://academia-stacks-server.vercel.app/api/materials/upvote",
+                                  process.env.REACT_APP_UPVOTE,
                                   { materialId, email }
                                 );
                               } catch (err) {

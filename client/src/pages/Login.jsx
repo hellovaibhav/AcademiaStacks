@@ -6,10 +6,11 @@ import LoginAnimation from "../assets/Login2.json";
 import { AuthContext } from "../context/AuthContext";
 import Loader from "../components/Loader";
 import ErrorBoundary from "../components/ErrorBoundary";
+
 const Login = () => {
   const navigate = useNavigate();
   //url to go to
-  const url = "https://academia-stacks-server.vercel.app/api/auth/login";
+  const url = process.env.REACT_APP_LOGIN;
 
   //useStates to hold input
   const [data, setdata] = useState({
