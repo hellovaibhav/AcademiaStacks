@@ -3,41 +3,41 @@ let About = [
     color: "bg-[#C5E0DC]",
     image: "https://avatars.githubusercontent.com/u/106366280?v=4",
     name: "Saquib Ali",
-    position: "Dev",
-    content:
-      "    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rem natus velit eaque nobis dicta obcaecati facere fuga ducimus non, ipsum iusto sit consectetur harum delectus nihil. Excepturi aliquid iure minima qui iste eius quia inventore, pariatur dolore tempore non provident veniam iusto totam in ea odio, dolor eum commodi vitae. Similique, facere libero praesentium eos natus, voluptatem, earum doloremque temporibus consectetur rem expedita. Ad quaerat repellendus ipsa explicabo numquam architecto sit, inventore vitae iusto provident tempora reiciendis doloribus debitis a quae dolorem ex eos sequi temporibus ipsum aut doloremque autem. Reiciendis illum perferendis libero aliquid quas voluptas maxime architecto quasi?      ",
+    position: "Frontend Developer",
+    content:"Worked as the lead frontend developer for this site",
+
   },
   {
     color: "bg-[#FFC2D1]",
     image: "https://avatars.githubusercontent.com/u/82583704?v=4",
     name: "Vaibhav Verma",
-    position: "Dev",
+    position: "Backend Developer",
     content:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsa, quo. Natus dolor, illo sunt ut tenetur praesentium aut quam, officiis commodi nam facilis accusantium eum fuga provident iusto hic dolorum.",
+      "Worked as The lead backend developer for this site",
   },
   {
     color: "bg-[#E7C8FF]",
     image: "https://avatars.githubusercontent.com/u/106348929?v=4",
     name: "Nishant Kumar",
-    position: "Dev",
+    position: "Backend Developer",
     content:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsa, quo. Natus dolor, illo sunt ut tenetur praesentium aut quam, officiis commodi nam facilis accusantium eum fuga provident iusto hic dolorum.",
+      "Worked as supporting backend developer, and fixed issues related to backend.",
   },
   {
     color: "bg-[#FFF1E6]",
     image: "https://avatars.githubusercontent.com/u/96737391?v=4",
     name: "Vivek Giri",
-    position: "Dev",
+    position: "Frontend Dev",
     content:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsa, quo. Natus dolor, illo sunt ut tenetur praesentium aut quam, officiis commodi nam facilis accusantium eum fuga provident iusto hic dolorum.",
+      "Worked as supporting frontend developer on this project, fixed issues related to frontend and provided data..",
   },
   {
     color: "bg-[#FFCCE5]",
     image: null,
     name: "Notes Provider",
-    position: "Dev",
+    position: "",
     content:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsa, quo. Natus dolor, illo sunt ut tenetur praesentium aut quam, officiis commodi nam facilis accusantium eum fuga provident iusto hic dolorum.",
+      "Ananya Shukla , Sumit Minz , Saquib",
   },
 ];
 export default About;

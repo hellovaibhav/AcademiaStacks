@@ -7,33 +7,72 @@ const dt = new Date();
 // Main function
 const Footer = () => {
   return (
-    <div className="overflow-hidden flex flex-col items-center justify-center bg-[#434242] min-h-[10vh] py-2 text-center text-white border-t-2 border-white">
-      <div>
-        <h1>Made With 💖 by Hacktivators+</h1>
-        <h1>© {dt.getFullYear()}</h1>
-      </div>
-      <div className="parent md:flex hidden w-[80vw]  items-center justify-around pt-5">
+    <div className="overflow-hidden flex flex-col items-center justify-center bg-[#434242] min-h-[10vh] pt-12 text-center text-white border-t-2 border-white">
+      <div className="parent md:flex hidden w-[80vw]  items-center justify-around pb-5">
         <div className="1 w-[15%]">
           <div className="flex flex-col items-center justify-center">
             <p className="text-xl font-semibold pb-2">Get In Touch</p>
             <p>saquibali353@gmail.com</p>
-            <p>dummy@gmail.com</p>
+            <p>hacktivator.iiit@gmail.com</p>
           </div>
         </div>
-        <div className="1 w-[15%]">
+        <div className="1 w-[25%]">
           <div className="flex flex-col items-center justify-center">
             <p className="text-xl font-semibold pb-2">Connect</p>
-            <a href="https://www.linkedin.com/in/saquib-ali-4a3235219/" target="_blank" className="hover:text-[#22a39fb3]">LinkedIn</a>
-            <a href="https://github.com/hellovaibhav/AcademiaStacks" target="_blank" className="hover:text-[#22a39fb3]">GitHub</a>
+            <div className="flex">
+            <p>LinkedIn :</p>
+            <a
+              href="https://www.linkedin.com/in/saquib-ali-4a3235219/"
+              target="_blank"
+              className="hover:text-[#22a39fb3] px-2"
+            >
+              Saquib
+            </a>
+            <p>|</p>
+            <a
+              href="https://www.linkedin.com/in/vaibhav-verma-iiitr/"
+              target="_blank"
+              className="hover:text-[#22a39fb3] px-2"
+            >
+              Vaibhav
+            </a>
+            <p>|</p>
+            <a
+              href="https://www.linkedin.com/in/nishant-kumar-92275b19a/"
+              target="_blank"
+              className="hover:text-[#22a39fb3] px-2"
+            >
+              Nishant
+            </a>
+            <p>|</p>
+            <a
+              href="https://www.linkedin.com/in/vivek-giri45/"
+              target="_blank"
+              className="hover:text-[#22a39fb3] px-2"
+            >
+              Vivek
+            </a>
+            </div>
+            <a
+              href="https://github.com/Hacktivators-IIIT"
+              target="_blank"
+              className="hover:text-[#22a39fb3]"
+            >
+              GitHub
+            </a>
           </div>
         </div>
         <div className="1 w-[15%]">
           <div className="flex flex-col items-center justify-center">
             <p className="text-xl font-semibold pb-2">Address</p>
             <p>IIIT Ranchi Jupmi Campus</p>
-            <p>IIIT JUT Campus</p>
+            <p>Dhurwa , Racnhi ,Jharkhand</p>
           </div>
         </div>
+      </div>
+      <div className="mt-6">
+        <h1>Made With 💖 by Hacktivators</h1>
+        <h1>© {dt.getFullYear()}</h1>
       </div>
     </div>
   );

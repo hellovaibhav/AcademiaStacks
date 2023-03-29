@@ -20,7 +20,7 @@ const Carousel = () => {
     setIndex(index - 1);
   };
   return (
-    <div className=" flex items-center justify-center w-[90vw] md:w-[60vw]">
+    <div className=" flex items-center justify-center w-[90vw] md:w-[60vw] ">
       <motion.div
         className="content flex items-center justify-center  px-4 md:px-0"
         initial={{ opacity: 0 }}
