@@ -8,6 +8,7 @@ import Loader from "../components/Loader";
 import { BiUpvote } from "react-icons/bi";
 import Cookies from "js-cookie";
 
+
 const Notes = () => {
   const [index, setIndex] = useState(7);
   const [data, setData] = useState([]);
@@ -21,6 +22,8 @@ const Notes = () => {
       setIndex(index + 4);
     }
   };
+
+
   const [loading, setLoading] = useState(false);
   const fetchNotes = async () => {
     setLoading(true);
@@ -28,7 +31,7 @@ const Notes = () => {
       setLoading(false);
     }, 1200);
     const { data } = await axios.get(
-      "https://academia-stacks-server.vercel.app/api/materials/Notes"
+      process.env.REACT_APP_NOTES
     );
     setData(data);
   };
@@ -186,7 +189,7 @@ const Notes = () => {
                             let materialId = material._id;
                             try {
                               const res = await axios.post(
-                                "https://academia-stacks-server.vercel.app/api/materials/upvote",
+                                process.env.REACT_APP_UPVOTE,
                                 { materialId, email }
                               );
                             } catch (err) {
@@ -274,7 +277,7 @@ const Notes = () => {
                               let materialId = material._id;
                               try {
                                 const res = await axios.post(
-                                  "https://academia-stacks-server.vercel.app/api/materials/upvote",
+                                  process.env.REACT_APP_UPVOTE,
                                   { materialId, email }
                                 );
                               } catch (err) {

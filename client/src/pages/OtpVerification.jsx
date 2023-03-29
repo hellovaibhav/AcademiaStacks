@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import Cookies from "js-cookie";
+
+
 const OtpVerification = () => {
   const navigate = useNavigate();
   //url to go to
-  const url = "https://academia-stacks-server.vercel.app/api/auth/verification";
+  const url = process.env.REACT_APP_VERIFY;
   //useStates to hold input
   const [data, setdata] = useState({
     email: "",
