@@ -24,6 +24,7 @@ const Footer = () => {
             <a
               href="https://www.linkedin.com/in/saquib-ali-4a3235219/"
               target="_blank"
+              rel="noreferrer"
               className="hover:text-[#22a39fb3] px-2"
             >
               Saquib
@@ -32,6 +33,7 @@ const Footer = () => {
             <a
               href="https://www.linkedin.com/in/vaibhav-verma-iiitr/"
               target="_blank"
+              rel="noreferrer"
               className="hover:text-[#22a39fb3] px-2"
             >
               Vaibhav
@@ -40,6 +42,7 @@ const Footer = () => {
             <a
               href="https://www.linkedin.com/in/nishant-kumar-92275b19a/"
               target="_blank"
+              rel="noreferrer"
               className="hover:text-[#22a39fb3] px-2"
             >
               Nishant
@@ -48,6 +51,7 @@ const Footer = () => {
             <a
               href="https://www.linkedin.com/in/vivek-giri45/"
               target="_blank"
+              rel="noreferrer"
               className="hover:text-[#22a39fb3] px-2"
             >
               Vivek
@@ -56,6 +60,7 @@ const Footer = () => {
             <a
               href="https://github.com/Hacktivators-IIIT"
               target="_blank"
+              rel="noreferrer"
               className="hover:text-[#22a39fb3]"
             >
               GitHub
@@ -72,7 +77,8 @@ const Footer = () => {
       </div>
       <div className="mt-6">
         <h1>Made With 💖 by Hacktivators</h1>
-        <h1>© {dt.getFullYear()}</h1>
+        <h1>© {dt.getFullYear()} <span className="absolute right-5 text-gray-400">Version 1.0.1 ( α )</span></h1>
+        
       </div>
     </div>
   );
