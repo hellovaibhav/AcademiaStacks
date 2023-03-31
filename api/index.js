@@ -16,9 +16,22 @@ const app = express();
 
 const port = process.env.PORT || 8800;
 
+var allowedOrigins = ['http://localhost:3000',
+    'https://academia-stacks.vercel.app/'];
+
 const options = {
-    origin : 'https://academia-stacks.vercel.app/',
-    useSuccessStatus : true
+    origin: function (origin, callback) {
+        // allow requests with no origin 
+        // (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            var msg = 'The CORS policy for this site does not ' +
+                'allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
+    useSuccessStatus: true
 }
 app.use(cors(options));
 
@@ -55,7 +68,7 @@ connect();
 app.use(cookieParser());
 app.use(express.json());
 
-app.use("/",homeRoute)
+app.use("/", homeRoute)
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 app.use("/api/materials", materialsRoute);
@@ -79,6 +92,6 @@ app.use((err, req, res, next) => {
 
 
 app.listen(port, () => {
-    
+
     console.log("connected to backend");
 });
