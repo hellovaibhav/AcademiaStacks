@@ -68,7 +68,7 @@ const Register = () => {
             />
             <label htmlFor="">Email</label>
             <motion.input
-              type="text"
+              type="email"
               placeholder="stewie@gmail.com"
               id="email"
               value={data.email}
@@ -105,7 +105,7 @@ const Register = () => {
             <div className="flex justify-center items-center">
               <motion.button
                 type="submit"
-                className="bg-white text-sky-600 h-10 w-20  hover:bg-sky-300 hover:rounded-sm hover:text-white mx-3 transition-all duration-100"
+                className="bg-white text-sky-600 h-10 w-20 mt-2 hover:bg-sky-300 hover:rounded-sm hover:text-white mx-3 transition-all duration-100"
                 whileHover={{ scale: 1.2, transition: { duration: 1 } }}
                 whileTap={{ scale: 0.8, transition: { duration: 0.1 } }}
                 initial={{ y: 50, opacity: 0 }}
