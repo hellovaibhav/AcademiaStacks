@@ -29,6 +29,10 @@ export const register = async (req, res, next) => {
     var str = req.body.email;
     var name = str.split("@")[0];
 
+    var domain =str.split("@")[1];
+
+    var username = name + domain.split(".")[0];
+
     var naming = req.body.name;
     var firstname = naming.split(" ")[0];
 
