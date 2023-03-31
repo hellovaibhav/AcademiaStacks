@@ -8,7 +8,6 @@ import Loader from "../components/Loader";
 import { BiUpvote } from "react-icons/bi";
 import Cookies from "js-cookie";
 
-
 const Notes = () => {
   const [index, setIndex] = useState(7);
   const [data, setData] = useState([]);
@@ -23,16 +22,13 @@ const Notes = () => {
     }
   };
 
-
   const [loading, setLoading] = useState(false);
   const fetchNotes = async () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 1200);
-    const { data } = await axios.get(
-      process.env.REACT_APP_NOTES
-    );
+    const { data } = await axios.get(process.env.REACT_APP_NOTES);
     setData(data);
   };
   useEffect(() => {
@@ -49,6 +45,7 @@ const Notes = () => {
     const { name, value } = event.target;
     setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
   };
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
 
   return (
     <>
@@ -140,14 +137,13 @@ const Notes = () => {
               </select>
             </div>
           </button>
-          
 
           <div className="flex max-w-[80vw] flex-col items-center justify-center md:ml-[10vw] pb-10">
             <div className="rightContent  flex flex-wrap mt-14 lg:mt-0">
               {filters.branch === "" &&
               filters.semester === "" &&
               filters.instructorName === ""
-                ? data.slice(0, index + 1).map((material) => (
+                ? data.slice(0, index + 1).map((material, ind) => (
                     <motion.div
                       key={material._id}
                       className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-[#22A39F] m-8 rounded-xl drop-shadow-md :hover-hidden"
@@ -161,7 +157,18 @@ const Notes = () => {
                           src={material.thumbnail}
                           alt="Not available"
                           className="h-[12rem] w-auto"
+                          onMouseEnter={() => setHoveredIndex(ind)}
+                          onMouseLeave={() => setHoveredIndex(-1)}
                         />
+                        {hoveredIndex === ind && material.desc && (
+                          <motion.div
+                            className="absolute bg-white text-black drop-shadow-md border-x-4 border-b-4 border-[#22a39f99] p-4  h-[144px] rounded-b-2xl bottom-0 left-0 right-0"
+                            initial={{ x: -90, opacity: 0 }}
+                            animate={{ x: 0, opacity: 0.8 }}
+                          >
+                            <p className="text-lg font-bold">{material.desc}</p>
+                          </motion.div>
+                        )}
                       </Link>
                       <div className="descriptionChild text-white p-2 flex flex-col justify-center items-center text-center">
                         <p className=" text-lg ">
@@ -235,7 +242,7 @@ const Notes = () => {
                           ? item.featured === (filters.featured === "true")
                           : true)
                     )
-                    .map((material) => (
+                    .map((material, ind) => (
                       <motion.div
                         key={material._id}
                         className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-[rgb(34,163,159,0.3)] m-8 rounded-xl drop-shadow-md :hover-hidden"
@@ -249,7 +256,20 @@ const Notes = () => {
                             src={material.thumbnail}
                             alt="Not available"
                             className="h-[12rem] w-auto"
+                            onMouseEnter={() => setHoveredIndex(ind)}
+                            onMouseLeave={() => setHoveredIndex(-1)}
                           />
+                          {hoveredIndex === ind && material.desc && (
+                            <motion.div
+                              className="absolute bg-white text-black drop-shadow-md border-x-4 border-b-4 border-[#22a39f99] h-[144px] rounded-b-2xl  p-4 top-bottom left-0 right-0"
+                              initial={{ x: -90, opacity: 0 }}
+                              animate={{ x: 0, opacity: 0.8 }}
+                            >
+                              <p className="text-lg font-bold">
+                                {material.desc}
+                              </p>
+                            </motion.div>
+                          )}
                         </Link>
                         <div className="descriptionChild text-white p-2 flex flex-col justify-center items-center text-center">
                           <p className=" text-lg ">

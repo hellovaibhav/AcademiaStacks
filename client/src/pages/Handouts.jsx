@@ -21,15 +21,14 @@ const Notes = () => {
       setIndex(index + 4);
     }
   };
+
   const [loading, setLoading] = useState(false);
   const fetchNotes = async () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
     }, 1200);
-    const { data } = await axios.get(
-      process.env.REACT_APP_HANDOUT
-    );
+    const { data } = await axios.get(process.env.REACT_APP_HANDOUT);
     setData(data);
   };
   useEffect(() => {
@@ -46,13 +45,14 @@ const Notes = () => {
     const { name, value } = event.target;
     setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
   };
+  const [hoveredIndex, setHoveredIndex] = useState(-1);
 
   return (
     <>
       {
         <div className="min-h-[100vh] bg-[#F3EFE0] flex items-center justify-center pt-[5rem] md:pt-24 pl-[15%] sm:pl-[25%] lg:pl-[25rem] md:pl-[20%] xl:pl-[30rem]  ">
           <div className="leftFilter fixed top-[15vh] left-14 hidden md:block w-[20vw]">
-            <div className="flex h-80 w-auto text-white flex-col items-center py-2 justify-center rounded-xl px-4 xl:px-10 2xl:px-20 lg:px-6 bg-[rgb(34,163,159,0.4)]">
+            <div className="flex text-white h-80 flex-col flex-wrap items-center py-2 justify-center rounded-xl px-4 xl:px-10 2xl:px-20 lg:px-6 bg-[rgb(34,163,159,0.4)]">
               <p className="text-3xl font-bold m-2">Filters</p>
               <div>
                 <label className="font-semibold text-right">Semester :</label>
@@ -137,17 +137,16 @@ const Notes = () => {
               </select>
             </div>
           </button>
-          
 
           <div className="flex max-w-[80vw] flex-col items-center justify-center md:ml-[10vw] pb-10">
             <div className="rightContent  flex flex-wrap mt-14 lg:mt-0">
               {filters.branch === "" &&
               filters.semester === "" &&
               filters.instructorName === ""
-                ? data.slice(0, index + 1).map((material) => (
+                ? data.slice(0, index + 1).map((material, ind) => (
                     <motion.div
                       key={material._id}
-                      className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-[#22A39F] m-8 rounded-xl drop-shadow-md "
+                      className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-[#22A39F] m-8 rounded-xl drop-shadow-md :hover-hidden"
                       // whileTap={{ scale: 0.9, transition: { duration: 0.1 } }}
                       // initial={{ y: 150, opacity: 0 }}
                       // animate={{ y: 0, opacity: 1 }}
@@ -158,10 +157,21 @@ const Notes = () => {
                           src={material.thumbnail}
                           alt="Not available"
                           className="h-[12rem] w-auto"
+                          onMouseEnter={() => setHoveredIndex(ind)}
+                          onMouseLeave={() => setHoveredIndex(-1)}
                         />
+                        {hoveredIndex === ind && material.desc && (
+                          <motion.div
+                            className="absolute bg-white text-black drop-shadow-md border-x-4 border-b-4 border-[#22a39f99] p-4  h-[144px] rounded-b-2xl bottom-0 left-0 right-0"
+                            initial={{ x: -90, opacity: 0 }}
+                            animate={{ x: 0, opacity: 0.8 }}
+                          >
+                            <p className="text-lg font-bold">{material.desc}</p>
+                          </motion.div>
+                        )}
                       </Link>
-                      <div className="descriptionChild p-2 flex flex-col justify-center items-center text-center">
-                        <p className=" text-lg text-blue-500">
+                      <div className="descriptionChild text-white p-2 flex flex-col justify-center items-center text-center">
+                        <p className=" text-lg ">
                           {" "}
                           {material.subject}{" "}
                           <span className="font-semibold text-lg">
@@ -232,7 +242,7 @@ const Notes = () => {
                           ? item.featured === (filters.featured === "true")
                           : true)
                     )
-                    .map((material) => (
+                    .map((material, ind) => (
                       <motion.div
                         key={material._id}
                         className="parent flex flex-col h-auto  w-[50vw] md:w-72 bg-[rgb(34,163,159,0.3)] m-8 rounded-xl drop-shadow-md :hover-hidden"
@@ -246,7 +256,20 @@ const Notes = () => {
                             src={material.thumbnail}
                             alt="Not available"
                             className="h-[12rem] w-auto"
+                            onMouseEnter={() => setHoveredIndex(ind)}
+                            onMouseLeave={() => setHoveredIndex(-1)}
                           />
+                          {hoveredIndex === ind && material.desc && (
+                            <motion.div
+                              className="absolute bg-white text-black drop-shadow-md border-x-4 border-b-4 border-[#22a39f99] h-[144px] rounded-b-2xl  p-4 top-bottom left-0 right-0"
+                              initial={{ x: -90, opacity: 0 }}
+                              animate={{ x: 0, opacity: 0.8 }}
+                            >
+                              <p className="text-lg font-bold">
+                                {material.desc}
+                              </p>
+                            </motion.div>
+                          )}
                         </Link>
                         <div className="descriptionChild text-white p-2 flex flex-col justify-center items-center text-center">
                           <p className=" text-lg ">
@@ -327,7 +350,7 @@ const Notes = () => {
                 onClick={null}
                 className="h-auto sm:h-10 w-40 bg-rose-400 p-2 rounded-lg drop-shadow-md  mb-4 mr-[25%] xl:mr-[10%] 2xl:mr-10 "
               >
-                Soon
+                Soon...
               </motion.button>
             )}
           </div>
