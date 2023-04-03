@@ -18,6 +18,7 @@ import PYQ from "./pages/PYQ";
 import User from "./pages/User";
 import Handouts from "./pages/Handouts";
 import OtpVerification from "./pages/OtpVerification";
+import AllMaterials from "./pages/AllMaterials";
 function App() {
   const ProtectedRoute = ({ children }) => {
     const { user } = useContext(AuthContext);
@@ -68,6 +69,14 @@ function App() {
           element={
             <ProtectedRoute>
               <PYQ />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/material/allMaterials"
+          element={
+            <ProtectedRoute>
+              <AllMaterials />
             </ProtectedRoute>
           }
         />
