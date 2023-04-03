@@ -276,8 +276,7 @@ const Notes = () => {
                             {" "}
                             {material.subject}{" "}
                             <span className="font-semibold text-lg">
-                              {" "}
-                              {material.instructorName}{" "}
+                              {"Sem "} {material.semester}
                             </span>
                           </p>
                           <p>

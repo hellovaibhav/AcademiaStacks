@@ -275,10 +275,8 @@ const Notes = () => {
                           <p className=" text-lg ">
                             {" "}
                             {material.subject}{" "}
-                            <span className="font-semibold text-lg">
-                              {" "}
-                              {material.instructorName}{" "}
-                            </span>
+                            {"| Sem "}
+                            {material.semester}{" "}
                           </p>
                           <p>
                             by{" "}
