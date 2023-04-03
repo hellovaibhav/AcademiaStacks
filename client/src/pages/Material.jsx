@@ -18,6 +18,7 @@ const Material = () => {
     { navigate: "notes", text: "Notes", image: NotesPic },
     { navigate: "assignment", text: "Assignment", image: AssignmentPic },
     { navigate: "handouts", text: "Handout", image: handouts },
+    { navigate: "allMaterials", text: "All Materials", image: handouts },
   ];
 
   // Loading Settings 
