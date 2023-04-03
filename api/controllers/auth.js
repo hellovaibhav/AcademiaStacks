@@ -51,10 +51,7 @@ export const register = async (req, res, next) => {
       to: req.body.email,
       subject: "Academia Stacks One Time Password ",
       text: "Your OTP for Academia Stacks registration is " + otpCode,
-      html:
-        '<html><body align="center" bgcolor="#EDF1D6"><p>We are happy to see that you want to join Academia Stacks and dig deep into the ocean of knowledge</p><br><h3> Here is your OTP </h3><br><h1>' +
-        otpCode +
-        ' </h1><br><p>Please enter this within 30-Minutes to activate your account.</p> <br><br><p align="left"> This is a system generated email. Please do not reply to this message. </p> <br><br><div align="left"><h4>Academia Stacks</h4><h5>Verification Mail | Hacktivators<br>hacktivators.iiit@gmail.com<br></h5><h6>IIIT Ranchi, JUPMI Campus, Ranchi, Jharkhand</h6></div></body></html>',
+      html: "<html><body align=\"center\" bgcolor=\"#EDF1D6\"><p>We are happy to see that you want to join Academia Stacks and dig deep into the ocean of knowledge</p><br><h3> Here is your OTP </h3><br><h1>" + otpCode + " </h1><br><p>Please enter this within 30-Minutes to activate your account.</p> <br><br><p align=\"left\"> This is a system generated email. Please do not reply to this message. </p> <br><br><div align=\"left\"><h4>Academia Stacks</h4><h5>Verification Mail | Hacktivators<br>hacktivators.iiit@gmail.com<br></h5><h6>IIIT Ranchi, JUPMI Campus, Ranchi, Jharkhand</h6></div></body></html>"
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -68,8 +65,13 @@ export const register = async (req, res, next) => {
     const checkUser = await User.findOne({ email: req.body.email });
 
     if (!checkUser) {
-      const saveduser = await newUser.save();
-      res.status(200).json(saveduser);
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email Sent' + info.response);
+        }
+      });
     } else {
       console.log(
         "The account associated with this email address already exists"
