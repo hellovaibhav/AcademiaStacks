@@ -18,9 +18,9 @@ const Footer = () => {
         </div>
         <div className="1 w-[25%]">
           <div className="flex flex-col items-center justify-center">
-            <p className="text-xl font-semibold pb-2">Connect</p>
+            <p className="text-xl font-semibold pb-2">Connect With Us</p>
             <div className="flex">
-            <p>LinkedIn :</p>
+            
             <a
               href="https://www.linkedin.com/in/saquib-ali-4a3235219/"
               target="_blank"
@@ -63,7 +63,7 @@ const Footer = () => {
               rel="noreferrer"
               className="hover:text-[#22a39fb3]"
             >
-              GitHub
+            GitHub
             </a>
           </div>
         </div>
@@ -71,7 +71,7 @@ const Footer = () => {
           <div className="flex flex-col items-center justify-center">
             <p className="text-xl font-semibold pb-2">Address</p>
             <p>IIIT Ranchi Jupmi Campus</p>
-            <p>Dhurwa , Racnhi ,Jharkhand</p>
+            <p>Dhurwa , Ranchi, Jharkhand</p>
           </div>
         </div>
       </div>

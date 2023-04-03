@@ -275,9 +275,8 @@ const Notes = () => {
                           <p className=" text-lg ">
                             {" "}
                             {material.subject}{" "}
-                            <span className="font-semibold text-lg">
-                              {"Sem "} {material.semester}
-                            </span>
+                              {"| Sem "} {material.semester}{" |"}
+                           
                           </p>
                           <p>
                             by{" "}
