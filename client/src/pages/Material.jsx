@@ -1,6 +1,7 @@
 //Imports :
 import React, { useEffect, useState } from "react";
 import AssignmentPic from "../assets/assignmentPic.jpg";
+import AllMaterialPic from "../assets/allMaterialPic.jpg"
 import NotesPic from "../assets/notesPic.png";
 import PyqPic from "../assets/pyqPic.jpg";
 import handouts from "../assets/handouts.png"
@@ -18,7 +19,7 @@ const Material = () => {
     { navigate: "notes", text: "Notes", image: NotesPic },
     { navigate: "assignment", text: "Assignment", image: AssignmentPic },
     { navigate: "handouts", text: "Handout", image: handouts },
-    { navigate: "allMaterials", text: "All Materials", image: handouts },
+    { navigate: "allMaterials", text: "All Materials", image: AllMaterialPic },
   ];
 
   // Loading Settings 
