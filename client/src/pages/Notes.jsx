@@ -236,7 +236,7 @@ const Notes = () => {
                           ? Number(item.semester) === Number(filters.semester)
                           : true) &&
                         (filters.branch
-                          ? item.branch === filters.branch
+                          ? item.branch.find((e) => e === filters.branch)
                           : true) &&
                         (filters.featured
                           ? item.featured === (filters.featured === "true")
@@ -274,9 +274,9 @@ const Notes = () => {
                         <div className="descriptionChild text-white p-2 flex flex-col justify-center items-center text-center">
                           <p className=" text-lg ">
                             {" "}
-                            {material.subject}{" "}
-                            {"| Sem "}
-                            {material.semester}{" |"}
+                            {material.subject} {"| Sem "}
+                            {material.semester}
+                            {" |"}
                             <span className="font-semibold text-lg">
                               {" "}
                               {material.instructorName}{" "}
