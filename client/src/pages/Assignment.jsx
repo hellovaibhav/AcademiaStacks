@@ -236,7 +236,7 @@ const Notes = () => {
                           ? Number(item.semester) === Number(filters.semester)
                           : true) &&
                         (filters.branch
-                          ? item.branch === filters.branch
+                          ? item.branch.find((e) => e === filters.branch)
                           : true) &&
                         (filters.featured
                           ? item.featured === (filters.featured === "true")
