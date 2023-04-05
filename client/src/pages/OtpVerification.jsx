@@ -48,15 +48,19 @@ const OtpVerification = () => {
 
   return (
     <div className="min-h-[95vh] flex flex-col items-center justify-center">
+
+      <div className="text-3l text-center text-black tracking-widest">An OTP has been sent to your mail id : {data.email} </div>
+  
       <form
         onSubmit={(e) => submit(e)}
         action=""
         method="POST"
         className="flex flex-wrap text-center justify-around items-center min-h-[20vh]"
       >
+
         <div>
           <span className="px-2 mx-2 text-left text-2xl font-semibold text-blue-600 ">
-            OTP   :   
+            OTP   :
           </span>
 
           <input
@@ -81,7 +85,9 @@ const OtpVerification = () => {
           Submit
         </motion.button>
       </form>
-      <div className="text-3xl text-center font-semibold text-red-400 tracking-widest">Enter Your 6 digit Otp Here</div>
+
+      <div className="text-3xl text-center text-red-400 tracking-widest">The OTP is valid for 30 minutes</div>
+      <div className="text-3l text-center tracking-widest"><br/>Not yet recived the OTP ? don't forget to check in the spams as well</div>
     </div>
   );
 };
