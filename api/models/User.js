@@ -40,7 +40,11 @@ const userSchema = new mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
-    }
+    },
+    savedItem:[{
+        type:String,
+        default:'0'
+    }]
 }, { timestamps: true });
 
 

@@ -4,6 +4,7 @@ import {
   deleteUser,
   getUser,
   getUsers,
+  saveItem,
 } from "../controllers/user.js";
 import {  verifyToken ,verifyUser,verifyAdmin } from "../utils/verifyToken.js";
 
@@ -22,15 +23,18 @@ router.get("/checkadmin/:id", verifyAdmin, (req,res,next)=>{
 })
 
 //UPDATE FOR BOTH USER AND ADMIN
-router.put("/:id", verifyUser, updateUser);
+router.put("/modify/:id", verifyUser, updateUser);
 
 //DELETE FOR BOTH USER AND ADMIN
-router.delete("/:id", verifyUser, deleteUser);
+router.delete("/modify/:id", verifyUser, deleteUser);
 
 //GET FOR BOTH USER AND ADMIN
-router.get("/:id", verifyUser, getUser);
+router.get("/modify/:id", verifyUser, getUser);
 
 //GET ALL FOR  ADMIN ONLY
 router.get("/",verifyAdmin,  getUsers);
 
-export default router;
+// Save fav material in your profile
+router.post("/saveItem",saveItem)
+
+export default router;  
