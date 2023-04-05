@@ -35,4 +35,38 @@ export const getUsers = async (req,res,next)=>{
   } catch (err) {
     next(err);
   }
-}
+};
+
+
+
+export const saveItem = async (req, res, next) => {
+
+  try {
+      const user = await User.findOne({"email":req.body.email});
+
+      console.log(req.body.email);
+
+      var foundMaterial = user.savedMaterial.find(function (element) {
+          return element == req.body.materialId;
+      });
+ 
+      console.log(foundMaterial);
+
+      if (foundMaterial != "") {
+          if (!foundMaterial) {
+              const updateUser = await User.findByIdAndUpdate(req.body.userId, { $push: { savedItem: req.body.materialId } }, { new: true });
+              res.status(200).json(updateUser);
+          } else {
+              const updateUser = await User.findByIdAndUpdate(req.body.userId, { $pull: { savedItem: req.body.materialId } }, { new: true });
+              res.status(200).json(updateUser);
+          }
+      } else {
+          console.log("Please login again !");
+      }
+
+  } catch (err) {
+      next(err);
+  }
+
+};
+

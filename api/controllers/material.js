@@ -94,7 +94,7 @@ export const upvoteMaterial = async (req, res, next) => {
     try {
         const material = await Material.findById(req.body.materialId);
 
-        console.log(material.upvotes);
+        // console.log(material.upvotes);
 
         var foundUser = material.upvotes.find(function (element) {
             return element == req.body.email;
