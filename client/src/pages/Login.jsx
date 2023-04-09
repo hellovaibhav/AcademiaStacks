@@ -33,9 +33,6 @@ const Login = () => {
     e.preventDefault();
     dispatch({ type: "LOGIN_START" });
     try {
-      setTimeout(() => {
-        setLoading(true);
-      }, 1000);
       const res = await axios.post(url, data);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
       navigate("/material");
