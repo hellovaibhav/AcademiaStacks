@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
 import { BiUpvote } from "react-icons/bi";
+import { BsSave } from "react-icons/bs";
 import Cookies from "js-cookie";
 
 const Notes = () => {
@@ -225,6 +226,9 @@ const Notes = () => {
                               : material.upvotes.length}
                           </span>
                         </p>
+                        <p>
+                          <BsSave />
+                        </p>
                       </div>
                     </motion.div>
                   ))
@@ -294,7 +298,6 @@ const Notes = () => {
                         <div className="h-10 flex text-center justify-center items-center cursor-pointer">
                           <p
                             onClick={async () => {
-                              console.log();
                               let email = Cookies.get("email");
                               let materialId = material._id;
                               try {
@@ -328,6 +331,9 @@ const Notes = () => {
                                 ? "0"
                                 : material.upvotes.length}
                             </span>
+                          </p>
+                          <p className="ml-10">
+                            <BsSave />
                           </p>
                         </div>
                       </motion.div>
