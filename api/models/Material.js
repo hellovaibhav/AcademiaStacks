@@ -10,10 +10,10 @@ const materialSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    instructorName: {
+    instructorName: [{
       type: String,
       required: true,
-    },
+    }],
     courseCode: {
       type: String,
       // required: true
@@ -26,10 +26,10 @@ const materialSchema = new mongoose.Schema(
     desc: {
       type: String,
     },
-    author: {
+    author: [{
       type: String,
       required: true,
-    },
+    }],
     yearOfWriting: {
       type: Number,
       required: true,
