@@ -53,6 +53,10 @@ const materialSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    contributedBy: {
+      type: String,
+      default:NULL
+    },
     upvotes: [
       {
         type: String,
