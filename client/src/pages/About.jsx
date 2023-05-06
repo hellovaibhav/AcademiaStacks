@@ -66,7 +66,7 @@ const About = () => {
               >
                 <div className="photo w-[60vw] md:w-[40vw]">
                   <img
-                    src="https://avatars.githubusercontent.com/u/82583704?v=4" alt="legendary developer"
+                    src="https://media.licdn.com/dms/image/D4D03AQFOVSF7CSyP5Q/profile-displayphoto-shrink_400_400/0/1680071249010?e=1688601600&v=beta&t=TDj7vpGCUSh_LVq7gGMPQHUTj8RxWL7kwqgNQ9IweTA" alt="legendary developer"
                     className="h-52 w-52 rounded-full border-4 border-[#22A39F] drop-shadow-2xl"
                   />
                 </div>
