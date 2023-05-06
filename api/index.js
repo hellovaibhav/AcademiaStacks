@@ -16,8 +16,7 @@ const app = express();
 
 const port = process.env.PORT || 8800;
 
-var allowedOrigins = ['http://localhost:3000',
-    'https://academia-stacks.vercel.app'];
+var allowedOrigins = '*';
 
 const options = {
     origin: function (origin, callback) {
