@@ -102,7 +102,7 @@ const Register = () => {
                 <option value="ECE">ECE</option>
                 <option value="ECE IOT">ECE Speclization</option>
                 <option value="CSE">CSE</option>
-                <option value="CSE AIDS">CSE DSAI</option>
+                <option value="CSE DSAI">CSE DSAI</option>
               </select>
               <select
                 name="batch"
