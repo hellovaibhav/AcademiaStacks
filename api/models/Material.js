@@ -26,10 +26,10 @@ const materialSchema = new mongoose.Schema(
     desc: {
       type: String,
     },
-    author: [{
+    author: {
       type: String,
       required: true,
-    }],
+    },
     yearOfWriting: {
       type: Number,
       required: true,
