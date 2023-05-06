@@ -167,7 +167,10 @@ const Notes = () => {
                             initial={{ x: -90, opacity: 0 }}
                             animate={{ x: 0, opacity: 0.8 }}
                           >
-                            <p className="text-lg font-bold">{material.desc}</p>
+                            <p className="text-lg font-bold">
+                              {material.desc} <br />
+                              Semester: {material.semester}
+                            </p>
                           </motion.div>
                         )}
                       </Link>
@@ -270,7 +273,8 @@ const Notes = () => {
                               animate={{ x: 0, opacity: 0.8 }}
                             >
                               <p className="text-lg font-bold">
-                                {material.desc}
+                                {material.desc} <br />
+                                Semester: {material.semester}
                               </p>
                             </motion.div>
                           )}
