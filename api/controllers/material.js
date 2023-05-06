@@ -20,7 +20,9 @@ export const createMaterial = async (req, res, next) => {
         branch: req.body.branch,
         materialType: req.body.materialType,
         thumbnail: link,
-        featured: req.body.featured
+        featured: req.body.featured,
+        contributedBy:req.body.contributedBy,
+        verifiedBy:req.body.verifiedBy
     });
 
     try {

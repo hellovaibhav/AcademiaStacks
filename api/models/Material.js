@@ -26,10 +26,10 @@ const materialSchema = new mongoose.Schema(
     desc: {
       type: String,
     },
-    author: {
+    author: [{
       type: String,
       required: true,
-    },
+    }],
     yearOfWriting: {
       type: Number,
       required: true,
@@ -40,10 +40,12 @@ const materialSchema = new mongoose.Schema(
         required: true,
       },
     ],
-
+    contributedBy:{
+      type:String,
+      default:"Admin"
+    },
     materialType: {
-      type: String,
-      required: true,
+      type: String
     },
     thumbnail: {
       type: String,
@@ -59,6 +61,10 @@ const materialSchema = new mongoose.Schema(
         default: "0",
       },
     ],
+    verifiedBy:{
+      type:String,
+      default:"notVerified"
+    }
   },
   { timestamp: true }
 );
