@@ -3,9 +3,9 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { AuthContextProvider } from "./context/AuthContext";
-import analytics from "@vercel/analytics";
-
-analytics();
+import { inject } from '@vercel/analytics';
+ 
+inject();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
