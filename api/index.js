@@ -11,6 +11,9 @@ import materialsRoute from "./routes/materials.js"
 import feedbacksRoute from "./routes/feedbacks.js"
 import homeRoute from "./routes/home.js"
 import cookieParser from "cookie-parser";
+import { inject } from '@vercel/analytics';
+ 
+inject();
 
 const app = express();
 
