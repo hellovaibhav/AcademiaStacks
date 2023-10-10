@@ -8,11 +8,14 @@ const Home = () => {
       <div className="flex flex-col w-screen xl:flex-row justify-around items-center">
         <Carousel />
         <div className=" flex flex-col justify-center items-center ">
-          <p className="text-lg text-white hidden lg:flex lg:text-4xl pr-4 bg-[rgb(34,163,159,0.4)] my-10 lg:my-8 h-[10rem] w-[15rem] lg:w-[20rem] text-center items-center justify-center px-5 rounded-lg">
-            The Quality you should TRUST on
+          <p className="text-lg text-Red hidden lg:flex lg:text-4xl pr-4 bg-[rgb(34,163,159,0.4)] my-10 lg:my-8 h-[10rem] w-[15rem] lg:w-[20rem] text-center items-center justify-center px-5 rounded-lg">
+            Wanna Contribute ?
           </p>
-          <p className="w-[70vw] xl:w-[20vw] my-10 lg:my-0 text-justify ">
-           You might have gone through many handwritten or printed materials which don't contain the Quality content you need to study for. You might have faced the issue of lack of proper study material in your life till now, but that won't be the case anymore as Academia Stacks brings for you the best notes and best study material you might have ever seen. All our materials have been verified by subject experts you can also go through PYQs and Handouts which are directly submitted by extremely qualified and experienced professor. We can wait to see you understand your concepts as clear as a crystal.
+          <p className="w-[70vw] xl:w-[20vw] my-10 lg:my-0 text-justify ">Maintaining an updated repository of study materials is a considerable endeavor, and your valuable contribution can make a significant difference. We invite you to share your notes, question papers, and any other non-copyrighted study materials that you believe will benefit your fellow students.
+
+By contributing to Academia Stacks, you not only help your peers but also have the chance to be featured on our contributors' page as a recognition of your valuable input. Your name will be proudly displayed alongside your contributed materials.
+
+Getting involved is easy! Simply reach out to any of our developers via email or social media links, and they will guide you through the process of featuring your materials on the site. Your generosity will ensure that Academia Stacks remains a dynamic resource for present and future batches. 
           </p>
         </div>
       </div>
