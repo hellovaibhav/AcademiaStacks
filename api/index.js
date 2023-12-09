@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import session from "express-session";
 import cors from "cors";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 // route imports
 import authRoute from "./routes/auth.js"
@@ -14,6 +15,7 @@ import cookieParser from "cookie-parser";
 import { inject } from '@vercel/analytics';
  
 inject();
+SpeedInsights();
 
 const app = express();
 
