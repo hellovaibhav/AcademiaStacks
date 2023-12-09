@@ -5,14 +5,15 @@ import App from "./App";
 import { AuthContextProvider } from "./context/AuthContext";
 import { inject } from '@vercel/analytics';
 import { SpeedInsights } from "@vercel/speed-insights/next"
- 
+
 inject();
-SpeedInsights();
+// SpeedInsights();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <AuthContextProvider>
+      <SpeedInsights />
       <App />
     </AuthContextProvider>
   </BrowserRouter>
