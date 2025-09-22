@@ -4,12 +4,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import Cookies from "js-cookie";
+import { API_ENDPOINTS } from "../config/api";
 
 
 const OtpVerification = () => {
   const navigate = useNavigate();
   //url to go to
-  const url = process.env.REACT_APP_VERIFY;
+  const url = API_ENDPOINTS.VERIFY;
   //useStates to hold input
   const [data, setdata] = useState({
     email: "",

@@ -5,36 +5,48 @@ import {
   getUser,
   getUsers,
   saveItem,
+  updateUserValidation,
+  userIdValidation,
+  saveItemValidation
 } from "../controllers/user.js";
-import {  verifyToken ,verifyUser,verifyAdmin } from "../utils/verifyToken.js";
+import { verifyToken, verifyUser, verifyAdmin } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
-router.get("/checkauthentication", verifyToken, (req,res,next)=>{
-  res.send("hello user, you are logged in")
-})
+// SECURITY: Enhanced authentication check endpoints
+router.get("/checkauthentication", verifyToken, (req, res, next) => {
+  res.status(200).json({ 
+    message: "User authenticated successfully",
+    user: { id: req.user.id, isAdmin: req.user.isAdmin }
+  });
+});
 
-router.get("/checkuser/:id", verifyUser, (req,res,next)=>{
-  res.send("hello user, you are logged in and you can delete your account")
-})
+router.get("/checkuser/:id", userIdValidation, verifyUser, (req, res, next) => {
+  res.status(200).json({ 
+    message: "User authorized for this resource" 
+  });
+});
 
-router.get("/checkadmin/:id", verifyAdmin, (req,res,next)=>{
-  res.send("hello admin, you are logged in and you can delete all accounts")
-})
+router.get("/checkadmin/:id", userIdValidation, verifyAdmin, (req, res, next) => {
+  res.status(200).json({ 
+    message: "Admin access confirmed" 
+  });
+});
 
+// SECURITY: Add validation to all routes
 //UPDATE FOR BOTH USER AND ADMIN
-router.put("/modify/:id", verifyUser, updateUser);
+router.put("/modify/:id", updateUserValidation, verifyUser, updateUser);
 
 //DELETE FOR BOTH USER AND ADMIN
-router.delete("/modify/:id", verifyUser, deleteUser);
+router.delete("/modify/:id", userIdValidation, verifyUser, deleteUser);
 
 //GET FOR BOTH USER AND ADMIN
-router.get("/modify/:id", verifyUser, getUser);
+router.get("/modify/:id", userIdValidation, verifyUser, getUser);
 
-//GET ALL FOR  ADMIN ONLY
-router.get("/",verifyAdmin,  getUsers);
+//GET ALL FOR ADMIN ONLY
+router.get("/", verifyAdmin, getUsers);
 
-// Save fav material in your profile
-router.post("/saveItem",saveItem)
+// SECURITY: Protect save item endpoint with authentication
+router.post("/saveItem", saveItemValidation, verifyToken, saveItem);
 
 export default router;  

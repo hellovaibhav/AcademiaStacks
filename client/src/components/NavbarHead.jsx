@@ -1,90 +1,241 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { 
+  AiOutlineMenu, 
+  AiOutlineClose, 
+  AiOutlineLogout, 
+  AiOutlineUser,
+  AiOutlineHome,
+  AiOutlineFileText,
+  AiOutlineUpload,
+  AiOutlineMessage
+} from "react-icons/ai";
 import { AuthContext } from "../context/AuthContext";
 import Logo from "../assets/logo_website.png";
 import { motion } from "framer-motion";
+
 const NavbarHead = () => {
-  const Navigate = useNavigate();
-  // const [loggedIn, setLoggedIn] = useState(false);
-  // useEffect(() => {
-  //   const token = localStorage.getItem("user");
-  //   if (token) {
-  //     setLoggedIn(true);
-  //     console.log("The state of loggedIn is : " + loggedIn);
-  //   }
-  // }, []);
-  const { user } = useContext(AuthContext);
-  // const [registered, setRegistered] = useState(true);
-  let Links = [
-    { name: "Home", logo: "Home", link: "/" },
-    { name: "Material", logo: "Material", link: "/material" },
-    { name: "About", logo: "About Us", link: "/about" },
-    { name: "Feedback", logo: "Feedback", link: "/feedback" },
-    {
-      name: "Login",
-      logo: `${user ? "Hello " + user.fname : "Login"}`,
-      link: `${user ? "/user": "/login"}`,
-    },
-  ];
+  const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+    setOpen(false);
+    setShowUserMenu(false);
+  };
+
+  const basicLinks = [
+    { name: "Home", icon: AiOutlineHome, link: "/" },
+    { name: "Materials", icon: AiOutlineFileText, link: "/material" },
+    { name: "Upload", icon: AiOutlineUpload, link: "/upload" },
+    { name: "Feedback", icon: AiOutlineMessage, link: "/feedback" },
+  ];
+
   return (
-    <div className="z-50 drop-shadow-none md:drop-shadow-lg w-full fixed top-0 left-0  ">
-      <div className="md:flex md:items-center bg-[#F3EFE0] justify-between md:bg-transparent pt-4 md:h-auto h-24 md:py-0 md:pl-10 md:pr-0 px-7">
-        <div className="flex items-center  justify-between">
-          <Link
-            to="/"
-            onClick={() => {
-              setOpen(false);
-            }}
-            className="text-3xl inline text-indigo-600 mr-1 font-bold cursor-pointer md:flex items-center font-[Poppins] pt-2"
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="flex-shrink-0"
           >
-            <img src={Logo} className="w-14 drop-shadow-md" alt="LOGO" />
-          </Link>
-          {open ? (
-            <AiOutlineClose
-              onClick={() => {
-                setOpen(!open);
-              }}
-              className="text-3xl   z-20 cursor-pointer md:hidden inline"
-            />
-          ) : (
-            <AiOutlineMenu
-              onClick={() => {
-                setOpen(!open);
-              }}
-              className="text-3xl   z-20 cursor-pointer md:hidden inline"
-            />
-          )}
+            <Link
+              to="/"
+              onClick={() => setOpen(false)}
+              className="flex items-center space-x-3"
+            >
+              <img src={Logo} className="h-10 w-10" alt="Academia Stacks" />
+              <span className="text-xl font-bold text-gray-900">
+                Academia <span className="text-[#22A39F]">Stacks</span>
+              </span>
+            </Link>
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-8">
+              {basicLinks.map((link) => {
+                const IconComponent = link.icon;
+                return (
+                  <NavLink
+                    key={link.name}
+                    to={link.link}
+                    className={({ isActive }) =>
+                      `flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                        isActive
+                          ? 'text-[#22A39F] bg-[#22A39F]/10'
+                          : 'text-gray-700 hover:text-[#22A39F] hover:bg-gray-100'
+                      }`
+                    }
+                  >
+                    <IconComponent className="w-4 h-4" />
+                    <span>{link.name}</span>
+                  </NavLink>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Desktop Auth Section */}
+          <div className="hidden md:flex items-center space-x-4">
+            {!isAuthenticated ? (
+              <Link
+                to="/login"
+                className="bg-[#22A39F] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1a8a87] transition-colors duration-200"
+              >
+                Login
+              </Link>
+            ) : (
+              <div className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center space-x-2 text-gray-700 hover:text-[#22A39F] transition-colors duration-200"
+                >
+                  <div className="w-8 h-8 bg-[#22A39F] rounded-full flex items-center justify-center">
+                    <AiOutlineUser className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-sm font-medium">
+                    {user?.fname || 'User'}
+                  </span>
+                </button>
+                
+                {showUserMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2 z-50"
+                  >
+                    <Link
+                      to="/user"
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        setOpen(false);
+                      }}
+                      className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                    >
+                      <AiOutlineUser className="w-4 h-4" />
+                      <span>Profile</span>
+                    </Link>
+                    {user?.isAdmin && (
+                      <Link
+                        to="/admin"
+                        onClick={() => {
+                          setShowUserMenu(false);
+                          setOpen(false);
+                        }}
+                        className="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
+                      >
+                        <AiOutlineUser className="w-4 h-4" />
+                        <span>Admin Dashboard</span>
+                      </Link>
+                    )}
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center space-x-2 w-full px-4 py-2 text-left text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      <AiOutlineLogout className="w-4 h-4" />
+                      <span>Logout</span>
+                    </button>
+                  </motion.div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setOpen(!open)}
+              className="text-gray-700 hover:text-[#22A39F] transition-colors duration-200"
+            >
+              {open ? (
+                <AiOutlineClose className="w-6 h-6" />
+              ) : (
+                <AiOutlineMenu className="w-6 h-6" />
+              )}
+            </button>
+          </div>
         </div>
 
-        <ul
-          className={` ${
-            open ? "top-24" : "top-[-490px]"
-          } bg-[#F3EFE0] opacity-[0.95]  border-b-[10px] border-[#22A39F] md:opacity-100  md:bg-[#22A39F] drop-shadow-lg pt-0 md:pt-3 md:pl-16 pl-0 md:rounded-bl-full rounded-b-3xl h-auto md:h-16 md:flex md:items-center absolute md:static  w-full left-0 md:w-auto transition-all duration-[600ms] ease-in`}
-        >
-          {Links.map((link) => (
-            <motion.li
-            
-              key={link.name}
-              className="text-[#22A39F] hover:text-white text-center md:text-right md:text-white md:hover:text-blue-400 md:ml-8 mx-4 text-xl md:my-0 my-7 "
-              whileTap={{ scale: 0.9, transition: { duration: 0.8 } }}
-            >
-              {" "}
-              <NavLink
-                onClick={() => {
-                  setOpen(!open);
-                }}
-                to={link.link}
-                className="text-2xl md:text-lg lg:text-2xl font-medium md:font-light px-4 md:px-1 lg:px-4 md:hover:text-bg-blue-400  md:hover:bg-white  hover:text-[#1b7875] hover:bg-blue-400 hover:rounded-xl hover:py-[0.65rem] transition-all duration-200 ease-in"
-              >
-                {link.logo}
-              </NavLink>
-            </motion.li>
-          ))}
-        </ul>
+        {/* Mobile Navigation */}
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden border-t border-gray-200"
+          >
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {basicLinks.map((link) => {
+                const IconComponent = link.icon;
+                return (
+                  <NavLink
+                    key={link.name}
+                    to={link.link}
+                    onClick={() => setOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ${
+                        isActive
+                          ? 'text-[#22A39F] bg-[#22A39F]/10'
+                          : 'text-gray-700 hover:text-[#22A39F] hover:bg-gray-100'
+                      }`
+                    }
+                  >
+                    <IconComponent className="w-5 h-5" />
+                    <span>{link.name}</span>
+                  </NavLink>
+                );
+              })}
+              
+              {!isAuthenticated ? (
+                <Link
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium text-white bg-[#22A39F] hover:bg-[#1a8a87] transition-colors duration-200"
+                >
+                  <AiOutlineUser className="w-5 h-5" />
+                  <span>Login</span>
+                </Link>
+              ) : (
+                <div className="border-t border-gray-200 pt-2">
+                  <Link
+                    to="/user"
+                    onClick={() => setOpen(false)}
+                    className="flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-[#22A39F] hover:bg-gray-100 transition-colors duration-200"
+                  >
+                    <AiOutlineUser className="w-5 h-5" />
+                    <span>Profile</span>
+                  </Link>
+                  {user?.isAdmin && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setOpen(false)}
+                      className="flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-[#22A39F] hover:bg-gray-100 transition-colors duration-200"
+                    >
+                      <AiOutlineUser className="w-5 h-5" />
+                      <span>Admin Dashboard</span>
+                    </Link>
+                  )}
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center space-x-2 w-full px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50 transition-colors duration-200"
+                  >
+                    <AiOutlineLogout className="w-5 h-5" />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
       </div>
-    </div>
+    </nav>
   );
 };
 
