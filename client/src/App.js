@@ -2,7 +2,8 @@ import "./App.css";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Footer from "./components/Footer.jsx";
 import Home from "./pages/Home.jsx";
-import About from "./pages/About";
+import Upload from "./pages/Upload";
+import AdminDashboard from "./pages/AdminDashboard";
 import Error from "./pages/Error";
 import Material from "./pages/Material";
 import Feedback from "./pages/Feedback";
@@ -19,11 +20,13 @@ import User from "./pages/User";
 import Handouts from "./pages/Handouts";
 import OtpVerification from "./pages/OtpVerification";
 import AllMaterials from "./pages/AllMaterials";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const ProtectedRoute = ({ children }) => {
-    const { user } = useContext(AuthContext);
+    const { isAuthenticated } = useContext(AuthContext);
 
-    if (!user) {
+    if (!isAuthenticated) {
       return <Navigate to="/login" />;
     }
 
@@ -46,7 +49,15 @@ function App() {
       {!isLoginPage ? <NavbarHead /> : <NavbarLogin />}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/upload" element={<Upload />} />
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } 
+        />
         <Route path="/material" element={<Material />} />
         <Route
           path="/material/assignment"
@@ -109,6 +120,20 @@ function App() {
         <Route path="*" element={<Error />} />
       </Routes>
       <Footer />
+      
+      {/* Toast Notifications */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }

@@ -64,9 +64,43 @@ const materialSchema = new mongoose.Schema(
     verifiedBy:{
       type:String,
       default:"notVerified"
+    },
+    driveFileId: {
+      type: String,
+      // Google Drive file ID for uploaded files
+    },
+    driveThumbnailId: {
+      type: String,
+      // Google Drive thumbnail file ID
+    },
+    fileSize: {
+      type: Number,
+      // File size in bytes
+    },
+    uploadDate: {
+      type: Date,
+      default: Date.now
+    },
+    verifiedAt: {
+      type: Date
+    },
+    verifiedByAdmin: {
+      type: String
+    },
+    rejectedAt: {
+      type: Date
+    },
+    rejectedByAdmin: {
+      type: String
+    },
+    rejectionReason: {
+      type: String
+    },
+    adminNotes: {
+      type: String
     }
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 export default mongoose.model("Material", materialSchema);

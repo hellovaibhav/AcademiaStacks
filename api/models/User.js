@@ -37,9 +37,15 @@ const userSchema = new mongoose.Schema({
     otp: {
         type: Number
     },
+    otpExpires: {
+        type: Date
+    },
     isVerified: {
         type: Boolean,
         default: false
+    },
+    refreshToken: {
+        type: String
     },
     savedItem:[{
         type:String,
@@ -47,8 +53,38 @@ const userSchema = new mongoose.Schema({
     }]
 }, { timestamps: true });
 
+// SECURITY: Add indexes for performance and security
+userSchema.index({ email: 1 }, { unique: true });
+userSchema.index({ isVerified: 1, createdAt: 1 });
+userSchema.index({ refreshToken: 1 });
+
+// SECURITY: Prevent admin escalation and validate data
+userSchema.pre('save', function(next) {
+    // Force isAdmin to false for new registrations (unless explicitly set by admin)
+    if (this.isNew && this.isAdmin && !this.isModifiedByAdmin) {
+        this.isAdmin = false;
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.email)) {
+        next(new Error('Invalid email format'));
+        return;
+    }
+    
+    next();
+});
+
+// SECURITY: Remove sensitive data from JSON output
+userSchema.methods.toJSON = function() {
+    const user = this.toObject();
+    delete user.password;
+    delete user.otp;
+    delete user.otpExpires;
+    delete user.refreshToken;
+    return user;
+};
 
 userSchema.plugin(passportLocalMongoose);
-
 
 export default mongoose.model("User", userSchema);
