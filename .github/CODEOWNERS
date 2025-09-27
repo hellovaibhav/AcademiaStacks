@@ -1,0 +1,39 @@
+# Global owners - these users will be requested for review on every pull request
+* @hellovaibhav
+
+# API specific files
+/api/ @hellovaibhav
+/api/controllers/ @hellovaibhav
+/api/models/ @hellovaibhav
+/api/routes/ @hellovaibhav
+/api/utils/ @hellovaibhav
+
+# Client specific files
+/client/ @hellovaibhav @Saquib1973
+/client/src/ @hellovaibhav @Saquib1973
+/client/src/components/ @hellovaibhav @Saquib1973
+/client/src/pages/ @hellovaibhav @Saquib1973
+/client/src/utils/ @hellovaibhav @Saquib1973
+
+# GitHub workflows and configurations
+/.github/ @hellovaibhav
+/.github/workflows/ @hellovaibhav
+
+# Security and configuration files
+package.json @hellovaibhav @Saquib1973
+package-lock.json @hellovaibhav @Saquib1973
+*.env.example @hellovaibhav @Saquib1973
+vercel.json @hellovaibhav @Saquib1973
+
+# Documentation
+README.md @hellovaibhav @Saquib1973
+*.md @hellovaibhav @Saquib1973
+
+# Database and migration files
+*.sql @hellovaibhav @Saquib1973
+/migrations/ @hellovaibhav @Saquib1973
+
+# Docker files
+Dockerfile @hellovaibhav @Saquib1973
+docker-compose.yml @hellovaibhav @Saquib1973
+.dockerignore @hellovaibhav @Saquib1973

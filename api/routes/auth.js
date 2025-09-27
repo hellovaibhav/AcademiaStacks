@@ -1,15 +1,17 @@
-import express from "express";
-import { 
-  login, 
-  register, 
-  registerVerify, 
-  logout, 
+import express from 'express';
+import {
+  login,
+  register,
+  registerVerify,
+  resendOTP,
+  logout,
   refreshToken,
   registerValidation,
   loginValidation,
-  otpValidation
-} from "../controllers/auth.js";
-import cors from "cors";
+  otpValidation,
+  resendOTPValidation
+} from '../controllers/auth.js';
+// import cors from 'cors';
 
 const router = express.Router();
 
@@ -18,14 +20,15 @@ const router = express.Router();
 // });
 
 // SECURITY: Add validation middleware to routes
-router.post("/register", registerValidation, register);
-router.post("/verification", otpValidation, registerVerify);
-router.post("/login", loginValidation, login);
+router.post('/register', registerValidation, register);
+router.post('/verification', otpValidation, registerVerify);
+router.post('/resend-otp', resendOTPValidation, resendOTP);
+router.post('/login', loginValidation, login);
 
 // SECURITY: Add logout endpoint
-router.post("/logout", logout);
+router.post('/logout', logout);
 
 // SECURITY: Add refresh token endpoint
-router.post("/refresh", refreshToken);
+router.post('/refresh', refreshToken);
 
 export default router;

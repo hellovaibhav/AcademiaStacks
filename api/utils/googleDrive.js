@@ -1,4 +1,4 @@
-import { google } from 'googleapis';
+import {google} from 'googleapis';
 import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
@@ -15,10 +15,10 @@ const FOLDER_ID = process.env.GOOGLE_DRIVE_FOLDER_ID;
 // Initialize Google Drive API
 const auth = new google.auth.GoogleAuth({
   keyFile: KEYFILEPATH,
-  scopes: SCOPES,
+  scopes: SCOPES
 });
 
-const drive = google.drive({ version: 'v3', auth });
+const drive = google.drive({version: 'v3', auth});
 
 /**
  * Upload a file to Google Drive
@@ -31,18 +31,18 @@ export const uploadToGoogleDrive = async (file, fileName, mimeType) => {
   try {
     const fileMetadata = {
       name: fileName,
-      parents: [FOLDER_ID],
+      parents: [FOLDER_ID]
     };
 
     const media = {
       mimeType: mimeType,
-      body: fs.createReadStream(file.path),
+      body: fs.createReadStream(file.path)
     };
 
     const response = await drive.files.create({
       resource: fileMetadata,
       media: media,
-      fields: 'id, name, webViewLink, webContentLink',
+      fields: 'id, name, webViewLink, webContentLink'
     });
 
     // Make the file publicly accessible
@@ -50,8 +50,8 @@ export const uploadToGoogleDrive = async (file, fileName, mimeType) => {
       fileId: response.data.id,
       requestBody: {
         role: 'reader',
-        type: 'anyone',
-      },
+        type: 'anyone'
+      }
     });
 
     return response.data;
@@ -112,11 +112,11 @@ export const generateThumbnail = async (pdfPath, outputPath) => {
         width: 300,
         height: 400,
         channels: 3,
-        background: { r: 200, g: 200, b: 200 }
+        background: {r: 200, g: 200, b: 200}
       }
     })
-    .png()
-    .toFile(outputPath);
+      .png()
+      .toFile(outputPath);
 
     return true;
   } catch (error) {
@@ -133,7 +133,7 @@ export const generateThumbnail = async (pdfPath, outputPath) => {
 export const deleteFromGoogleDrive = async (fileId) => {
   try {
     await drive.files.delete({
-      fileId: fileId,
+      fileId: fileId
     });
     return true;
   } catch (error) {
@@ -151,7 +151,7 @@ export const getFileInfo = async (fileId) => {
   try {
     const response = await drive.files.get({
       fileId: fileId,
-      fields: 'id, name, size, mimeType, webViewLink, webContentLink, createdTime, modifiedTime',
+      fields: 'id, name, size, mimeType, webViewLink, webContentLink, createdTime, modifiedTime'
     });
     return response.data;
   } catch (error) {

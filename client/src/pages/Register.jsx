@@ -1,28 +1,29 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { AuthContext } from "../context/AuthContext";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import React, {useState, useContext, useEffect} from 'react';
+import {Link, useNavigate} from 'react-router-dom';
+import {motion} from 'framer-motion';
+import {AuthContext} from '../context/AuthContext';
+import {AiOutlineEye, AiOutlineEyeInvisible} from 'react-icons/ai';
+import {validateEmailForRegistration} from '../utils/tempEmailValidator';
 
 const Register = () => {
   const navigate = useNavigate();
-  
+
   const [data, setData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    branch: "",
-    batch: "",
+    name: '',
+    email: '',
+    password: '',
+    branch: '',
+    batch: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const { loading, error, register, isAuthenticated, clearError } = useContext(AuthContext);
+  const {loading, error, register, isAuthenticated, clearError} = useContext(AuthContext);
 
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/material");
+      navigate('/material');
     }
   }, [isAuthenticated, navigate]);
 
@@ -33,60 +34,63 @@ const Register = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!data.name || data.name.trim().length < 2) {
-      newErrors.name = "Name must be at least 2 characters";
+      newErrors.name = 'Name must be at least 2 characters';
     }
-    
+
     if (!data.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = 'Email is required';
+    } else {
+      const emailValidation = validateEmailForRegistration(data.email);
+      if (!emailValidation.isValid) {
+        newErrors.email = emailValidation.message;
+      }
     }
-    
+
     if (!data.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = 'Password is required';
     } else if (data.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+      newErrors.password = 'Password must be at least 8 characters';
     } else if (data.password.length > 128) {
-      newErrors.password = "Password must be less than 128 characters";
+      newErrors.password = 'Password must be less than 128 characters';
     } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(data.password)) {
-      newErrors.password = "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character";
+      newErrors.password = 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character';
     }
-    
+
     if (!data.branch) {
-      newErrors.branch = "Please select a branch";
+      newErrors.branch = 'Please select a branch';
     }
-    
+
     if (!data.batch) {
-      newErrors.batch = "Please select a batch";
+      newErrors.batch = 'Please select a batch';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    setData(prev => ({ ...prev, [id]: value }));
-    
+    const {id, value} = e.target;
+    setData(prev => ({...prev, [id]: value}));
+
     // Clear error for this field when user starts typing
     if (errors[id]) {
-      setErrors(prev => ({ ...prev, [id]: "" }));
+      setErrors(prev => ({...prev, [id]: ''}));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     const result = await register(data);
-    
+
     if (result.success) {
-      navigate("/verification");
+      navigate('/verification');
     }
   };
 
@@ -95,8 +99,8 @@ const Register = () => {
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: -20}}
+          animate={{opacity: 1, y: 0}}
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
@@ -109,15 +113,15 @@ const Register = () => {
 
         <div className="max-w-2xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.6}}
             className="bg-white rounded-2xl shadow-xl p-8"
           >
             {error && (
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={{opacity: 0, x: -20}}
+                animate={{opacity: 1, x: 0}}
                 className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6"
               >
                 {error}
@@ -139,13 +143,13 @@ const Register = () => {
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#22A39F] focus:border-transparent transition-all duration-200 ${
                     errors.name ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  whileFocus={{ scale: 1.02 }}
+                  whileFocus={{scale: 1.02}}
                   autoComplete="name"
                 />
                 {errors.name && (
                   <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{opacity: 0, y: -10}}
+                    animate={{opacity: 1, y: 0}}
                     className="text-red-500 text-sm"
                   >
                     {errors.name}
@@ -167,13 +171,13 @@ const Register = () => {
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#22A39F] focus:border-transparent transition-all duration-200 ${
                     errors.email ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  whileFocus={{ scale: 1.02 }}
+                  whileFocus={{scale: 1.02}}
                   autoComplete="email"
                 />
                 {errors.email && (
                   <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{opacity: 0, y: -10}}
+                    animate={{opacity: 1, y: 0}}
                     className="text-red-500 text-sm"
                   >
                     {errors.email}
@@ -188,7 +192,7 @@ const Register = () => {
                 </label>
                 <div className="relative">
                   <motion.input
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     id="password"
                     value={data.password}
                     onChange={handleChange}
@@ -196,7 +200,7 @@ const Register = () => {
                     className={`w-full px-4 py-3 pr-12 border rounded-lg focus:ring-2 focus:ring-[#22A39F] focus:border-transparent transition-all duration-200 ${
                       errors.password ? 'border-red-500' : 'border-gray-300'
                     }`}
-                    whileFocus={{ scale: 1.02 }}
+                    whileFocus={{scale: 1.02}}
                     autoComplete="new-password"
                   />
                   <button
@@ -209,8 +213,8 @@ const Register = () => {
                 </div>
                 {errors.password && (
                   <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{opacity: 0, y: -10}}
+                    animate={{opacity: 1, y: 0}}
                     className="text-red-500 text-sm"
                   >
                     {errors.password}
@@ -243,8 +247,8 @@ const Register = () => {
                   </select>
                   {errors.branch && (
                     <motion.p
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      initial={{opacity: 0, y: -10}}
+                      animate={{opacity: 1, y: 0}}
                       className="text-red-500 text-sm"
                     >
                       {errors.branch}
@@ -267,7 +271,7 @@ const Register = () => {
                     <option value="" disabled>
                       Select your batch
                     </option>
-                    {Array.from({ length: new Date().getFullYear() - 2015 }, (_, i) => {
+                    {Array.from({length: new Date().getFullYear() - 2015}, (_, i) => {
                       const year = new Date().getFullYear() - i;
                       return (
                         <option key={year} value={year}>
@@ -278,8 +282,8 @@ const Register = () => {
                   </select>
                   {errors.batch && (
                     <motion.p
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      initial={{opacity: 0, y: -10}}
+                      animate={{opacity: 1, y: 0}}
                       className="text-red-500 text-sm"
                     >
                       {errors.batch}
@@ -293,23 +297,27 @@ const Register = () => {
                 type="submit"
                 disabled={loading}
                 className="w-full bg-[#22A39F] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#1a8a87] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
-                whileHover={{ scale: loading ? 1 : 1.02 }}
-                whileTap={{ scale: loading ? 1 : 0.98 }}
+                whileHover={{scale: loading ? 1 : 1.02}}
+                whileTap={{scale: loading ? 1 : 0.98}}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    <motion.div
+                      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                      animate={{rotate: 360}}
+                      transition={{duration: 1, repeat: Infinity, ease: 'linear'}}
+                    />
                     Creating Account...
                   </div>
                 ) : (
-                  "Create Account"
+                  'Create Account'
                 )}
               </motion.button>
 
               {/* Login Link */}
               <div className="text-center">
                 <p className="text-gray-600">
-                  Already have an account?{" "}
+                  Already have an account?{' '}
                   <Link
                     to="/login"
                     className="text-[#22A39F] hover:text-[#1a8a87] font-semibold transition-colors duration-200"
@@ -323,9 +331,9 @@ const Register = () => {
 
           {/* Additional Info */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.6, delay: 0.3}}
             className="mt-8 text-center"
           >
             <p className="text-gray-600 text-sm">

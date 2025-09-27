@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { HiUserCircle } from "react-icons/hi";
-import { 
-  AiOutlineUpload, 
-  AiOutlineHeart, 
+import React, {useState, useEffect, useCallback} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {motion} from 'framer-motion';
+import {HiUserCircle} from 'react-icons/hi';
+import {
+  AiOutlineUpload,
+  AiOutlineHeart,
   AiOutlineEye,
   AiOutlineLogout
-} from "react-icons/ai";
-import { BsBookmark } from "react-icons/bs";
-import { BiUpvote } from "react-icons/bi";
-import axios from "axios";
-import PDFViewer from "../components/PDFViewer";
-import PDFThumbnail from "../components/PDFThumbnail";
-import { API_ENDPOINTS } from "../config/api";
-import { toast } from "react-toastify";
-import Cookies from "js-cookie";
+} from 'react-icons/ai';
+import {BsBookmark} from 'react-icons/bs';
+import {BiUpvote} from 'react-icons/bi';
+import axios from 'axios';
+import PDFViewer from '../components/PDFViewer';
+import PDFThumbnail from '../components/PDFThumbnail';
+import {ModernSpinner} from '../components/Loader';
+import {API_ENDPOINTS} from '../config/api';
+import {useAuth} from '../context/AuthContext';
+import Cookies from 'js-cookie';
 const User = () => {
   const navigate = useNavigate();
+  const {toast} = useAuth();
   const [user, setUser] = useState(null);
   const [stats, setStats] = useState(null);
   const [activeTab, setActiveTab] = useState('uploaded');
@@ -25,51 +27,67 @@ const User = () => {
   const [loading, setLoading] = useState(false);
   const [pdfViewer, setPdfViewer] = useState({
     isOpen: false,
-    url: "",
-    title: ""
+    url: '',
+    title: ''
   });
   const [upvoteLoading, setUpvoteLoading] = useState({});
 
+  // Helper function to safely format dates
+  const formatDate = (dateString) => {
+    if (!dateString) {
+      return 'Date not available';
+    }
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return 'Date not available';
+    }
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
   // Helper function to check if user has upvoted
   const hasUserUpvoted = (material) => {
-    const userEmail = Cookies.get("email");
-    if (!userEmail || !material.upvotes) return false;
+    const userEmail = Cookies.get('email');
+    if (!userEmail || !material.upvotes) {
+      return false;
+    }
     return material.upvotes.includes(userEmail);
   };
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
+    const userData = JSON.parse(localStorage.getItem('user'));
     if (!userData) {
-      navigate("/login");
+      navigate('/login');
       return;
     }
     setUser(userData);
     fetchUserStats(userData._id);
     fetchMaterials(userData._id, 'uploaded');
-  }, [navigate]);
+  }, [navigate, fetchUserStats, fetchMaterials]);
 
-  const fetchUserStats = async (userId) => {
+  const fetchUserStats = useCallback(async (userId) => {
     try {
       const response = await axios.get(`${API_ENDPOINTS.USER_PROFILE_STATS}/${userId}/stats`);
       setStats(response.data.stats);
     } catch (error) {
-      console.error('Error fetching user stats:', error);
       toast.error('Failed to load profile statistics');
     }
-  };
+  }, [toast]);
 
-  const fetchMaterials = async (userId, type) => {
+  const fetchMaterials = useCallback(async (userId, type) => {
     setLoading(true);
     try {
       const response = await axios.get(`${API_ENDPOINTS.USER_PROFILE_STATS}/${userId}/${type}`);
       setMaterials(response.data.materials || []);
     } catch (error) {
-      console.error(`Error fetching ${type} materials:`, error);
       toast.error(`Failed to load ${type} materials`);
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -89,27 +107,27 @@ const User = () => {
 
   const handleUpvote = async (material) => {
     const materialId = material._id;
-    const email = Cookies.get("email");
+    const email = Cookies.get('email');
 
     if (!email) {
-      toast.error("Please login to upvote");
+      toast.error('Please login to upvote');
       return;
     }
 
-    setUpvoteLoading(prev => ({ ...prev, [materialId]: true }));
+    setUpvoteLoading(prev => ({...prev, [materialId]: true}));
 
     try {
-      await axios.post(API_ENDPOINTS.UPVOTE, { materialId, email });
-      
+      await axios.post(API_ENDPOINTS.UPVOTE, {materialId, email});
+
       // Update local data
-      setMaterials(prevMaterials => 
+      setMaterials(prevMaterials =>
         prevMaterials.map(item => {
           if (item._id === materialId) {
             const hasUpvoted = hasUserUpvoted(item);
-            const newUpvotes = hasUpvoted 
+            const newUpvotes = hasUpvoted
               ? item.upvotes.filter(vote => vote !== email)
               : [...(item.upvotes || []), email];
-            
+
             return {
               ...item,
               upvotes: newUpvotes
@@ -121,31 +139,52 @@ const User = () => {
 
       // Show appropriate success message
       const hasUpvoted = hasUserUpvoted(material);
-      toast.success(hasUpvoted ? "Upvote removed" : "Upvoted successfully");
-      
+      toast.success(hasUpvoted ? 'Upvote removed' : 'Upvoted successfully');
+
       // Refresh stats and materials to reflect changes
       if (user) {
         fetchUserStats(user._id);
         fetchMaterials(user._id, activeTab);
       }
     } catch (error) {
-      console.error('Upvote error:', error);
-      toast.error("Failed to update vote");
+      toast.error('Failed to update vote');
     } finally {
-      setUpvoteLoading(prev => ({ ...prev, [materialId]: false }));
+      setUpvoteLoading(prev => ({...prev, [materialId]: false}));
     }
   };
 
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.reload(false);
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      // Clear local storage and navigate
+      localStorage.clear();
+      toast.success('Logged out successfully!');
+      navigate('/login');
+    } catch (error) {
+      toast.error('Error during logout');
+    }
+  };
+
+  const handleTabClick = (tabId) => {
+    handleTabChange(tabId);
+  };
+
+  const handleViewPDFClick = (material) => {
+    handleViewPDF(material);
+  };
+
+  const handleUpvoteClick = (e, material) => {
+    e.stopPropagation();
+    handleUpvote(material);
+  };
+
+  const handleClosePDFViewer = () => {
+    setPdfViewer({isOpen: false, url: '', materialId: '', title: ''});
   };
 
   if (!user) {
     return (
       <div className="min-h-screen bg-[#F3EFE0] flex items-center justify-center pt-20">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#22A39F]"></div>
+        <ModernSpinner size="large" type="stacking" />
       </div>
     );
   }
@@ -155,8 +194,8 @@ const User = () => {
       <div className="container mx-auto px-4">
         {/* Profile Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: -20}}
+          animate={{opacity: 1, y: 0}}
           className="bg-white rounded-lg shadow-lg p-8 mb-8"
         >
           <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-8">
@@ -191,8 +230,8 @@ const User = () => {
         {/* Statistics Cards */}
         {stats && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
             className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
           >
             <div className="bg-white rounded-lg shadow-lg p-6">
@@ -236,22 +275,22 @@ const User = () => {
 
         {/* Tab Navigation */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: 20}}
+          animate={{opacity: 1, y: 0}}
           className="bg-white rounded-lg shadow-lg mb-8"
         >
           <div className="border-b border-gray-200">
             <nav className="flex space-x-8 px-6">
               {[
-                { id: 'uploaded', label: 'Uploaded Materials', icon: AiOutlineUpload },
-                { id: 'upvoted', label: 'Upvoted Materials', icon: BiUpvote },
-                { id: 'saved', label: 'Saved Materials', icon: BsBookmark }
+                {id: 'uploaded', label: 'Uploaded Materials', icon: AiOutlineUpload},
+                {id: 'upvoted', label: 'Upvoted Materials', icon: BiUpvote},
+                {id: 'saved', label: 'Saved Materials', icon: BsBookmark}
               ].map((tab) => {
                 const Icon = tab.icon;
                 return (
                   <button
                     key={tab.id}
-                    onClick={() => handleTabChange(tab.id)}
+                    onClick={() => handleTabClick(tab.id)}
                     className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
                       activeTab === tab.id
                         ? 'border-[#22A39F] text-[#22A39F]'
@@ -270,7 +309,7 @@ const User = () => {
           <div className="p-6">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#22A39F]"></div>
+                <ModernSpinner size="medium" type="symmetric" />
               </div>
             ) : materials.length === 0 ? (
               <div className="text-center py-12 text-gray-500">
@@ -282,11 +321,11 @@ const User = () => {
                   <motion.div
                     key={material._id}
                     className="bg-gray-50 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{scale: 1.02}}
                   >
-                    <div 
+                    <div
                       className="relative cursor-pointer"
-                      onClick={() => handleViewPDF(material)}
+                      onClick={() => handleViewPDFClick(material)}
                     >
                       <PDFThumbnail
                         pdfUrl={material.materialLink}
@@ -295,7 +334,7 @@ const User = () => {
                         className="w-full h-48 object-cover"
                         alt={`${material.subject} - PDF Preview`}
                       />
-                      
+
                       {/* View PDF Overlay */}
                       <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
                         <div className="text-white text-center">
@@ -304,7 +343,7 @@ const User = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="p-4">
                       <h3 className="font-semibold text-lg text-gray-800 mb-2">
                         {material.subject}
@@ -320,25 +359,22 @@ const User = () => {
                       </p>
                       <div className="flex items-center justify-between mt-3">
                         <span className="text-xs text-gray-500">
-                          {new Date(material.createdAt).toLocaleDateString()}
+                          {formatDate(material.createdAt)}
                         </span>
                         <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleUpvote(material);
-                          }}
+                          onClick={(e) => handleUpvoteClick(e, material)}
                           disabled={upvoteLoading[material._id]}
                           className={`flex items-center space-x-2 transition-all duration-200 disabled:opacity-50 ${
                             hasUserUpvoted(material)
-                              ? "text-[#22A39F] bg-[#22A39F]/10 rounded-lg px-2 py-1"
-                              : "text-gray-600 hover:text-[#22A39F] hover:bg-gray-100 rounded-lg px-2 py-1"
+                              ? 'text-[#22A39F] bg-[#22A39F]/10 rounded-lg px-2 py-1'
+                              : 'text-gray-600 hover:text-[#22A39F] hover:bg-gray-100 rounded-lg px-2 py-1'
                           }`}
                         >
                           <BiUpvote
                             className={`h-4 w-4 ${
                               hasUserUpvoted(material)
-                                ? "text-[#22A39F]"
-                                : "text-gray-400"
+                                ? 'text-[#22A39F]'
+                                : 'text-gray-400'
                             }`}
                           />
                           <span className="text-sm font-medium">
@@ -362,7 +398,7 @@ const User = () => {
         {/* PDF Viewer Modal */}
         <PDFViewer
           isOpen={pdfViewer.isOpen}
-          onClose={() => setPdfViewer({ isOpen: false, url: "", materialId: "", title: "" })}
+          onClose={handleClosePDFViewer}
           pdfUrl={pdfViewer.url}
           materialId={pdfViewer.materialId}
           title={pdfViewer.title}

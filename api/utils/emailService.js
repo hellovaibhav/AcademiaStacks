@@ -4,35 +4,37 @@ import dotenv from "dotenv";
 // Load environment variables
 dotenv.config();
 
-// Create reusable transporter with optimized settings
-const createTransporter = () => {
-  return nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // Use TLS
-    auth: {
-      user: process.env.MAILID,
-      pass: process.env.MAILPASS,
-    },
-    // Optimized settings for faster delivery
-    pool: true, // Use connection pooling
-    maxConnections: 5, // Maximum number of connections
-    maxMessages: 100, // Maximum number of messages per connection
-    rateLimit: 10, // Maximum number of messages per second
-    // Connection timeout settings
-    connectionTimeout: 60000, // 60 seconds
-    greetingTimeout: 30000, // 30 seconds
-    socketTimeout: 60000, // 60 seconds
-    // Retry settings
-    retryDelay: 1000, // 1 second between retries
-    retryAttempts: 3, // Number of retry attempts
-  });
-};
+if (!process.env.MAILID || !process.env.MAILPASS) {
+  console.warn("⚠️ Email credentials (MAILID, MAILPASS) are not configured in .env. Email service will be disabled.");
+}
+
+// Create a single, reusable transporter object (Singleton pattern)
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // Use TLS
+  // Only configure auth if credentials are provided
+  auth: (process.env.MAILID && process.env.MAILPASS) ? {
+    user: process.env.MAILID,
+    pass: process.env.MAILPASS,
+  } : null,
+  // Optimized settings for faster delivery
+  pool: true, // Use connection pooling
+  maxConnections: 5,
+  maxMessages: 100,
+  rateLimit: 10, // messages per second
+});
+
+transporter.on('error', err => {
+  console.error('❌ Nodemailer transport error:', err);
+});
 
 // Verify transporter configuration
 export const verifyEmailConfig = async () => {
+  if (!transporter.options.auth) {
+    return false;
+  }
   try {
-    const transporter = createTransporter();
     await transporter.verify();
     console.log("✅ Email service is ready to send messages");
     return true;
@@ -45,8 +47,11 @@ export const verifyEmailConfig = async () => {
 // Send OTP email with optimized template
 export const sendOTPEmail = async (email, name, otpCode) => {
   try {
-    const transporter = createTransporter();
-    
+    if (!transporter.options.auth) {
+      console.error("❌ Cannot send OTP email: Email service is not configured.");
+      return { success: false, error: "Email service not configured." };
+    }
+
     const mailOptions = {
       from: {
         name: "Academia Stacks",
@@ -117,7 +122,7 @@ export const sendOTPEmail = async (email, name, otpCode) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log("✅ OTP email sent successfully:", info.messageId);
+    console.log(`✅ OTP email sent successfully to: ${email} (Message ID: ${info.messageId})`);
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error("❌ Error sending OTP email:", error);
@@ -128,8 +133,11 @@ export const sendOTPEmail = async (email, name, otpCode) => {
 // Send feedback notification to admin
 export const sendFeedbackNotification = async (feedbackData) => {
   try {
-    const transporter = createTransporter();
-    
+    if (!transporter.options.auth) {
+      console.error("❌ Cannot send feedback email: Email service is not configured.");
+      return { success: false, error: "Email service not configured." };
+    }
+
     const mailOptions = {
       from: {
         name: "Academia Stacks",
@@ -219,8 +227,12 @@ export const sendFeedbackNotification = async (feedbackData) => {
 // Send password reset email
 export const sendPasswordResetEmail = async (email, name, resetToken) => {
   try {
-    const transporter = createTransporter();
     const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}`;
+    
+    if (!transporter.options.auth) {
+      console.error("❌ Cannot send password reset email: Email service is not configured.");
+      return { success: false, error: "Email service not configured." };
+    }
     
     const mailOptions = {
       from: {

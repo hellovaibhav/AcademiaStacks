@@ -1,0 +1,239 @@
+name: Full CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, development ]
+    paths:
+      - 'api/**'
+      - 'client/**'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [ main, development ]
+    paths:
+      - 'api/**'
+      - 'client/**'
+      - '.github/workflows/**'
+
+jobs:
+  api-checks:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.modified, 'api/') || contains(github.event.head_commit.added, 'api/') || github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'api/package-lock.json'
+        
+    - name: Install API dependencies
+      working-directory: ./api
+      run: npm ci
+      
+    - name: Run API linting
+      working-directory: ./api
+      run: npx eslint . --ext .js --max-warnings 0
+      
+    - name: Install jq
+      run: sudo apt-get update && sudo apt-get install -y jq
+      
+    - name: Run API security audit
+      working-directory: ./api
+      run: npm audit --audit-level=high
+      
+    - name: Test API syntax
+      working-directory: ./api
+      run: node -c index.js
+      
+  client-checks:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.modified, 'client/') || contains(github.event.head_commit.added, 'client/') || github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'client/package-lock.json'
+        
+    - name: Install client dependencies
+      working-directory: ./client
+      run: npm ci
+      
+    - name: Run client linting
+      working-directory: ./client
+      run: npx eslint src/ --ext .js,.jsx --max-warnings 0
+      
+    - name: Install jq
+      run: sudo apt-get update && sudo apt-get install -y jq
+      
+    - name: Run client security audit
+      working-directory: ./client
+      run: npm audit --audit-level=high
+      
+    - name: Build client
+      working-directory: ./client
+      run: npm run build
+      
+  security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        
+    - name: Upload Trivy scan results
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+        
+    - name: Run CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+        
+  commit-validation:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Validate commit messages
+      run: |
+        echo "🔍 Validating commit messages..."
+        
+        # Get the commit range
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          COMMIT_RANGE="${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
+        else
+          # For push events, get the last commit
+          COMMIT_RANGE="HEAD~1..HEAD"
+        fi
+        
+        # Get commit messages
+        COMMITS=$(git log --pretty=format:"%s" $COMMIT_RANGE)
+        
+        if [ -z "$COMMITS" ]; then
+          echo "ℹ️  No commits to validate"
+          exit 0
+        fi
+        
+        echo "📝 Validating commits:"
+        echo "$COMMITS"
+        echo ""
+        
+        # Validate each commit message
+        VALID_COUNT=0
+        TOTAL_COUNT=0
+        
+        while IFS= read -r commit_msg; do
+          TOTAL_COUNT=$((TOTAL_COUNT + 1))
+          
+          # Check if commit message follows conventional commits format
+          if echo "$commit_msg" | grep -qE "^(feat|fix|docs|style|refactor|test|chore|ci|perf|build)(\(.+\))?: .+"; then
+            echo "✅ Valid: $commit_msg"
+            VALID_COUNT=$((VALID_COUNT + 1))
+          else
+            echo "❌ Invalid: $commit_msg"
+            echo "   Expected format: <type>(<scope>): <description>"
+            echo "   Valid types: feat, fix, docs, style, refactor, test, chore, ci, perf, build"
+            echo ""
+          fi
+        done <<< "$COMMITS"
+        
+        echo ""
+        echo "📊 Validation Summary:"
+        echo "   Valid commits: $VALID_COUNT/$TOTAL_COUNT"
+        
+        if [ $VALID_COUNT -ne $TOTAL_COUNT ]; then
+          echo "❌ Some commits do not follow the conventional commits format"
+          echo ""
+          echo "Please update your commit messages to follow the format:"
+          echo "  <type>(<scope>): <description>"
+          echo ""
+          echo "Examples:"
+          echo "  feat(auth): add email validation"
+          echo "  fix(upload): resolve PDF thumbnail issue"
+          echo "  docs(readme): update installation guide"
+          echo "  chore(deps): update dependencies"
+          echo ""
+          echo "For more information, see: https://www.conventionalcommits.org/"
+          exit 1
+        else
+          echo "✅ All commits follow the conventional commits format"
+        fi
+        
+    - name: Validate PR title (if applicable)
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "🔍 Validating PR title..."
+        
+        PR_TITLE="${{ github.event.pull_request.title }}"
+        echo "PR Title: $PR_TITLE"
+        
+        # Check if PR title follows conventional commits format
+        if echo "$PR_TITLE" | grep -qE "^(feat|fix|docs|style|refactor|test|chore|ci|perf|build)(\(.+\))?: .+"; then
+          echo "✅ PR title follows conventional commits format"
+        else
+          echo "❌ PR title does not follow conventional commits format"
+          echo "   Expected format: <type>(<scope>): <description>"
+          echo "   Valid types: feat, fix, docs, style, refactor, test, chore, ci, perf, build"
+          echo ""
+          echo "Please update your PR title to follow the format:"
+          echo "  <type>(<scope>): <description>"
+          echo ""
+          echo "Examples:"
+          echo "  feat(auth): add email validation"
+          echo "  fix(upload): resolve PDF thumbnail issue"
+          echo "  docs(readme): update installation guide"
+          echo "  chore(deps): update dependencies"
+          exit 1
+        fi
+        
+  dependency-review:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Dependency Review
+      uses: actions/dependency-review-action@v4
+      with:
+        fail-on-severity: moderate
+        
+  branch-protection-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check for direct push to protected branch
+      run: |
+        echo "❌ Direct push to protected branch detected!"
+        echo "Please use pull requests for changes to main/development branches"
+        echo "Current branch: ${{ github.ref }}"
+        echo "Commit: ${{ github.sha }}"
+        echo "Author: ${{ github.actor }}"
+        exit 1

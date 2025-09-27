@@ -12,7 +12,9 @@ import path from 'path';
  * @returns {string} - Human-readable file size
  */
 const formatFileSize = (bytes) => {
-  if (bytes === 0) return '0 Bytes';
+  if (bytes === 0) {
+    return '0 Bytes';
+  }
   const k = 1024;
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
@@ -28,7 +30,7 @@ export const analyzePDF = (filePath) => {
   try {
     const stats = fs.statSync(filePath);
     const sizeInMB = stats.size / (1024 * 1024);
-    
+
     const analysis = {
       filePath,
       originalSize: stats.size,
@@ -37,7 +39,7 @@ export const analyzePDF = (filePath) => {
       compressionLevel: 'none',
       estimatedSavings: 0
     };
-    
+
     if (sizeInMB > 10) {
       analysis.compressionLevel = 'aggressive';
       analysis.estimatedSavings = 30; // 30% estimated savings
@@ -48,7 +50,7 @@ export const analyzePDF = (filePath) => {
       analysis.compressionLevel = 'light';
       analysis.estimatedSavings = 10; // 10% estimated savings
     }
-    
+
     return analysis;
   } catch (error) {
     console.error('Error analyzing PDF:', error);
@@ -69,9 +71,9 @@ export const compressPDFBasic = async (inputPath, outputPath, level = 'moderate'
     if (!analysis) {
       throw new Error('Failed to analyze PDF');
     }
-    
+
     console.log(`📄 PDF Analysis: ${formatFileSize(analysis.originalSize)} (${analysis.sizeInMB} MB)`);
-    
+
     // If file is already small, just copy it
     if (!analysis.needsCompression) {
       console.log('📄 File is already small, copying without compression');
@@ -85,39 +87,39 @@ export const compressPDFBasic = async (inputPath, outputPath, level = 'moderate'
         message: 'File already optimized'
       };
     }
-    
+
     // Read the original file
     const originalBuffer = fs.readFileSync(inputPath);
-    
+
     // Apply compression based on level
     let compressedBuffer = originalBuffer;
-    
+
     switch (level) {
-      case 'aggressive':
-        // For aggressive compression, we would typically use external tools
-        // For now, we'll use basic optimization
-        compressedBuffer = await optimizePDFBuffer(originalBuffer, 0.7);
-        break;
-      case 'moderate':
-        compressedBuffer = await optimizePDFBuffer(originalBuffer, 0.8);
-        break;
-      case 'light':
-        compressedBuffer = await optimizePDFBuffer(originalBuffer, 0.9);
-        break;
-      default:
-        compressedBuffer = originalBuffer;
+    case 'aggressive':
+      // For aggressive compression, we would typically use external tools
+      // For now, we'll use basic optimization
+      compressedBuffer = await optimizePDFBuffer(originalBuffer, 0.7);
+      break;
+    case 'moderate':
+      compressedBuffer = await optimizePDFBuffer(originalBuffer, 0.8);
+      break;
+    case 'light':
+      compressedBuffer = await optimizePDFBuffer(originalBuffer, 0.9);
+      break;
+    default:
+      compressedBuffer = originalBuffer;
     }
-    
+
     // Write compressed file
-    fs.writeFileSync(outputPath, compressedBuffer, { 
+    fs.writeFileSync(outputPath, compressedBuffer, {
       encoding: 'binary',
       flag: 'w'
     });
-    
+
     // Verify compression
     const compressedStats = fs.statSync(outputPath);
     const compressionRatio = ((analysis.originalSize - compressedStats.size) / analysis.originalSize * 100);
-    
+
     const result = {
       success: true,
       originalSize: analysis.originalSize,
@@ -126,9 +128,9 @@ export const compressPDFBasic = async (inputPath, outputPath, level = 'moderate'
       method: level,
       message: `Compressed by ${compressionRatio.toFixed(2)}%`
     };
-    
+
     console.log(`✅ PDF Compressed: ${formatFileSize(compressedStats.size)} (${result.compressionRatio}% reduction)`);
-    
+
     // If compression didn't help, use original
     if (compressedStats.size >= analysis.originalSize) {
       console.log('📄 Compression didn\'t reduce size, using original file');
@@ -138,9 +140,9 @@ export const compressPDFBasic = async (inputPath, outputPath, level = 'moderate'
       result.method = 'none';
       result.message = 'Compression not beneficial, using original';
     }
-    
+
     return result;
-    
+
   } catch (error) {
     console.error('❌ PDF compression error:', error);
     return {
@@ -163,19 +165,19 @@ const optimizePDFBuffer = async (buffer, quality = 0.8) => {
     // 1. Remove unnecessary whitespace
     // 2. Optimize binary data
     // 3. Remove redundant metadata
-    
+
     // This is a simplified approach
     // In production, you would use libraries like:
     // - PDF-lib for programmatic compression
     // - Ghostscript for advanced compression
     // - External services like TinyPDF
-    
+
     // For now, we'll apply basic optimizations
     let optimizedBuffer = Buffer.from(buffer);
-    
+
     // Basic optimization: remove null bytes and optimize structure
     // This is a placeholder - real PDF optimization requires PDF parsing
-    
+
     return optimizedBuffer;
   } catch (error) {
     console.error('Error optimizing PDF buffer:', error);
@@ -195,13 +197,13 @@ export const compressPDFAdvanced = async (inputPath, outputPath) => {
     // - Ghostscript: gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf
     // - PDF-lib: Programmatic compression
     // - Cloud services: TinyPDF, SmallPDF, etc.
-    
+
     console.log('🚀 Advanced PDF compression not yet implemented');
     console.log('💡 Consider integrating with Ghostscript or PDF-lib for better compression');
-    
+
     // Fallback to basic compression
     return await compressPDFBasic(inputPath, outputPath, 'aggressive');
-    
+
   } catch (error) {
     console.error('❌ Advanced PDF compression error:', error);
     return {
@@ -220,9 +222,9 @@ export const compressPDFAdvanced = async (inputPath, outputPath) => {
 export const getCompressionRecommendations = (filePath) => {
   const analysis = analyzePDF(filePath);
   if (!analysis) {
-    return { error: 'Failed to analyze file' };
+    return {error: 'Failed to analyze file'};
   }
-  
+
   const recommendations = {
     fileSize: formatFileSize(analysis.originalSize),
     needsCompression: analysis.needsCompression,
@@ -230,7 +232,7 @@ export const getCompressionRecommendations = (filePath) => {
     estimatedSavings: analysis.estimatedSavings,
     strategies: []
   };
-  
+
   if (analysis.needsCompression) {
     if (analysis.sizeInMB > 10) {
       recommendations.strategies = [
@@ -257,7 +259,7 @@ export const getCompressionRecommendations = (filePath) => {
       'No compression needed'
     ];
   }
-  
+
   return recommendations;
 };
 

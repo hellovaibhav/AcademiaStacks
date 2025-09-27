@@ -1,80 +1,81 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { API_ENDPOINTS } from "../config/api";
-import { 
-  AiOutlineMessage, 
-  AiOutlineBug, 
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {motion} from 'framer-motion';
+import axios from 'axios';
+import {useAuth} from '../context/AuthContext';
+import {API_ENDPOINTS} from '../config/api';
+import {
+  AiOutlineMessage,
+  AiOutlineBug,
   AiOutlineBulb,
   AiOutlineCheckCircle,
   AiOutlineUser,
   AiOutlineMail
-} from "react-icons/ai";
+} from 'react-icons/ai';
 
 const Feedback = () => {
   const navigate = useNavigate();
+  const {toast} = useAuth();
   const url = API_ENDPOINTS.FEEDBACK;
-  
+
   const [data, setData] = useState({
-    name: "",
-    email: "",
-    type: "",
-    message: "",
+    name: '',
+    email: '',
+    type: '',
+    message: ''
   });
-  
+
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   const feedbackTypes = [
-    { value: "Bug", label: "Bug Report", icon: AiOutlineBug, color: "text-red-500" },
-    { value: "Suggestions", label: "Suggestions", icon: AiOutlineBulb, color: "text-yellow-500" },
-    { value: "Feature", label: "Feature Request", icon: AiOutlineCheckCircle, color: "text-green-500" },
-    { value: "General", label: "General Feedback", icon: AiOutlineMessage, color: "text-blue-500" }
+    {value: 'Bug', label: 'Bug Report', icon: AiOutlineBug, color: 'text-red-500'},
+    {value: 'Suggestions', label: 'Suggestions', icon: AiOutlineBulb, color: 'text-yellow-500'},
+    {value: 'Feature', label: 'Feature Request', icon: AiOutlineCheckCircle, color: 'text-green-500'},
+    {value: 'General', label: 'General Feedback', icon: AiOutlineMessage, color: 'text-blue-500'}
   ];
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!data.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = 'Name is required';
     }
-    
+
     if (!data.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(data.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = 'Please enter a valid email';
     }
-    
+
     if (!data.type) {
-      newErrors.type = "Please select a feedback type";
+      newErrors.type = 'Please select a feedback type';
     }
-    
+
     if (!data.message.trim()) {
-      newErrors.message = "Message is required";
+      newErrors.message = 'Message is required';
     } else if (data.message.trim().length < 10) {
-      newErrors.message = "Message must be at least 10 characters";
+      newErrors.message = 'Message must be at least 10 characters';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = (e) => {
-    const { id, value, name } = e.target;
+    const {id, value, name} = e.target;
     const fieldName = id || name;
-    setData(prev => ({ ...prev, [fieldName]: value }));
-    
+    setData(prev => ({...prev, [fieldName]: value}));
+
     // Clear error for this field when user starts typing
     if (errors[fieldName]) {
-      setErrors(prev => ({ ...prev, [fieldName]: "" }));
+      setErrors(prev => ({...prev, [fieldName]: ''}));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -82,11 +83,10 @@ const Feedback = () => {
     setLoading(true);
     try {
       await axios.post(url, data);
-      toast.success("Feedback submitted successfully! Thank you for your input.");
-      navigate("/");
+      toast.success('Feedback submitted successfully! Thank you for your input.');
+      navigate('/');
     } catch (err) {
-      console.error("Feedback submission error:", err);
-      toast.error("Failed to submit feedback. Please try again.");
+      toast.error('Failed to submit feedback. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -97,8 +97,8 @@ const Feedback = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         {/* Header Section */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: -20}}
+          animate={{opacity: 1, y: 0}}
           className="text-center mb-16"
         >
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
@@ -111,9 +111,9 @@ const Feedback = () => {
 
         <div className="max-w-2xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.6}}
             className="bg-white rounded-2xl shadow-xl p-8"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -132,12 +132,12 @@ const Feedback = () => {
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#22A39F] focus:border-transparent transition-all duration-200 ${
                     errors.name ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  whileFocus={{ scale: 1.02 }}
+                  whileFocus={{scale: 1.02}}
                 />
                 {errors.name && (
                   <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{opacity: 0, y: -10}}
+                    animate={{opacity: 1, y: 0}}
                     className="text-red-500 text-sm"
                   >
                     {errors.name}
@@ -160,12 +160,12 @@ const Feedback = () => {
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#22A39F] focus:border-transparent transition-all duration-200 ${
                     errors.email ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  whileFocus={{ scale: 1.02 }}
+                  whileFocus={{scale: 1.02}}
                 />
                 {errors.email && (
                   <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{opacity: 0, y: -10}}
+                    animate={{opacity: 1, y: 0}}
                     className="text-red-500 text-sm"
                   >
                     {errors.email}
@@ -189,8 +189,8 @@ const Feedback = () => {
                             ? 'border-[#22A39F] bg-[#22A39F] bg-opacity-10'
                             : 'border-gray-300 hover:border-[#22A39F] hover:bg-gray-50'
                         }`}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        whileHover={{scale: 1.02}}
+                        whileTap={{scale: 0.98}}
                       >
                         <input
                           type="radio"
@@ -208,8 +208,8 @@ const Feedback = () => {
                 </div>
                 {errors.type && (
                   <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{opacity: 0, y: -10}}
+                    animate={{opacity: 1, y: 0}}
                     className="text-red-500 text-sm"
                   >
                     {errors.type}
@@ -232,12 +232,12 @@ const Feedback = () => {
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#22A39F] focus:border-transparent transition-all duration-200 resize-none ${
                     errors.message ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  whileFocus={{ scale: 1.02 }}
+                  whileFocus={{scale: 1.02}}
                 />
                 {errors.message && (
                   <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{opacity: 0, y: -10}}
+                    animate={{opacity: 1, y: 0}}
                     className="text-red-500 text-sm"
                   >
                     {errors.message}
@@ -253,16 +253,20 @@ const Feedback = () => {
                 type="submit"
                 disabled={loading}
                 className="w-full bg-[#22A39F] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#1a8a87] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
-                whileHover={{ scale: loading ? 1 : 1.02 }}
-                whileTap={{ scale: loading ? 1 : 0.98 }}
+                whileHover={{scale: loading ? 1 : 1.02}}
+                whileTap={{scale: loading ? 1 : 0.98}}
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    <motion.div
+                      className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                      animate={{rotate: 360}}
+                      transition={{duration: 1, repeat: Infinity, ease: 'linear'}}
+                    />
                     Submitting...
                   </div>
                 ) : (
-                  "Submit Feedback"
+                  'Submit Feedback'
                 )}
               </motion.button>
             </form>
@@ -270,13 +274,13 @@ const Feedback = () => {
 
           {/* Additional Info */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
+            transition={{duration: 0.6, delay: 0.3}}
             className="mt-8 text-center"
           >
             <p className="text-gray-600">
-              Your feedback helps us make Academia Stacks better for everyone. 
+              Your feedback helps us make Academia Stacks better for everyone.
               We appreciate your time and input!
             </p>
           </motion.div>

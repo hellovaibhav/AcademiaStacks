@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { generatePdfThumbnail } from '../utils/pdfThumbnail';
-import { AiOutlineFilePdf, AiOutlineLoading3Quarters } from 'react-icons/ai';
+import React, {useState, useEffect} from 'react';
+import {generatePdfThumbnail} from '../utils/pdfThumbnail';
+import {AiOutlineFilePdf, AiOutlineLoading3Quarters} from 'react-icons/ai';
 
-const PDFThumbnail = ({ 
-  pdfUrl, 
-  pageNumber = 1, 
-  width = 200, 
-  height = 280, 
+const PDFThumbnail = ({
+  pdfUrl,
+  pageNumber = 1,
+  width = 200,
+  height = 280,
   className = '',
   alt = 'PDF Thumbnail',
   showLoading = true,
@@ -31,7 +31,6 @@ const PDFThumbnail = ({
         setThumbnail(thumb);
       } catch (err) {
         setError(err);
-        console.error('Error generating PDF thumbnail:', err);
       } finally {
         setLoading(false);
       }
@@ -48,9 +47,9 @@ const PDFThumbnail = ({
 
   if (loading && showLoading) {
     return (
-      <div 
+      <div
         className={`bg-gray-100 flex items-center justify-center ${className}`}
-        style={{ width, height }}
+        style={{width, height}}
         onClick={handleClick}
       >
         <div className="flex flex-col items-center space-y-2">
@@ -63,9 +62,9 @@ const PDFThumbnail = ({
 
   if (error || !thumbnail) {
     return (
-      <div 
+      <div
         className={`bg-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-colors ${className}`}
-        style={{ width, height }}
+        style={{width, height}}
         onClick={handleClick}
       >
         {fallbackIcon ? (
@@ -85,7 +84,7 @@ const PDFThumbnail = ({
       src={thumbnail}
       alt={alt}
       className={`cursor-pointer hover:opacity-90 transition-opacity ${className}`}
-      style={{ width, height, objectFit: 'cover' }}
+      style={{width, height, objectFit: 'cover'}}
       onClick={handleClick}
     />
   );

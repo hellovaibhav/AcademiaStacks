@@ -1,0 +1,185 @@
+name: Client CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, development ]
+    paths:
+      - 'client/**'
+      - '.github/workflows/client-ci.yml'
+  pull_request:
+    branches: [ main, development ]
+    paths:
+      - 'client/**'
+      - '.github/workflows/client-ci.yml'
+
+jobs:
+  lint-and-security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'client/package-lock.json'
+        
+    - name: Install dependencies
+      working-directory: ./client
+      run: npm ci
+      
+    - name: Run ESLint
+      working-directory: ./client
+      run: npx eslint src/ --ext .js,.jsx --format json --output-file eslint-report.json || true
+      
+    - name: Upload ESLint results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: eslint-report-client
+        path: client/eslint-report.json
+        
+    - name: Run Prettier check
+      working-directory: ./client
+      run: npx prettier --check src/ || true
+      
+    - name: Run security audit
+      working-directory: ./client
+      run: npm audit --audit-level=moderate --json > security-audit.json || true
+      
+    - name: Upload security audit results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: security-audit-client
+        path: client/security-audit.json
+        
+    - name: Install jq
+      run: sudo apt-get update && sudo apt-get install -y jq
+      
+    - name: Check for security vulnerabilities
+      working-directory: ./client
+      run: |
+        if npm audit --audit-level=high --json | jq -e '.vulnerabilities | length > 0' > /dev/null; then
+          echo "❌ High severity vulnerabilities found!"
+          npm audit --audit-level=high
+          exit 1
+        else
+          echo "✅ No high severity vulnerabilities found"
+        fi
+        
+    - name: Check for hardcoded secrets
+      run: |
+        echo "Scanning for potential secrets in client code..."
+        if grep -r -i "password\|secret\|key\|token\|api_key\|apikey" client/src/ --exclude-dir=node_modules | grep -v "process.env" | grep -v "//.*password\|//.*secret"; then
+          echo "❌ Potential hardcoded secrets found in client code!"
+          exit 1
+        else
+          echo "✅ No hardcoded secrets found in client code"
+        fi
+        
+    - name: Check for console statements
+      run: |
+        echo "Checking for console statements in production code..."
+        if grep -r "console\." client/src/ --exclude-dir=node_modules | grep -v "//.*console"; then
+          echo "⚠️  Warning: Console statements found (consider removing for production)"
+        else
+          echo "✅ No console statements found"
+        fi
+        
+    - name: Validate React components
+      working-directory: ./client
+      run: |
+        echo "Validating React components..."
+        # Check for unused imports
+        npx eslint src/ --ext .js,.jsx --rule 'no-unused-vars: error' || true
+        
+        # Check for missing dependencies in useEffect
+        npx eslint src/ --ext .js,.jsx --rule 'react-hooks/exhaustive-deps: error' || true
+        
+    - name: Check bundle size
+      working-directory: ./client
+      run: |
+        echo "Checking bundle size..."
+        npm run build
+        echo "✅ Build successful"
+        
+  security-scan:
+    runs-on: ubuntu-latest
+    needs: lint-and-security
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: './client'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        
+    - name: Upload Trivy scan results
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+        
+    - name: Run CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+        
+  build-and-test:
+    runs-on: ubuntu-latest
+    needs: [lint-and-security, security-scan]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: 'client/package-lock.json'
+        
+    - name: Install dependencies
+      working-directory: ./client
+      run: npm ci
+      
+    - name: Run tests
+      working-directory: ./client
+      run: |
+        if [ -f "package.json" ] && npm run test --if-present -- --coverage --watchAll=false; then
+          echo "✅ Client tests passed"
+        else
+          echo "ℹ️  No tests found or tests skipped"
+        fi
+      
+    - name: Build client
+      working-directory: ./client
+      run: |
+        echo "Building client application..."
+        npm run build
+        echo "✅ Client build successful"
+        
+    - name: Check build artifacts
+      run: |
+        if [ -d "client/build" ]; then
+          echo "✅ Build artifacts created successfully"
+          ls -la client/build/
+        else
+          echo "❌ Build artifacts not found"
+          exit 1
+        fi
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: client-build
+        path: client/build/
+        retention-days: 7

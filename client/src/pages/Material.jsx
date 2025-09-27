@@ -1,69 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import Loader from "../components/Loader";
-import { 
-  AiOutlineFileText, 
-  AiOutlineBook, 
+import React, {useEffect, useState} from 'react';
+import {motion} from 'framer-motion';
+import {useNavigate} from 'react-router-dom';
+import Loader from '../components/Loader';
+import {
+  AiOutlineFileText,
+  AiOutlineBook,
   AiOutlineFolderOpen,
   AiOutlineAppstore
-} from "react-icons/ai";
-import { BiNotepad } from "react-icons/bi";
+} from 'react-icons/ai';
+import {BiNotepad} from 'react-icons/bi';
 
 const Material = () => {
   const navigate = useNavigate();
 
   // Modern content array with icons and descriptions
   const materialTypes = [
-    { 
-      navigate: "allMaterials", 
-      title: "All Materials", 
-      description: "Browse through all available study materials",
+    {
+      navigate: 'allMaterials',
+      title: 'All Materials',
+      description: 'Browse through all available study materials',
       icon: AiOutlineAppstore,
-      color: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-50",
-      iconColor: "text-blue-600"
+      color: 'from-blue-500 to-blue-600',
+      bgColor: 'bg-blue-50',
+      iconColor: 'text-blue-600'
     },
-    { 
-      navigate: "notes", 
-      title: "Notes", 
-      description: "Comprehensive study notes and summaries",
+    {
+      navigate: 'notes',
+      title: 'Notes',
+      description: 'Comprehensive study notes and summaries',
       icon: AiOutlineFileText,
-      color: "from-green-500 to-green-600",
-      bgColor: "bg-green-50",
-      iconColor: "text-green-600"
+      color: 'from-green-500 to-green-600',
+      bgColor: 'bg-green-50',
+      iconColor: 'text-green-600'
     },
-    { 
-      navigate: "assignment", 
-      title: "Assignments", 
-      description: "Homework and project assignments",
+    {
+      navigate: 'assignment',
+      title: 'Assignments',
+      description: 'Homework and project assignments',
       icon: BiNotepad,
-      color: "from-purple-500 to-purple-600",
-      bgColor: "bg-purple-50",
-      iconColor: "text-purple-600"
+      color: 'from-purple-500 to-purple-600',
+      bgColor: 'bg-purple-50',
+      iconColor: 'text-purple-600'
     },
-    { 
-      navigate: "handouts", 
-      title: "Handouts", 
-      description: "Course handouts and supplementary materials",
+    {
+      navigate: 'handouts',
+      title: 'Handouts',
+      description: 'Course handouts and supplementary materials',
       icon: AiOutlineFolderOpen,
-      color: "from-orange-500 to-orange-600",
-      bgColor: "bg-orange-50",
-      iconColor: "text-orange-600"
+      color: 'from-orange-500 to-orange-600',
+      bgColor: 'bg-orange-50',
+      iconColor: 'text-orange-600'
     },
-    { 
-      navigate: "pyq", 
-      title: "Previous Year Questions", 
-      description: "PYQ papers and exam preparation materials",
+    {
+      navigate: 'pyq',
+      title: 'Previous Year Questions',
+      description: 'PYQ papers and exam preparation materials',
       icon: AiOutlineBook,
-      color: "from-red-500 to-red-600",
-      bgColor: "bg-red-50",
-      iconColor: "text-red-600"
+      color: 'from-red-500 to-red-600',
+      bgColor: 'bg-red-50',
+      iconColor: 'text-red-600'
     }
   ];
 
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
@@ -73,7 +73,7 @@ const Material = () => {
   if (loading) {
     return (
       <div className="min-h-[100vh] bg-[#F3EFE0] flex items-center justify-center">
-        <Loader />
+        <Loader message="Loading study materials..." />
       </div>
     );
   }
@@ -83,8 +83,8 @@ const Material = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         {/* Header Section */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: -20}}
+          animate={{opacity: 1, y: 0}}
           className="text-center mb-16"
         >
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
@@ -102,11 +102,11 @@ const Material = () => {
             return (
               <motion.div
                 key={item.navigate}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -5 }}
-                whileTap={{ scale: 0.95 }}
+                initial={{opacity: 0, y: 20}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 0.5, delay: index * 0.1}}
+                whileHover={{scale: 1.05, y: -5}}
+                whileTap={{scale: 0.95}}
                 className="group cursor-pointer"
                 onClick={() => navigate(item.navigate)}
               >
@@ -126,7 +126,7 @@ const Material = () => {
                     <p className="text-gray-600 text-sm leading-relaxed mb-4">
                       {item.description}
                     </p>
-                    
+
                     {/* Action Button */}
                     <div className="flex items-center justify-center">
                       <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${item.iconColor} bg-white shadow-sm group-hover:shadow-md transition-all duration-200`}>

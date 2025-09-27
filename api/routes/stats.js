@@ -1,5 +1,5 @@
 import express from 'express';
-import { getPlatformStats, getGitHubStats } from '../controllers/stats.js';
+import {getPlatformStats, getGitHubStats} from '../controllers/stats.js';
 
 const router = express.Router();
 
