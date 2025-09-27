@@ -1,0 +1,41 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches: [ main, development ]
+  push:
+    branches: [ main, development ]
+
+jobs:
+  pr-validation:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Validate PR title
+      if: github.event_name == 'pull_request'
+      run: |
+        PR_TITLE="${{ github.event.pull_request.title }}"
+        echo "Validating PR title: $PR_TITLE"
+        
+        # Check if PR title follows conventional commits format
+        if echo "$PR_TITLE" | grep -qE "^(feat|fix|docs|style|refactor|test|chore|ci|perf|build)(\(.+\))?: .+"; then
+          echo "✅ Valid PR title: $PR_TITLE"
+        else
+          echo "❌ Invalid PR title: $PR_TITLE"
+          echo "Expected format: <type>(<scope>): <description>"
+          echo "Valid types: feat, fix, docs, style, refactor, test, chore, ci, perf, build"
+          exit 1
+        fi
+        
+    - name: Check for direct push to protected branch
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/development')
+      run: |
+        echo "❌ Direct push to protected branch detected!"
+        echo "Please use pull requests for changes to main/development branches"
+        echo "Current branch: ${{ github.ref }}"
+        echo "Commit: ${{ github.sha }}"
+        echo "Author: ${{ github.actor }}"
+        exit 1

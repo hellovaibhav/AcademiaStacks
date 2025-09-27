@@ -1,0 +1,48 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Validating commit message..."
+
+# Read the commit message
+commit_msg=$(cat $1)
+
+# Check if commit message follows conventional commits format
+if echo "$commit_msg" | grep -qE "^(feat|fix|docs|style|refactor|test|chore|ci|perf|build)(\(.+\))?: .+"; then
+  echo "✅ Commit message follows conventional commits format"
+else
+  echo "❌ Commit message does not follow conventional commits format"
+  echo ""
+  echo "Expected format: <type>(<scope>): <description>"
+  echo ""
+  echo "Types: feat, fix, docs, style, refactor, test, chore, ci, perf, build"
+  echo "Scope: optional, describes the area of change"
+  echo "Description: brief description of the change"
+  echo ""
+  echo "Examples:"
+  echo "  feat(auth): add email validation"
+  echo "  fix(upload): resolve PDF thumbnail issue"
+  echo "  docs(readme): update installation guide"
+  echo "  chore(deps): update dependencies"
+  echo ""
+  echo "Your commit message:"
+  echo "$commit_msg"
+  echo ""
+  exit 1
+fi
+
+# Check for common mistakes
+if echo "$commit_msg" | grep -qE "^(update|change|modify|improve):"; then
+  echo "❌ Please use a more specific type (feat, fix, docs, etc.)"
+  exit 1
+fi
+
+if echo "$commit_msg" | grep -qE "^(added|fixed|updated|changed):"; then
+  echo "❌ Please use imperative mood (add, fix, update, change)"
+  exit 1
+fi
+
+if [ ${#commit_msg} -gt 100 ]; then
+  echo "⚠️  Commit message is quite long (${#commit_msg} characters). Consider keeping it under 100 characters."
+fi
+
+echo "✅ Commit message validation passed!"
