@@ -1,17 +1,17 @@
-import React, { useState, useCallback } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  AiOutlineClose, 
-  AiOutlineZoomIn, 
-  AiOutlineZoomOut, 
-  AiOutlineLeft, 
+import React, {useState, useCallback} from 'react';
+import {Document, Page, pdfjs} from 'react-pdf';
+import {motion, AnimatePresence} from 'framer-motion';
+import {
+  AiOutlineClose,
+  AiOutlineZoomIn,
+  AiOutlineZoomOut,
+  AiOutlineLeft,
   AiOutlineRight,
   AiOutlineFullscreen,
   AiOutlineFullscreenExit
 } from 'react-icons/ai';
-import { BsChevronUp, BsChevronDown } from 'react-icons/bs';
-import { generatePdfThumbnail } from '../utils/pdfThumbnail';
+import {BsChevronUp, BsChevronDown} from 'react-icons/bs';
+import {generatePdfThumbnail} from '../utils/pdfThumbnail';
 
 // Set up PDF.js worker
 const setupWorker = () => {
@@ -21,28 +21,32 @@ const setupWorker = () => {
 
 setupWorker();
 
-const PDFViewer = ({ 
-  isOpen, 
-  onClose, 
-  pdfUrl, 
+const PDFViewer = ({
+  isOpen,
+  onClose,
+  pdfUrl,
   materialId,
-  title = "Document Viewer",
-  initialPage = 1 
+  title = 'Document Viewer',
+  initialPage = 1
 }) => {
   // Method to generate thumbnail for this PDF
   const generateThumbnail = useCallback(async (pageNumber = 1, width = 200, height = 280) => {
-    if (!pdfUrl) return null;
-    return await generatePdfThumbnail(pdfUrl, pageNumber, width, height);
+    if (!pdfUrl) {
+      return null;
+    }
+    return generatePdfThumbnail(pdfUrl, pageNumber, width, height);
   }, [pdfUrl]);
   // Convert various PDF URLs to direct view URLs
   const getDirectPdfUrl = (url) => {
-    if (!url) return url;
-    
+    if (!url) {
+      return url;
+    }
+
     // Handle Drime URLs
     if (url.includes('api.drime.cloud') || url.includes('drime.cloud')) {
       return url;
     }
-    
+
     // Handle Google Drive share links
     if (url.includes('drive.google.com/file/d/')) {
       const fileId = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)?.[1];
@@ -51,12 +55,12 @@ const PDFViewer = ({
         return directUrl;
       }
     }
-    
+
     // Handle Google Drive view links
     if (url.includes('drive.google.com/uc?export=view')) {
       return url;
     }
-    
+
     // Handle Google Drive download links
     if (url.includes('drive.google.com/uc?export=download')) {
       const directUrl = url.replace('export=download', 'export=view');
@@ -66,7 +70,7 @@ const PDFViewer = ({
   };
 
   // Use proxy URL if materialId is provided, otherwise use direct URL
-  const directPdfUrl = materialId 
+  const directPdfUrl = materialId
     ? `${process.env.REACT_APP_API_BASE_URL}/materials/pdf-proxy/${materialId}`
     : getDirectPdfUrl(pdfUrl);
   const [numPages, setNumPages] = useState(null);
@@ -77,7 +81,7 @@ const PDFViewer = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showControls, setShowControls] = useState(true);
 
-  const onDocumentLoadSuccess = useCallback(({ numPages }) => {
+  const onDocumentLoadSuccess = useCallback(({numPages}) => {
     setNumPages(numPages);
     setPageNumber(1);
     setLoading(false);
@@ -85,7 +89,7 @@ const PDFViewer = ({
   }, []);
 
   const onDocumentLoadError = useCallback((error) => {
-    
+
     let errorMessage = 'Failed to load PDF. ';
     if (error.name === 'InvalidPDFException') {
       errorMessage += 'The file is not a valid PDF or is corrupted.';
@@ -96,10 +100,10 @@ const PDFViewer = ({
     } else {
       errorMessage += 'This might be due to CORS restrictions or the file format.';
     }
-    
+
     setError(errorMessage);
     setLoading(false);
-  }, [pdfUrl, directPdfUrl, materialId]);
+  }, [pdfUrl]);
 
   const changePage = useCallback((direction) => {
     setPageNumber(prevPageNumber => {
@@ -126,38 +130,38 @@ const PDFViewer = ({
 
   const handleKeyDown = useCallback((e) => {
     switch (e.key) {
-      case 'Escape':
-        if (isFullscreen) {
-          setIsFullscreen(false);
-        } else {
-          onClose();
-        }
-        break;
-      case 'ArrowLeft':
-        changePage(-1);
-        break;
-      case 'ArrowRight':
-        changePage(1);
-        break;
-      case 'ArrowUp':
-        changePage(-1);
-        break;
-      case 'ArrowDown':
-        changePage(1);
-        break;
-      case '+':
-      case '=':
-        changeScale(0.1);
-        break;
-      case '-':
-        changeScale(-0.1);
-        break;
-      case 'f':
-      case 'F':
-        toggleFullscreen();
-        break;
-      default:
-        break;
+    case 'Escape':
+      if (isFullscreen) {
+        setIsFullscreen(false);
+      } else {
+        onClose();
+      }
+      break;
+    case 'ArrowLeft':
+      changePage(-1);
+      break;
+    case 'ArrowRight':
+      changePage(1);
+      break;
+    case 'ArrowUp':
+      changePage(-1);
+      break;
+    case 'ArrowDown':
+      changePage(1);
+      break;
+    case '+':
+    case '=':
+      changeScale(0.1);
+      break;
+    case '-':
+      changeScale(-0.1);
+      break;
+    case 'f':
+    case 'F':
+      toggleFullscreen();
+      break;
+    default:
+      break;
     }
   }, [changePage, changeScale, toggleFullscreen, onClose, isFullscreen]);
 
@@ -175,23 +179,25 @@ const PDFViewer = ({
     }
   }, [isOpen, pdfUrl]);
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        exit={{opacity: 0}}
         className={`fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center ${
           isFullscreen ? 'p-0' : 'p-4'
         }`}
         onClick={(e) => e.target === e.currentTarget && onClose()}
       >
         <motion.div
-          initial={{ scale: 0.9 }}
-          animate={{ scale: 1 }}
-          exit={{ scale: 0.9 }}
+          initial={{scale: 0.9}}
+          animate={{scale: 1}}
+          exit={{scale: 0.9}}
           className={`bg-white rounded-lg shadow-2xl overflow-hidden ${
             isFullscreen ? 'w-full h-full rounded-none' : 'max-w-6xl max-h-[90vh] w-full'
           }`}
@@ -202,9 +208,9 @@ const PDFViewer = ({
           <AnimatePresence>
             {showControls && (
               <motion.div
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -50, opacity: 0 }}
+                initial={{y: -50, opacity: 0}}
+                animate={{y: 0, opacity: 1}}
+                exit={{y: -50, opacity: 0}}
                 className="bg-gray-800 text-white p-4 flex items-center justify-between"
               >
                 <div className="flex items-center space-x-4">
@@ -226,7 +232,7 @@ const PDFViewer = ({
                   >
                     <AiOutlineLeft />
                   </button>
-                  
+
                   <button
                     onClick={() => changePage(1)}
                     disabled={pageNumber >= numPages}
@@ -265,7 +271,7 @@ const PDFViewer = ({
                   <button
                     onClick={toggleFullscreen}
                     className="p-2 hover:bg-gray-700 rounded"
-                    title={isFullscreen ? "Exit Fullscreen (F)" : "Fullscreen (F)"}
+                    title={isFullscreen ? 'Exit Fullscreen (F)' : 'Fullscreen (F)'}
                   >
                     {isFullscreen ? <AiOutlineFullscreenExit /> : <AiOutlineFullscreen />}
                   </button>
@@ -289,7 +295,7 @@ const PDFViewer = ({
           } flex items-center justify-center p-4`}>
             {loading && (
               <div className="flex items-center justify-center py-20">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
                 <span className="ml-4 text-gray-600">Loading PDF...</span>
               </div>
             )}
@@ -323,7 +329,7 @@ const PDFViewer = ({
                 onLoadError={onDocumentLoadError}
                 loading={
                   <div className="flex items-center justify-center py-20">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
                   </div>
                 }
                 error={
@@ -363,9 +369,9 @@ const PDFViewer = ({
           <AnimatePresence>
             {showControls && numPages > 1 && (
               <motion.div
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 50, opacity: 0 }}
+                initial={{y: 50, opacity: 0}}
+                animate={{y: 0, opacity: 1}}
+                exit={{y: 50, opacity: 0}}
                 className="bg-gray-800 text-white p-2 flex items-center justify-center space-x-4"
               >
                 <button
@@ -413,7 +419,7 @@ const PDFViewer = ({
 
 // Add generateThumbnail method to the component
 PDFViewer.generateThumbnail = async (pdfUrl, pageNumber = 1, width = 200, height = 280) => {
-  return await generatePdfThumbnail(pdfUrl, pageNumber, width, height);
+  return generatePdfThumbnail(pdfUrl, pageNumber, width, height);
 };
 
 export default PDFViewer;

@@ -1,5 +1,5 @@
-import express from "express";
-import { 
+import express from 'express';
+import {
   getAllMaterialsForAdmin,
   approveMaterial,
   rejectMaterial,
@@ -7,9 +7,9 @@ import {
   getAdminStats,
   promoteToAdmin,
   demoteFromAdmin
-} from "../controllers/admin.js";
-import { verifyAdmin } from "../utils/verifyAdmin.js";
-import { body, param, validationResult } from "express-validator";
+} from '../controllers/admin.js';
+import {verifyAdmin} from '../utils/verifyAdmin.js';
+import {body, param} from 'express-validator';
 
 const router = express.Router();
 
@@ -18,8 +18,8 @@ router.use(verifyAdmin);
 
 // Validation middleware
 const validateMaterialAction = [
-  body('reason').optional().trim().isLength({ max: 500 }).withMessage('Reason cannot exceed 500 characters'),
-  body('adminNotes').optional().trim().isLength({ max: 500 }).withMessage('Admin notes cannot exceed 500 characters')
+  body('reason').optional().trim().isLength({max: 500}).withMessage('Reason cannot exceed 500 characters'),
+  body('adminNotes').optional().trim().isLength({max: 500}).withMessage('Admin notes cannot exceed 500 characters')
 ];
 
 const validateMaterialId = [
@@ -31,32 +31,32 @@ const validateUserId = [
 ];
 
 // Get all materials for admin review
-router.get("/materials", getAllMaterialsForAdmin);
+router.get('/materials', getAllMaterialsForAdmin);
 
 // Get specific material for admin review
-router.get("/materials/:materialId", validateMaterialId, getMaterialForAdmin);
+router.get('/materials/:materialId', validateMaterialId, getMaterialForAdmin);
 
 // Approve a material
-router.patch("/materials/:materialId/approve", 
-  validateMaterialId, 
-  validateMaterialAction, 
+router.patch('/materials/:materialId/approve',
+  validateMaterialId,
+  validateMaterialAction,
   approveMaterial
 );
 
 // Reject a material
-router.patch("/materials/:materialId/reject", 
-  validateMaterialId, 
-  validateMaterialAction, 
+router.patch('/materials/:materialId/reject',
+  validateMaterialId,
+  validateMaterialAction,
   rejectMaterial
 );
 
 // Get admin dashboard statistics
-router.get("/stats", getAdminStats);
+router.get('/stats', getAdminStats);
 
 // Promote user to admin
-router.patch("/users/:userId/promote", validateUserId, promoteToAdmin);
+router.patch('/users/:userId/promote', validateUserId, promoteToAdmin);
 
 // Demote admin to regular user
-router.patch("/users/:userId/demote", validateUserId, demoteFromAdmin);
+router.patch('/users/:userId/demote', validateUserId, demoteFromAdmin);
 
 export default router;

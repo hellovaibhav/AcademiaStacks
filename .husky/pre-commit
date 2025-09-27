@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running pre-commit checks... (ESLint, Audit, Secret Scan)"
+
+# Run API checks
+echo "📦 Running API checks..."
+(cd api && npm run lint && npm audit --audit-level=high)
+if [ $? -ne 0 ]; then
+  echo "❌ Pre-commit checks failed in /api directory."
+  exit 1
+fi
+
+# Run Client checks
+echo "📦 Running Client checks..."
+(cd client && npm run lint && npm audit --audit-level=high)
+if [ $? -ne 0 ]; then
+  echo "❌ Pre-commit checks failed in /client directory."
+  exit 1
+fi
+
+# Check for hardcoded secrets
+echo "🔐 Checking for hardcoded secrets..."
+if git grep -E "password|secret|key|token" -- ':!*.json' ':!*.lock' ':!*.md' ':!*.example'; then
+  echo "❌ Potential hardcoded secrets found in staged files! Please remove them before committing."
+  exit 1
+fi
+
+echo "✅ All pre-commit checks passed! 🎉"

@@ -1,9 +1,9 @@
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
-import { body, validationResult } from 'express-validator';
-import { createError } from '../utils/error.js';
-import { uploadToGozunga, compressPDFWithGozunga, generateThumbnailWithGozunga, uploadToLocalStorage } from '../utils/gozunga.js';
+import {body, validationResult} from 'express-validator';
+import {createError} from '../utils/error.js';
+// Removed Gozunga integration - using local storage only
 import Material from '../models/Material.js';
 
 // Configure multer for file uploads
@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = './uploads';
     if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+      fs.mkdirSync(uploadDir, {recursive: true});
     }
     cb(null, uploadDir);
   },
@@ -33,12 +33,12 @@ const fileFilter = (req, file, cb) => {
 export const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 50 * 1024 * 1024, // 50MB limit
+    fileSize: 50 * 1024 * 1024 // 50MB limit
   },
   fileFilter: fileFilter
 });
 
-export { parseFormData };
+export {parseFormData};
 
 /**
  * Check upload status and configuration
@@ -47,17 +47,15 @@ export const checkUploadStatus = async (req, res) => {
   try {
     const fs = await import('fs');
     const path = await import('path');
-    
+
     // Check if uploads directory exists
     const uploadsDir = './uploads';
     const materialsDir = './uploads/materials';
-    
+
     const status = {
-      gozunga: {
-        configured: !!process.env.GOZUNGA_API_KEY,
-        apiKey: process.env.GOZUNGA_API_KEY ? '***HIDDEN***' : 'Not set',
-        baseUrl: process.env.GOZUNGA_API_BASE_URL || 'https://api.gozunga.com',
-        bucketName: process.env.GOZUNGA_BUCKET_NAME || 'academia-stacks'
+      storage: {
+        type: 'local',
+        status: 'active'
       },
       localStorage: {
         uploadsDir: fs.existsSync(uploadsDir),
@@ -66,7 +64,7 @@ export const checkUploadStatus = async (req, res) => {
       },
       files: []
     };
-    
+
     // List uploaded files if materials directory exists
     if (fs.existsSync(materialsDir)) {
       try {
@@ -76,16 +74,16 @@ export const checkUploadStatus = async (req, res) => {
           size: fs.statSync(path.join(materialsDir, file)).size,
           type: file.endsWith('.pdf') ? 'PDF' : 'Thumbnail'
         }));
-      } catch (error) {
+      } catch {
         status.files = [];
       }
     }
-    
+
     res.json({
       success: true,
       status
     });
-  } catch (error) {
+  } catch {
     res.status(500).json({
       success: false,
       message: 'Failed to check upload status',
@@ -96,18 +94,18 @@ export const checkUploadStatus = async (req, res) => {
 
 // Validation schema for material upload
 export const uploadMaterialValidation = [
-  body('subject').trim().isLength({ min: 2, max: 100 }).withMessage('Subject must be between 2 and 100 characters'),
-  body('semester').isInt({ min: 1, max: 8 }).withMessage('Semester must be between 1 and 8'),
-  body('instructorName').isArray({ min: 1 }).withMessage('At least one instructor name is required'),
-  body('instructorName.*').trim().isLength({ min: 2, max: 50 }).withMessage('Instructor name must be between 2 and 50 characters'),
-  body('desc').optional().trim().isLength({ max: 500 }).withMessage('Description cannot exceed 500 characters'),
-  body('author').isArray({ min: 1 }).withMessage('At least one author is required'),
-  body('author.*').trim().isLength({ min: 2, max: 50 }).withMessage('Author name must be between 2 and 50 characters'),
-  body('yearOfWriting').isInt({ min: 2000, max: new Date().getFullYear() }).withMessage('Year must be valid'),
-  body('branch').isArray({ min: 1 }).withMessage('At least one branch is required'),
-  body('materialType').trim().isLength({ min: 2, max: 50 }).withMessage('Material type is required'),
-  body('courseCode').optional().trim().isLength({ max: 20 }).withMessage('Course code cannot exceed 20 characters'),
-  body('contributedBy').optional().trim().isLength({ max: 100 }).withMessage('Contributor name cannot exceed 100 characters'),
+  body('subject').trim().isLength({min: 2, max: 100}).withMessage('Subject must be between 2 and 100 characters'),
+  body('semester').isInt({min: 1, max: 8}).withMessage('Semester must be between 1 and 8'),
+  body('instructorName').isArray({min: 1}).withMessage('At least one instructor name is required'),
+  body('instructorName.*').trim().isLength({min: 2, max: 50}).withMessage('Instructor name must be between 2 and 50 characters'),
+  body('desc').optional().trim().isLength({max: 500}).withMessage('Description cannot exceed 500 characters'),
+  body('author').isArray({min: 1}).withMessage('At least one author is required'),
+  body('author.*').trim().isLength({min: 2, max: 50}).withMessage('Author name must be between 2 and 50 characters'),
+  body('yearOfWriting').isInt({min: 2000, max: new Date().getFullYear()}).withMessage('Year must be valid'),
+  body('branch').isArray({min: 1}).withMessage('At least one branch is required'),
+  body('materialType').trim().isLength({min: 2, max: 50}).withMessage('Material type is required'),
+  body('courseCode').optional().trim().isLength({max: 20}).withMessage('Course code cannot exceed 20 characters'),
+  body('contributedBy').optional().trim().isLength({max: 100}).withMessage('Contributor name cannot exceed 100 characters')
 ];
 
 /**
@@ -126,7 +124,7 @@ const parseFormData = (req, res, next) => {
       req.body.branch = JSON.parse(req.body.branch);
     }
     next();
-  } catch (error) {
+  } catch {
     return next(createError(400, 'Invalid JSON format in form data'));
   }
 };
@@ -166,117 +164,51 @@ export const uploadMaterial = async (req, res, next) => {
     const authors = Array.isArray(author) ? author : [author];
     const branches = Array.isArray(branch) ? branch : [branch];
 
-    // Compress PDF using Gozunga
-    const compressedPath = file.path.replace('.pdf', '_compressed.pdf');
-    const compressionSuccess = await compressPDFWithGozunga(file.path, compressedPath);
-    
-    if (!compressionSuccess) {
-      // If compression fails, use original file
-      fs.copyFileSync(file.path, compressedPath);
-    }
+    // Use original file path (PDF compression removed)
+    const compressedPath = file.path;
 
-    // Generate thumbnail using Gozunga
+    // Generate thumbnail using local processing
     const thumbnailPath = file.path.replace('.pdf', '_thumb.png');
-    const thumbnailSuccess = await generateThumbnailWithGozunga(compressedPath, thumbnailPath);
+    const thumbnailSuccess = false; // Disabled for now
 
-    // Upload PDF to Gozunga (with fallback to local storage)
+    // Upload PDF to local storage
     const pdfFileName = `${subject.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}.pdf`;
-    let pdfGozungaFile;
     let materialLink;
     let driveFileId;
     let fileSize;
 
-    try {
-      console.log('🔄 Attempting to upload PDF to Gozunga...');
-      pdfGozungaFile = await uploadToGozunga(
-        { path: compressedPath },
-        pdfFileName,
-        'application/pdf',
-        {
-          subject,
-          semester: parseInt(semester),
-          materialType,
-          branch: branches.join(','),
-          year: parseInt(yearOfWriting)
-        }
-      );
-      materialLink = pdfGozungaFile.url;
-      driveFileId = pdfGozungaFile.id;
-      fileSize = pdfGozungaFile.size;
-      console.log('✅ PDF uploaded to Gozunga successfully');
-    } catch (gozungaError) {
-      console.warn('❌ Gozunga upload failed, using local storage fallback:', gozungaError.message);
-      
-      // Fallback to local storage
-      console.log('📁 Setting up local storage fallback...');
-      const localUploadDir = './uploads/materials';
-      if (!fs.existsSync(localUploadDir)) {
-        fs.mkdirSync(localUploadDir, { recursive: true });
-        console.log('📁 Created local uploads directory');
-      }
-      
-      const localFilePath = path.join(localUploadDir, pdfFileName);
-      fs.copyFileSync(compressedPath, localFilePath);
-      console.log('📁 PDF copied to local storage:', localFilePath);
-      
-      // Get file stats for size
-      const stats = fs.statSync(localFilePath);
-      fileSize = stats.size;
-      
-      // Create a local file object similar to Gozunga response
-      pdfGozungaFile = {
-        id: `local_${Date.now()}`,
-        name: pdfFileName,
-        url: `/uploads/materials/${pdfFileName}`,
-        download_url: `/uploads/materials/${pdfFileName}`,
-        size: fileSize
-      };
-      
-      materialLink = `/uploads/materials/${pdfFileName}`;
-      driveFileId = `local_${Date.now()}`;
-      console.log('✅ PDF uploaded to local storage successfully');
+    console.log('📁 Uploading PDF to local storage...');
+    const localUploadDir = './uploads/materials';
+    if (!fs.existsSync(localUploadDir)) {
+      fs.mkdirSync(localUploadDir, {recursive: true});
+      console.log('📁 Created local uploads directory');
     }
 
-    // Upload thumbnail (with fallback to local storage)
+    const localFilePath = path.join(localUploadDir, pdfFileName);
+    fs.copyFileSync(compressedPath, localFilePath);
+    console.log('📁 PDF copied to local storage:', localFilePath);
+
+    // Get file stats for size
+    const stats = fs.statSync(localFilePath);
+    fileSize = stats.size;
+
+    materialLink = `/uploads/materials/${pdfFileName}`;
+    driveFileId = `local_${Date.now()}`;
+    console.log('✅ PDF uploaded to local storage successfully');
+
+    // Thumbnail generation disabled
     let thumbnailUrl = '';
-    if (thumbnailSuccess) {
-      const thumbFileName = `${subject.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}_thumb.png`;
-      
-      try {
-        console.log('🔄 Attempting to upload thumbnail to Gozunga...');
-        const thumbGozungaFile = await uploadToGozunga(
-          { path: thumbnailPath },
-          thumbFileName,
-          'image/png',
-          {
-            type: 'thumbnail',
-            parent_file: pdfGozungaFile.id
-          }
-        );
-        thumbnailUrl = thumbGozungaFile.url;
-        console.log('✅ Thumbnail uploaded to Gozunga successfully');
-      } catch (gozungaError) {
-        console.warn('❌ Gozunga thumbnail upload failed, using local storage fallback:', gozungaError.message);
-        
-        // Fallback to local storage for thumbnail
-        console.log('📁 Setting up local storage fallback for thumbnail...');
-        const localThumbPath = path.join('./uploads/materials', thumbFileName);
-        fs.copyFileSync(thumbnailPath, localThumbPath);
-        thumbnailUrl = `/uploads/materials/${thumbFileName}`;
-        console.log('✅ Thumbnail uploaded to local storage successfully');
-      }
-    }
 
     // Create material record
     const newMaterial = new Material({
       subject,
-      semester: parseInt(semester),
+      semester: parseInt(semester, 10),
       instructorName: instructorNames,
       courseCode: courseCode || '',
       materialLink: materialLink,
       desc: desc || '',
       author: authors,
-      yearOfWriting: parseInt(yearOfWriting),
+      yearOfWriting: parseInt(yearOfWriting, 10),
       branch: branches,
       materialType,
       thumbnail: thumbnailUrl,
@@ -306,18 +238,15 @@ export const uploadMaterial = async (req, res, next) => {
       success: true,
       message: 'Material uploaded successfully',
       material: savedMaterial,
-      gozungaFile: {
-        id: pdfGozungaFile.id,
-        name: pdfGozungaFile.name,
-        url: pdfGozungaFile.url,
-        download_url: pdfGozungaFile.download_url,
-        size: pdfGozungaFile.size
+      storage: {
+        type: 'local',
+        path: materialLink
       }
     });
 
-  } catch (error) {
+  } catch {
     console.error('Upload error:', error);
-    
+
     // Clean up files on error
     if (req.file) {
       try {
@@ -326,7 +255,7 @@ export const uploadMaterial = async (req, res, next) => {
         console.warn('Failed to clean up file on error:', cleanupError);
       }
     }
-    
+
     next(createError(500, 'Failed to upload material'));
   }
 };
@@ -337,9 +266,9 @@ export const uploadMaterial = async (req, res, next) => {
 export const getUploadStats = async (req, res, next) => {
   try {
     const totalMaterials = await Material.countDocuments();
-    const pendingMaterials = await Material.countDocuments({ verifiedBy: 'pending' });
-    const verifiedMaterials = await Material.countDocuments({ verifiedBy: { $ne: 'pending' } });
-    
+    const pendingMaterials = await Material.countDocuments({verifiedBy: 'pending'});
+    const verifiedMaterials = await Material.countDocuments({verifiedBy: {$ne: 'pending'}});
+
     res.json({
       success: true,
       stats: {
@@ -348,7 +277,7 @@ export const getUploadStats = async (req, res, next) => {
         verified: verifiedMaterials
       }
     });
-  } catch (error) {
+  } catch {
     next(createError(500, 'Failed to get upload statistics'));
   }
 };
@@ -358,8 +287,8 @@ export const getUploadStats = async (req, res, next) => {
  */
 export const deleteUploadedMaterial = async (req, res, next) => {
   try {
-    const { materialId } = req.params;
-    
+    const {materialId} = req.params;
+
     const material = await Material.findById(materialId);
     if (!material) {
       return next(createError(404, 'Material not found'));
@@ -367,12 +296,7 @@ export const deleteUploadedMaterial = async (req, res, next) => {
 
     // Delete from Gozunga if file ID exists
     if (material.driveFileId) {
-      try {
-        const { deleteGozungaFile } = await import('../utils/gozunga.js');
-        await deleteGozungaFile(material.driveFileId);
-      } catch (gozungaError) {
-        console.warn('Failed to delete from Gozunga:', gozungaError);
-      }
+      // File stored locally, no additional cleanup needed
     }
 
     // Delete from database
@@ -382,7 +306,7 @@ export const deleteUploadedMaterial = async (req, res, next) => {
       success: true,
       message: 'Material deleted successfully'
     });
-  } catch (error) {
+  } catch {
     next(createError(500, 'Failed to delete material'));
   }
 };

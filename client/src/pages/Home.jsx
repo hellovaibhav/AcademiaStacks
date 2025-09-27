@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { 
-  AiOutlineBook, 
-  AiOutlineFileText, 
-  AiOutlineUpload, 
+import React, {useState, useEffect} from 'react';
+import {motion} from 'framer-motion';
+import {Link} from 'react-router-dom';
+import axios from 'axios';
+import {
+  AiOutlineBook,
+  AiOutlineFileText,
+  AiOutlineUpload,
   AiOutlineTeam,
   AiOutlineGithub,
   AiOutlineStar,
@@ -14,8 +14,8 @@ import {
   AiOutlineClockCircle,
   AiOutlineUser,
   AiOutlineDatabase
-} from "react-icons/ai";
-import { API_ENDPOINTS } from "../config/api";
+} from 'react-icons/ai';
+import {API_ENDPOINTS} from '../config/api';
 
 const Home = () => {
   const [platformStats, setPlatformStats] = useState(null);
@@ -29,11 +29,10 @@ const Home = () => {
           axios.get(API_ENDPOINTS.PLATFORM_STATS),
           axios.get(API_ENDPOINTS.GITHUB_STATS)
         ]);
-        
+
         setPlatformStats(platformResponse.data.stats);
         setGithubStats(githubResponse.data.github);
       } catch (error) {
-        console.error('Error fetching stats:', error);
         // Set fallback data
         setPlatformStats({
           totalMaterials: 0,
@@ -57,23 +56,23 @@ const Home = () => {
   const features = [
     {
       icon: AiOutlineBook,
-      title: "Comprehensive Materials",
-      description: "Access notes, assignments, PYQs, and handouts for all courses"
+      title: 'Comprehensive Materials',
+      description: 'Access notes, assignments, PYQs, and handouts for all courses'
     },
     {
       icon: AiOutlineFileText,
-      title: "PDF Thumbnails",
-      description: "Preview PDFs before downloading with auto-generated thumbnails"
+      title: 'PDF Thumbnails',
+      description: 'Preview PDFs before downloading with auto-generated thumbnails'
     },
     {
       icon: AiOutlineUpload,
-      title: "Easy Upload",
-      description: "Contribute materials easily with our streamlined upload process"
+      title: 'Easy Upload',
+      description: 'Contribute materials easily with our streamlined upload process'
     },
     {
       icon: AiOutlineTeam,
-      title: "Community Driven",
-      description: "Upvote and share materials with fellow students and educators"
+      title: 'Community Driven',
+      description: 'Upvote and share materials with fellow students and educators'
     }
   ];
 
@@ -84,23 +83,23 @@ const Home = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <motion.div
-              initial={{ opacity: 0, y: -50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                duration: 0.8, 
+              initial={{opacity: 0, y: -50}}
+              animate={{opacity: 1, y: 0}}
+              transition={{
+                duration: 0.8,
                 ease: [0.25, 0.46, 0.45, 0.94],
                 delay: 0.2
               }}
             >
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-800 mb-6">
-                Welcome to{" "}
+                Welcome to{' '}
                 <span className="text-[#22A39F]">Academia Stacks</span>
               </h1>
               <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed max-w-4xl mx-auto">
-                Your comprehensive platform for accessing and sharing study materials. 
+                Your comprehensive platform for accessing and sharing study materials.
                 Find notes, assignments, previous year questions, and more for all your courses.
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <Link
                   to="/material"
@@ -119,28 +118,28 @@ const Home = () => {
 
             {/* Visual Elements Grid */}
             <motion.div
-              initial={{ opacity: 0, y: 60 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                duration: 0.9, 
+              initial={{opacity: 0, y: 60}}
+              animate={{opacity: 1, y: 0}}
+              transition={{
+                duration: 0.9,
                 ease: [0.25, 0.46, 0.45, 0.94],
                 delay: 0.4
               }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
             >
               {/* Feature Cards */}
-              <motion.div 
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  duration: 0.6, 
+              <motion.div
+                initial={{opacity: 0, y: 30, scale: 0.9}}
+                animate={{opacity: 1, y: 0, scale: 1}}
+                transition={{
+                  duration: 0.6,
                   ease: [0.25, 0.46, 0.45, 0.94],
                   delay: 0.5
                 }}
-                whileHover={{ 
-                  y: -8, 
+                whileHover={{
+                  y: -8,
                   scale: 1.02,
-                  transition: { duration: 0.3, ease: "easeOut" }
+                  transition: {duration: 0.3, ease: 'easeOut'}
                 }}
                 className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
@@ -151,18 +150,18 @@ const Home = () => {
                 <p className="text-gray-600 text-sm">Comprehensive notes for all subjects</p>
               </motion.div>
 
-              <motion.div 
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  duration: 0.6, 
+              <motion.div
+                initial={{opacity: 0, y: 30, scale: 0.9}}
+                animate={{opacity: 1, y: 0, scale: 1}}
+                transition={{
+                  duration: 0.6,
                   ease: [0.25, 0.46, 0.45, 0.94],
                   delay: 0.6
                 }}
-                whileHover={{ 
-                  y: -8, 
+                whileHover={{
+                  y: -8,
                   scale: 1.02,
-                  transition: { duration: 0.3, ease: "easeOut" }
+                  transition: {duration: 0.3, ease: 'easeOut'}
                 }}
                 className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
@@ -173,18 +172,18 @@ const Home = () => {
                 <p className="text-gray-600 text-sm">Homework and project solutions</p>
               </motion.div>
 
-              <motion.div 
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  duration: 0.6, 
+              <motion.div
+                initial={{opacity: 0, y: 30, scale: 0.9}}
+                animate={{opacity: 1, y: 0, scale: 1}}
+                transition={{
+                  duration: 0.6,
                   ease: [0.25, 0.46, 0.45, 0.94],
                   delay: 0.7
                 }}
-                whileHover={{ 
-                  y: -8, 
+                whileHover={{
+                  y: -8,
                   scale: 1.02,
-                  transition: { duration: 0.3, ease: "easeOut" }
+                  transition: {duration: 0.3, ease: 'easeOut'}
                 }}
                 className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
@@ -195,18 +194,18 @@ const Home = () => {
                 <p className="text-gray-600 text-sm">Previous year question papers</p>
               </motion.div>
 
-              <motion.div 
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ 
-                  duration: 0.6, 
+              <motion.div
+                initial={{opacity: 0, y: 30, scale: 0.9}}
+                animate={{opacity: 1, y: 0, scale: 1}}
+                transition={{
+                  duration: 0.6,
                   ease: [0.25, 0.46, 0.45, 0.94],
                   delay: 0.8
                 }}
-                whileHover={{ 
-                  y: -8, 
+                whileHover={{
+                  y: -8,
                   scale: 1.02,
-                  transition: { duration: 0.3, ease: "easeOut" }
+                  transition: {duration: 0.3, ease: 'easeOut'}
                 }}
                 className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
@@ -220,10 +219,10 @@ const Home = () => {
 
             {/* Trust Indicators */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                duration: 0.8, 
+              initial={{opacity: 0, y: 40}}
+              animate={{opacity: 1, y: 0}}
+              transition={{
+                duration: 0.8,
                 ease: [0.25, 0.46, 0.45, 0.94],
                 delay: 0.6
               }}
@@ -250,21 +249,21 @@ const Home = () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ 
-              duration: 0.8, 
+            initial={{opacity: 0, y: 40}}
+            whileInView={{opacity: 1, y: 0}}
+            transition={{
+              duration: 0.8,
               ease: [0.25, 0.46, 0.45, 0.94]
             }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{once: true, amount: 0.3}}
             className="grid grid-cols-2 md:grid-cols-4 gap-8"
           >
             {loading ? (
               // Loading skeleton
-              Array.from({ length: 4 }).map((_, index) => (
+              Array.from({length: 4}).map((_, index) => (
                 <div key={index} className="text-center">
-                  <div className="h-12 bg-gray-200 rounded animate-pulse mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                  <div className="h-12 bg-gray-200 rounded animate-pulse mb-2" />
+                  <div className="h-4 bg-gray-200 rounded animate-pulse" />
                 </div>
               ))
             ) : (
@@ -311,13 +310,13 @@ const Home = () => {
       <section className="py-20 px-4">
         <div className="container mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ 
-              duration: 0.8, 
+            initial={{opacity: 0, y: 40}}
+            whileInView={{opacity: 1, y: 0}}
+            transition={{
+              duration: 0.8,
               ease: [0.25, 0.46, 0.45, 0.94]
             }}
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{once: true, amount: 0.3}}
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
@@ -334,18 +333,18 @@ const Home = () => {
               return (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 40, scale: 0.9 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ 
-                    duration: 0.7, 
+                  initial={{opacity: 0, y: 40, scale: 0.9}}
+                  whileInView={{opacity: 1, y: 0, scale: 1}}
+                  transition={{
+                    duration: 0.7,
                     ease: [0.25, 0.46, 0.45, 0.94],
                     delay: index * 0.15
                   }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  whileHover={{ 
-                    y: -8, 
+                  viewport={{once: true, amount: 0.3}}
+                  whileHover={{
+                    y: -8,
                     scale: 1.02,
-                    transition: { duration: 0.3, ease: "easeOut" }
+                    transition: {duration: 0.3, ease: 'easeOut'}
                   }}
                   className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center"
                 >
@@ -369,16 +368,16 @@ const Home = () => {
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{opacity: 0, y: 30}}
+            whileInView={{opacity: 1, y: 0}}
+            transition={{duration: 0.6}}
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
               Open Source & Community Driven
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Academia Stacks is an open-source project built by students, for students. 
+              Academia Stacks is an open-source project built by students, for students.
               We believe in the power of community collaboration and transparency.
             </p>
           </motion.div>
@@ -386,9 +385,9 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* GitHub Stats */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              initial={{opacity: 0, x: -30}}
+              whileInView={{opacity: 1, x: 0}}
+              transition={{duration: 0.6}}
               className="bg-white rounded-xl p-8 shadow-lg"
             >
               <div className="flex items-center justify-center mb-6">
@@ -396,16 +395,16 @@ const Home = () => {
               </div>
               <h3 className="text-2xl font-bold text-gray-800 mb-4">GitHub Repository</h3>
               <p className="text-gray-600 mb-6">
-                Our code is open source and available on GitHub. Anyone can contribute, 
+                Our code is open source and available on GitHub. Anyone can contribute,
                 report issues, or suggest new features.
               </p>
-              
+
               {loading ? (
                 <div className="grid grid-cols-3 gap-4">
-                  {Array.from({ length: 3 }).map((_, index) => (
+                  {Array.from({length: 3}).map((_, index) => (
                     <div key={index} className="text-center">
-                      <div className="h-8 bg-gray-200 rounded animate-pulse mb-2"></div>
-                      <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                      <div className="h-8 bg-gray-200 rounded animate-pulse mb-2" />
+                      <div className="h-4 bg-gray-200 rounded animate-pulse" />
                     </div>
                   ))}
                 </div>
@@ -439,7 +438,7 @@ const Home = () => {
                   </div>
                 </div>
               )}
-              
+
               <div className="mt-6">
                 <a
                   href="https://github.com/hellovaibhav/AcademiaStacks"
@@ -455,9 +454,9 @@ const Home = () => {
 
             {/* Contribution Info */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              initial={{opacity: 0, x: 30}}
+              whileInView={{opacity: 1, x: 0}}
+              transition={{duration: 0.6}}
               className="bg-white rounded-xl p-8 shadow-lg"
             >
               <div className="flex items-center justify-center mb-6">
@@ -490,7 +489,7 @@ const Home = () => {
                   <p>Share study materials through our upload system</p>
                 </div>
               </div>
-              
+
               <div className="mt-6">
                 <Link
                   to="/upload"
@@ -509,9 +508,9 @@ const Home = () => {
       <section className="py-20 bg-[#22A39F]">
         <div className="container mx-auto px-4 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{opacity: 0, y: 30}}
+            whileInView={{opacity: 1, y: 0}}
+            transition={{duration: 0.6}}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
               Ready to Get Started?

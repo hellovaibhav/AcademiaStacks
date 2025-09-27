@@ -1,37 +1,37 @@
-import React, { useContext, useState } from "react";
-import { NavLink, Link, useNavigate } from "react-router-dom";
-import { 
-  AiOutlineMenu, 
-  AiOutlineClose, 
-  AiOutlineLogout, 
+import React, {useContext, useState} from 'react';
+import {NavLink, Link, useNavigate} from 'react-router-dom';
+import {
+  AiOutlineMenu,
+  AiOutlineClose,
+  AiOutlineLogout,
   AiOutlineUser,
   AiOutlineHome,
   AiOutlineFileText,
   AiOutlineUpload,
   AiOutlineMessage
-} from "react-icons/ai";
-import { AuthContext } from "../context/AuthContext";
-import Logo from "../assets/logo_website.png";
-import { motion } from "framer-motion";
+} from 'react-icons/ai';
+import {AuthContext} from '../context/AuthContext';
+import Logo from '../assets/logo_website.png';
+import {motion} from 'framer-motion';
 
 const NavbarHead = () => {
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useContext(AuthContext);
+  const {user, isAuthenticated, logout} = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const handleLogout = async () => {
     await logout();
-    navigate("/");
+    navigate('/');
     setOpen(false);
     setShowUserMenu(false);
   };
 
   const basicLinks = [
-    { name: "Home", icon: AiOutlineHome, link: "/" },
-    { name: "Materials", icon: AiOutlineFileText, link: "/material" },
-    { name: "Upload", icon: AiOutlineUpload, link: "/upload" },
-    { name: "Feedback", icon: AiOutlineMessage, link: "/feedback" },
+    {name: 'Home', icon: AiOutlineHome, link: '/'},
+    {name: 'Materials', icon: AiOutlineFileText, link: '/material'},
+    {name: 'Upload', icon: AiOutlineUpload, link: '/upload'},
+    {name: 'Feedback', icon: AiOutlineMessage, link: '/feedback'}
   ];
 
   return (
@@ -40,8 +40,8 @@ const NavbarHead = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{opacity: 0, x: -20}}
+            animate={{opacity: 1, x: 0}}
             className="flex-shrink-0"
           >
             <Link
@@ -65,7 +65,7 @@ const NavbarHead = () => {
                   <NavLink
                     key={link.name}
                     to={link.link}
-                    className={({ isActive }) =>
+                    className={({isActive}) =>
                       `flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                         isActive
                           ? 'text-[#22A39F] bg-[#22A39F]/10'
@@ -103,12 +103,12 @@ const NavbarHead = () => {
                     {user?.fname || 'User'}
                   </span>
                 </button>
-                
+
                 {showUserMenu && (
                   <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
+                    initial={{opacity: 0, y: -10}}
+                    animate={{opacity: 1, y: 0}}
+                    exit={{opacity: 0, y: -10}}
                     className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border py-2 z-50"
                   >
                     <Link
@@ -166,9 +166,9 @@ const NavbarHead = () => {
         {/* Mobile Navigation */}
         {open && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{opacity: 0, height: 0}}
+            animate={{opacity: 1, height: 'auto'}}
+            exit={{opacity: 0, height: 0}}
             className="md:hidden border-t border-gray-200"
           >
             <div className="px-2 pt-2 pb-3 space-y-1">
@@ -179,7 +179,7 @@ const NavbarHead = () => {
                     key={link.name}
                     to={link.link}
                     onClick={() => setOpen(false)}
-                    className={({ isActive }) =>
+                    className={({isActive}) =>
                       `flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ${
                         isActive
                           ? 'text-[#22A39F] bg-[#22A39F]/10'
@@ -192,7 +192,7 @@ const NavbarHead = () => {
                   </NavLink>
                 );
               })}
-              
+
               {!isAuthenticated ? (
                 <Link
                   to="/login"

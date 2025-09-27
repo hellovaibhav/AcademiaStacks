@@ -1,80 +1,80 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const materialSchema = new mongoose.Schema(
   {
     subject: {
       type: String,
-      required: true,
+      required: true
     },
     semester: {
       type: Number,
-      required: true,
+      required: true
     },
     instructorName: [{
       type: String,
-      required: true,
+      required: true
     }],
     courseCode: {
-      type: String,
+      type: String
       // required: true
     },
     materialLink: {
       type: String,
       required: true,
-      unique: true,
+      unique: true
     },
     desc: {
-      type: String,
+      type: String
     },
     author: [{
       type: String,
-      required: true,
+      required: true
     }],
     yearOfWriting: {
       type: Number,
-      required: true,
+      required: true
     },
     branch: [
       {
         type: String,
-        required: true,
-      },
+        required: true
+      }
     ],
-    contributedBy:{
-      type:String,
-      default:"Admin"
+    contributedBy: {
+      type: String,
+      default: 'Admin'
     },
     materialType: {
       type: String
     },
     thumbnail: {
       type: String,
-      required: true,
+      required: true
     },
     featured: {
       type: Boolean,
-      default: false,
+      default: false
     },
     upvotes: [
       {
         type: String,
-        default: "0",
-      },
+        default: '0'
+      }
     ],
-    verifiedBy:{
-      type:String,
-      default:"notVerified"
+    verifiedBy: {
+      type: String,
+      default: 'notVerified'
     },
     driveFileId: {
-      type: String,
+      type: String
       // Google Drive file ID for uploaded files
     },
     driveThumbnailId: {
-      type: String,
+      type: String
       // Google Drive thumbnail file ID
     },
     fileSize: {
-      type: Number,
+      type: Number
       // File size in bytes
     },
     uploadDate: {
@@ -100,7 +100,7 @@ const materialSchema = new mongoose.Schema(
       type: String
     }
   },
-  { timestamps: true }
+  {timestamps: true}
 );
 
-export default mongoose.model("Material", materialSchema);
+export default mongoose.model('Material', materialSchema);

@@ -1,27 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, {useState, useEffect} from 'react';
+import {motion} from 'framer-motion';
 import axios from 'axios';
-import { toast } from 'react-toastify';
-import { useAuth } from '../context/AuthContext';
-import { API_ENDPOINTS } from '../config/api';
-import { 
-  AiOutlineUpload, 
-  AiOutlineFileText, 
-  AiOutlineCheckCircle,
+import {useToast} from '../components/Toast';
+import {useAuth} from '../context/AuthContext';
+import {API_ENDPOINTS} from '../config/api';
+import {ModernSpinner} from '../components/Loader';
+import PaywallOverlay from '../components/PaywallOverlay';
+import {
+  AiOutlineUpload,
+  AiOutlineFileText,
   AiOutlineCloseCircle,
   AiOutlineEye,
   AiOutlineDelete
 } from 'react-icons/ai';
-import { BiUpvote } from 'react-icons/bi';
 
 const Upload = () => {
-  const { user, isAuthenticated } = useAuth();
-  const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const {user, isAuthenticated} = useAuth();
+  const {toast} = useToast();
+  // Upload functionality disabled - paywall active
   const [uploadedMaterials, setUploadedMaterials] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showPaywall] = useState(true); // Show paywall immediately
+
+  // Helper function to safely format dates
+  const formatDate = (dateString) => {
+    if (!dateString) {
+      return 'Date not available';
+    }
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return 'Date not available';
+    }
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
   const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
 
   // Form data
   const [formData, setFormData] = useState({
@@ -39,10 +55,10 @@ const Upload = () => {
 
   // Material types
   const materialTypes = [
-    { value: 'notes', label: 'Notes' },
-    { value: 'assignments', label: 'Assignments' },
-    { value: 'pyqs', label: 'Previous Year Questions' },
-    { value: 'handouts', label: 'Handouts' }
+    {value: 'notes', label: 'Notes'},
+    {value: 'assignments', label: 'Assignments'},
+    {value: 'pyqs', label: 'Previous Year Questions'},
+    {value: 'handouts', label: 'Handouts'}
   ];
 
   // Branches
@@ -63,12 +79,11 @@ const Upload = () => {
       const response = await axios.get(API_ENDPOINTS.MATERIAL);
       const materials = response.data.materials || response.data;
       // Filter materials uploaded by current user
-      const userMaterials = materials.filter(material => 
+      const userMaterials = materials.filter(material =>
         material.contributedBy === user?.name || material.contributedBy === user?.email
       );
       setUploadedMaterials(userMaterials);
     } catch (error) {
-      console.error('Error fetching materials:', error);
       toast.error('Failed to load uploaded materials');
     } finally {
       setLoading(false);
@@ -87,31 +102,21 @@ const Upload = () => {
         return;
       }
       setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
     }
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const {name, value} = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
-  const handleArrayInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
 
   const addInstructor = () => {
-    console.log('Adding new instructor field');
     setFormData(prev => {
       const newInstructorName = [...prev.instructorName, ''];
-      console.log('New instructor names array after add:', newInstructorName);
       return {
         ...prev,
         instructorName: newInstructorName
@@ -127,10 +132,8 @@ const Upload = () => {
   };
 
   const updateInstructor = (index, value) => {
-    console.log(`Updating instructor ${index} with value: "${value}"`);
     setFormData(prev => {
       const newInstructorName = prev.instructorName.map((item, i) => i === index ? value : item);
-      console.log('New instructor names array:', newInstructorName);
       return {
         ...prev,
         instructorName: newInstructorName
@@ -179,165 +182,10 @@ const Upload = () => {
     return formData.branch.filter(branch => branch.trim() !== '');
   };
 
-  // Debug effect to monitor formData changes
-  useEffect(() => {
-    console.log('FormData changed:', formData);
-    console.log('Instructor names:', formData.instructorName);
-    console.log('Valid instructors:', getValidInstructors());
-  }, [formData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Prevent multiple submissions
-    if (uploading) {
-      return;
-    }
-    
-    if (!selectedFile) {
-      toast.error('Please select a PDF file');
-      return;
-    }
-
-    // Quick check before processing
-    if (formData.instructorName.length === 0) {
-      toast.error('Please add at least one instructor name by clicking the "+ Add Instructor" button');
-      return;
-    }
-
-    if (formData.branch.length === 0) {
-      toast.error('Please add at least one branch by clicking the "+ Add Branch" button');
-      return;
-    }
-
-    // Small delay to ensure state is updated
-    await new Promise(resolve => setTimeout(resolve, 100));
-
-    // Validate instructor names - at least one non-empty name required
-    const validInstructors = getValidInstructors();
-    console.log('=== VALIDATION DEBUG ===');
-    console.log('Form Data:', formData);
-    console.log('Instructor Names Array:', formData.instructorName);
-    console.log('Instructor Names Length:', formData.instructorName.length);
-    console.log('Valid Instructors:', validInstructors);
-    console.log('Valid Instructors Length:', validInstructors.length);
-    
-    if (validInstructors.length === 0) {
-      console.log('❌ VALIDATION FAILED: No valid instructor names found');
-      console.log('Raw instructor names:', formData.instructorName);
-      console.log('Filtered result:', formData.instructorName.filter(name => name.trim() !== ''));
-      console.log('Each instructor name check:');
-      formData.instructorName.forEach((name, index) => {
-        console.log(`  [${index}]: "${name}" (trimmed: "${name.trim()}", empty: ${name.trim() === ''})`);
-      });
-      toast.error('At least one instructor name is required');
-      return;
-    }
-    
-    console.log('✅ Instructor validation passed');
-
-    // Validate branches - at least one non-empty branch required
-    const validBranches = getValidBranches();
-    if (validBranches.length === 0) {
-      toast.error('At least one branch is required');
-      return;
-    }
-
-    // Validate author - required field
-    if (!formData.author.trim()) {
-      toast.error('Author name is required');
-      return;
-    }
-
-    // Validate other required fields
-    if (!formData.subject.trim()) {
-      toast.error('Subject is required');
-      return;
-    }
-
-    if (!formData.semester) {
-      toast.error('Semester is required');
-      return;
-    }
-
-    if (!formData.courseCode.trim()) {
-      toast.error('Course code is required');
-      return;
-    }
-
-    if (!isAuthenticated) {
-      toast.error('Please login to upload materials');
-      return;
-    }
-
-    setUploading(true);
-    setUploadProgress(0);
-
-    try {
-      const uploadData = new FormData();
-      uploadData.append('pdfFile', selectedFile);
-      
-      // Append form data
-      Object.keys(formData).forEach(key => {
-        if (Array.isArray(formData[key])) {
-          // Filter out empty strings from arrays
-          const filteredArray = formData[key].filter(item => item.trim() !== '');
-          // Don't send empty arrays - this will cause backend validation to fail
-          if (filteredArray.length > 0) {
-            uploadData.append(key, JSON.stringify(filteredArray));
-          } else {
-            throw new Error(`${key} cannot be empty`);
-          }
-        } else if (key === 'author') {
-          // Convert single author string to array for backend compatibility
-          uploadData.append(key, JSON.stringify([formData[key]]));
-        } else {
-          uploadData.append(key, formData[key]);
-        }
-      });
-
-      const response = await axios.post(API_ENDPOINTS.UPLOAD_MATERIAL, uploadData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        onUploadProgress: (progressEvent) => {
-          const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setUploadProgress(progress);
-        }
-      });
-
-      toast.success('Material uploaded successfully!');
-      
-      // Reset form
-      setFormData({
-        subject: '',
-        semester: '',
-        instructorName: [],
-        courseCode: '',
-        desc: '',
-        author: '',
-        yearOfWriting: new Date().getFullYear(),
-        branch: [],
-        materialType: 'notes',
-        contributedBy: user?.name || ''
-      });
-      setSelectedFile(null);
-      setPreviewUrl(null);
-      setUploadProgress(0);
-      
-      // Refresh uploaded materials
-      fetchUploadedMaterials();
-
-    } catch (error) {
-      console.error('Upload error:', error);
-      if (error.response?.data?.message) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error('Failed to upload material');
-      }
-    } finally {
-      setUploading(false);
-    }
+    // Paywall is already shown, no need to trigger it again
   };
 
   const handleDeleteMaterial = async (materialId) => {
@@ -350,7 +198,6 @@ const Upload = () => {
       toast.success('Material deleted successfully');
       fetchUploadedMaterials();
     } catch (error) {
-      console.error('Delete error:', error);
       toast.error('Failed to delete material');
     }
   };
@@ -363,8 +210,8 @@ const Upload = () => {
     return (
       <div className="min-h-screen bg-[#F3EFE0] flex items-center justify-center pt-20">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: 50}}
+          animate={{opacity: 1, y: 0}}
           className="bg-white p-8 rounded-xl shadow-lg text-center max-w-md mx-4"
         >
           <AiOutlineFileText className="text-6xl text-[#22A39F] mx-auto mb-4" />
@@ -373,7 +220,9 @@ const Upload = () => {
             Please login to upload and manage your materials
           </p>
           <button
-            onClick={() => window.location.href = '/login'}
+            onClick={() => {
+              window.location.href = '/login';
+            }}
             className="bg-[#22A39F] text-white px-6 py-2 rounded-lg hover:bg-[#1a8a85] transition-colors"
           >
             Go to Login
@@ -384,12 +233,17 @@ const Upload = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F3EFE0] pt-28 pb-10">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F3EFE0] pt-28 pb-10 relative">
+      {/* Translucent Overlay */}
+      {showPaywall && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm z-40" />
+      )}
+
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 relative">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: -20}}
+          animate={{opacity: 1, y: 0}}
           className="text-center mb-12"
         >
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#22A39F] mb-4">Upload Materials</h1>
@@ -401,8 +255,8 @@ const Upload = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Upload Form */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{opacity: 0, x: -20}}
+            animate={{opacity: 1, x: 0}}
             className="bg-white rounded-xl shadow-lg p-6"
           >
             <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
@@ -444,28 +298,20 @@ const Upload = () => {
                 </div>
               </div>
 
-              {/* Upload Progress */}
-              {uploading && (
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-[#22A39F] h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${uploadProgress}%` }}
-                  ></div>
-                </div>
-              )}
+              {/* Upload Progress - Disabled */}
 
               {/* Subject */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Subject *
                 </label>
-                  <input
-                    type="text"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#22A39F]"
-                  />
+                <input
+                  type="text"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#22A39F]"
+                />
               </div>
 
               {/* Semester and Material Type */}
@@ -509,7 +355,7 @@ const Upload = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Instructor Name * 
+                    Instructor Name *
                     {getValidInstructors().length > 0 && (
                       <span className="text-green-600 text-xs ml-2">✓ {getValidInstructors().length} instructor(s) added</span>
                     )}
@@ -520,19 +366,19 @@ const Upload = () => {
                     ) : (
                       formData.instructorName.map((instructor, index) => (
                         <div key={index} className="flex items-center space-x-2">
-                        <input
-                          type="text"
-                          value={instructor}
-                          onChange={(e) => updateInstructor(index, e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              e.preventDefault();
-                              addInstructor();
-                            }
-                          }}
-                          placeholder="Dr. John Smith"
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#22A39F]"
-                        />
+                          <input
+                            type="text"
+                            value={instructor}
+                            onChange={(e) => updateInstructor(index, e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault();
+                                addInstructor();
+                              }
+                            }}
+                            placeholder="Dr. John Smith"
+                            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#22A39F]"
+                          />
                           {formData.instructorName.length > 1 && (
                             <button
                               type="button"
@@ -558,7 +404,7 @@ const Upload = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Author * 
+                    Author *
                     {formData.author.trim() && (
                       <span className="text-green-600 text-xs ml-2">✓ Author added</span>
                     )}
@@ -583,7 +429,7 @@ const Upload = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Branch * 
+                    Branch *
                     {getValidBranches().length > 0 && (
                       <span className="text-green-600 text-xs ml-2">✓ {getValidBranches().length} branch(es) selected</span>
                     )}
@@ -601,11 +447,11 @@ const Upload = () => {
                           >
                             <option value="">Select Branch</option>
                             {branches
-                              .filter(branchOption => 
+                              .filter(branchOption =>
                                 // Show all branches if current field is empty
-                                branch === '' || 
+                                branch === '' ||
                                 // Show only unselected branches if current field has a value
-                                !formData.branch.some((selectedBranch, selectedIndex) => 
+                                !formData.branch.some((selectedBranch, selectedIndex) =>
                                   selectedBranch === branchOption && selectedIndex !== index
                                 )
                               )
@@ -684,28 +530,18 @@ const Upload = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={uploading}
-                className="w-full bg-[#22A39F] text-white py-3 px-4 rounded-lg hover:bg-[#1a8a85] disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+                className="w-full bg-[#22A39F] text-white py-3 px-4 rounded-lg hover:bg-[#1a8a85] transition-colors flex items-center justify-center"
               >
-                {uploading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Uploading... {uploadProgress}%
-                  </>
-                ) : (
-                  <>
-                    <AiOutlineUpload className="mr-2" />
-                    Upload Material
-                  </>
-                )}
+                <AiOutlineUpload className="mr-2" />
+                Upload Material
               </button>
             </form>
           </motion.div>
 
           {/* Uploaded Materials */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{opacity: 0, x: 20}}
+            animate={{opacity: 1, x: 0}}
             className="bg-white rounded-xl shadow-lg p-6"
           >
             <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
@@ -715,7 +551,7 @@ const Upload = () => {
 
             {loading ? (
               <div className="flex items-center justify-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#22A39F]"></div>
+                <ModernSpinner size="medium" type="symmetric" />
               </div>
             ) : uploadedMaterials.length === 0 ? (
               <div className="text-center py-8 text-gray-500">
@@ -740,17 +576,17 @@ const Upload = () => {
                         </p>
                         <div className="flex items-center mt-2">
                           <span className={`px-2 py-1 text-xs rounded-full ${
-                            material.verifiedBy === 'pending' 
-                              ? 'bg-yellow-100 text-yellow-800' 
+                            material.verifiedBy === 'pending'
+                              ? 'bg-yellow-100 text-yellow-800'
                               : material.verifiedBy === 'verified'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-red-100 text-red-800'
                           }`}>
-                            {material.verifiedBy === 'pending' ? 'Pending' : 
-                             material.verifiedBy === 'verified' ? 'Verified' : 'Rejected'}
+                            {material.verifiedBy === 'pending' ? 'Pending' :
+                              material.verifiedBy === 'verified' ? 'Verified' : 'Rejected'}
                           </span>
                           <span className="ml-2 text-xs text-gray-500">
-                            {new Date(material.createdAt).toLocaleDateString()}
+                            {formatDate(material.createdAt)}
                           </span>
                         </div>
                       </div>
@@ -778,6 +614,17 @@ const Upload = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Paywall Overlay */}
+      <PaywallOverlay
+        isVisible={showPaywall}
+        onClose={() => {
+          // No close functionality
+        }}
+        title="Upload Feature Under Development"
+        message="This feature is currently under development. We're working hard to bring you the best upload experience. If you'd like to contribute to this project, please visit our GitHub repository."
+        githubUrl="https://github.com/hellovaibhav/AcademiaStacks"
+      />
     </div>
   );
 };

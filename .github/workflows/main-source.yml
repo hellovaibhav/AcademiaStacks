@@ -1,4 +1,4 @@
-name: 'Enforce Staging to Main PRs'
+name: 'Enforce Development to Main PRs'
 
 on:
   pull_request:
@@ -10,8 +10,8 @@ jobs:
   enforce_branch_source:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Check that PR source is the staging branch'
-        if: github.head_ref != 'staging'
+      - name: 'Check that PR source is the development branch'
+        if: github.head_ref != 'development'
         run: |
-          echo "ERROR: Pull Requests to the 'main' branch must come from the 'staging' branch."
+          echo "ERROR: Pull Requests to the 'main' branch must come from the 'development' branch."
           exit 1

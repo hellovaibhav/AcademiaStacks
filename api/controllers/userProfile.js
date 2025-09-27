@@ -1,37 +1,37 @@
-import Material from "../models/Material.js";
-import User from "../models/User.js";
-import { createError } from "../utils/error.js";
+import Material from '../models/Material.js';
+import User from '../models/User.js';
+import {createError} from '../utils/error.js';
 
 /**
  * Get user's uploaded materials
  */
 export const getUserUploadedMaterials = async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const { page = 1, limit = 20 } = req.query;
+    const {userId} = req.params;
+    const {page = 1, limit = 20} = req.query;
 
     const skip = (page - 1) * limit;
     const maxLimit = 100;
     const finalLimit = Math.min(limit, maxLimit);
 
-    const materials = await Material.find({ 
+    const materials = await Material.find({
       contributedBy: userId,
       $or: [
-        { verifiedBy: 'verified' },
-        { verifiedBy: 'notVerified' },
-        { verifiedBy: { $exists: false } }
+        {verifiedBy: 'verified'},
+        {verifiedBy: 'notVerified'},
+        {verifiedBy: {$exists: false}}
       ]
     })
-      .sort({ createdAt: -1 })
+      .sort({createdAt: -1})
       .skip(skip)
       .limit(finalLimit);
 
-    const totalMaterials = await Material.countDocuments({ 
+    const totalMaterials = await Material.countDocuments({
       contributedBy: userId,
       $or: [
-        { verifiedBy: 'verified' },
-        { verifiedBy: 'notVerified' },
-        { verifiedBy: { $exists: false } }
+        {verifiedBy: 'verified'},
+        {verifiedBy: 'notVerified'},
+        {verifiedBy: {$exists: false}}
       ]
     });
 
@@ -41,7 +41,7 @@ export const getUserUploadedMaterials = async (req, res, next) => {
       success: true,
       materials,
       pagination: {
-        currentPage: parseInt(page),
+        currentPage: parseInt(page, 10),
         totalPages,
         totalMaterials,
         hasNext: page < totalPages,
@@ -59,8 +59,8 @@ export const getUserUploadedMaterials = async (req, res, next) => {
  */
 export const getUserUpvotedMaterials = async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const { page = 1, limit = 20 } = req.query;
+    const {userId} = req.params;
+    const {page = 1, limit = 20} = req.query;
 
     const skip = (page - 1) * limit;
     const maxLimit = 100;
@@ -73,24 +73,24 @@ export const getUserUpvotedMaterials = async (req, res, next) => {
     }
 
     // Find materials where the user's email is in the upvotes array
-    const materials = await Material.find({ 
+    const materials = await Material.find({
       upvotes: user.email,
       $or: [
-        { verifiedBy: 'verified' },
-        { verifiedBy: 'notVerified' },
-        { verifiedBy: { $exists: false } }
+        {verifiedBy: 'verified'},
+        {verifiedBy: 'notVerified'},
+        {verifiedBy: {$exists: false}}
       ]
     })
-      .sort({ createdAt: -1 })
+      .sort({createdAt: -1})
       .skip(skip)
       .limit(finalLimit);
 
-    const totalMaterials = await Material.countDocuments({ 
+    const totalMaterials = await Material.countDocuments({
       upvotes: user.email,
       $or: [
-        { verifiedBy: 'verified' },
-        { verifiedBy: 'notVerified' },
-        { verifiedBy: { $exists: false } }
+        {verifiedBy: 'verified'},
+        {verifiedBy: 'notVerified'},
+        {verifiedBy: {$exists: false}}
       ]
     });
 
@@ -100,7 +100,7 @@ export const getUserUpvotedMaterials = async (req, res, next) => {
       success: true,
       materials,
       pagination: {
-        currentPage: parseInt(page),
+        currentPage: parseInt(page, 10),
         totalPages,
         totalMaterials,
         hasNext: page < totalPages,
@@ -118,8 +118,8 @@ export const getUserUpvotedMaterials = async (req, res, next) => {
  */
 export const getUserSavedMaterials = async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const { page = 1, limit = 20 } = req.query;
+    const {userId} = req.params;
+    const {page = 1, limit = 20} = req.query;
 
     const skip = (page - 1) * limit;
     const maxLimit = 100;
@@ -138,7 +138,7 @@ export const getUserSavedMaterials = async (req, res, next) => {
         success: true,
         materials: [],
         pagination: {
-          currentPage: parseInt(page),
+          currentPage: parseInt(page, 10),
           totalPages: 0,
           totalMaterials: 0,
           hasNext: false,
@@ -147,24 +147,24 @@ export const getUserSavedMaterials = async (req, res, next) => {
       });
     }
 
-    const materials = await Material.find({ 
-      _id: { $in: savedItemIds },
+    const materials = await Material.find({
+      _id: {$in: savedItemIds},
       $or: [
-        { verifiedBy: 'verified' },
-        { verifiedBy: 'notVerified' },
-        { verifiedBy: { $exists: false } }
+        {verifiedBy: 'verified'},
+        {verifiedBy: 'notVerified'},
+        {verifiedBy: {$exists: false}}
       ]
     })
-      .sort({ createdAt: -1 })
+      .sort({createdAt: -1})
       .skip(skip)
       .limit(finalLimit);
 
-    const totalMaterials = await Material.countDocuments({ 
-      _id: { $in: savedItemIds },
+    const totalMaterials = await Material.countDocuments({
+      _id: {$in: savedItemIds},
       $or: [
-        { verifiedBy: 'verified' },
-        { verifiedBy: 'notVerified' },
-        { verifiedBy: { $exists: false } }
+        {verifiedBy: 'verified'},
+        {verifiedBy: 'notVerified'},
+        {verifiedBy: {$exists: false}}
       ]
     });
 
@@ -174,7 +174,7 @@ export const getUserSavedMaterials = async (req, res, next) => {
       success: true,
       materials,
       pagination: {
-        currentPage: parseInt(page),
+        currentPage: parseInt(page, 10),
         totalPages,
         totalMaterials,
         hasNext: page < totalPages,
@@ -192,7 +192,7 @@ export const getUserSavedMaterials = async (req, res, next) => {
  */
 export const getUserProfileStats = async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const {userId} = req.params;
 
     // Get user info
     const user = await User.findById(userId);
@@ -201,41 +201,41 @@ export const getUserProfileStats = async (req, res, next) => {
     }
 
     // Get uploaded materials count
-    const uploadedCount = await Material.countDocuments({ 
+    const uploadedCount = await Material.countDocuments({
       contributedBy: userId,
       $or: [
-        { verifiedBy: 'verified' },
-        { verifiedBy: 'notVerified' },
-        { verifiedBy: { $exists: false } }
+        {verifiedBy: 'verified'},
+        {verifiedBy: 'notVerified'},
+        {verifiedBy: {$exists: false}}
       ]
     });
 
     // Get upvoted materials count
-    const upvotedCount = await Material.countDocuments({ 
+    const upvotedCount = await Material.countDocuments({
       upvotes: user.email,
       $or: [
-        { verifiedBy: 'verified' },
-        { verifiedBy: 'notVerified' },
-        { verifiedBy: { $exists: false } }
+        {verifiedBy: 'verified'},
+        {verifiedBy: 'notVerified'},
+        {verifiedBy: {$exists: false}}
       ]
     });
 
     // Get saved materials count
     const savedItemIds = user.savedItem.filter(id => id !== '0');
-    const savedCount = await Material.countDocuments({ 
-      _id: { $in: savedItemIds },
+    const savedCount = await Material.countDocuments({
+      _id: {$in: savedItemIds},
       $or: [
-        { verifiedBy: 'verified' },
-        { verifiedBy: 'notVerified' },
-        { verifiedBy: { $exists: false } }
+        {verifiedBy: 'verified'},
+        {verifiedBy: 'notVerified'},
+        {verifiedBy: {$exists: false}}
       ]
     });
 
     // Get total upvotes received
     const totalUpvotesReceived = await Material.aggregate([
-      { $match: { contributedBy: userId } },
-      { $project: { upvoteCount: { $size: "$upvotes" } } },
-      { $group: { _id: null, total: { $sum: "$upvoteCount" } } }
+      {$match: {contributedBy: userId}},
+      {$project: {upvoteCount: {$size: '$upvotes'}}},
+      {$group: {_id: null, total: {$sum: '$upvoteCount'}}}
     ]);
 
     res.json({

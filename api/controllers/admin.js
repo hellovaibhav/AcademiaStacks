@@ -1,15 +1,15 @@
-import Material from "../models/Material.js";
-import User from "../models/User.js";
-import { deleteGozungaFile } from "../utils/gozunga.js";
-import { createError } from "../utils/error.js";
+import Material from '../models/Material.js';
+import User from '../models/User.js';
+// Removed Gozunga integration
+import {createError} from '../utils/error.js';
 
 /**
  * Get all materials for admin review (including pending, approved, rejected)
  */
 export const getAllMaterialsForAdmin = async (req, res, next) => {
   try {
-    const { status, page = 1, limit = 20 } = req.query;
-    
+    const {status, page = 1, limit = 20} = req.query;
+
     // Build filter based on status
     let filter = {};
     if (status) {
@@ -22,7 +22,7 @@ export const getAllMaterialsForAdmin = async (req, res, next) => {
 
     const materials = await Material.find(filter)
       .populate('contributedBy', 'name email')
-      .sort({ createdAt: -1 })
+      .sort({createdAt: -1})
       .skip(skip)
       .limit(finalLimit);
 
@@ -33,8 +33,8 @@ export const getAllMaterialsForAdmin = async (req, res, next) => {
     const stats = await Material.aggregate([
       {
         $group: {
-          _id: { $ifNull: ['$verifiedBy', 'legacy'] },
-          count: { $sum: 1 }
+          _id: {$ifNull: ['$verifiedBy', 'legacy']},
+          count: {$sum: 1}
         }
       }
     ]);
@@ -49,18 +49,24 @@ export const getAllMaterialsForAdmin = async (req, res, next) => {
     };
 
     stats.forEach(stat => {
-      if (stat._id === 'pending') statistics.pending = stat.count;
-      else if (stat._id === 'verified') statistics.approved = stat.count;
-      else if (stat._id === 'rejected') statistics.rejected = stat.count;
-      else if (stat._id === 'legacy') statistics.legacy = stat.count;
-      else if (stat._id === 'notVerified') statistics.notVerified = stat.count;
+      if (stat._id === 'pending') {
+        statistics.pending = stat.count;
+      } else if (stat._id === 'verified') {
+        statistics.approved = stat.count;
+      } else if (stat._id === 'rejected') {
+        statistics.rejected = stat.count;
+      } else if (stat._id === 'legacy') {
+        statistics.legacy = stat.count;
+      } else if (stat._id === 'notVerified') {
+        statistics.notVerified = stat.count;
+      }
     });
 
     res.json({
       success: true,
       materials,
       pagination: {
-        currentPage: parseInt(page),
+        currentPage: parseInt(page, 10),
         totalPages,
         totalMaterials,
         hasNext: page < totalPages,
@@ -79,8 +85,8 @@ export const getAllMaterialsForAdmin = async (req, res, next) => {
  */
 export const approveMaterial = async (req, res, next) => {
   try {
-    const { materialId } = req.params;
-    const { adminNotes } = req.body;
+    const {materialId} = req.params;
+    const {adminNotes} = req.body;
 
     const material = await Material.findById(materialId);
     if (!material) {
@@ -117,8 +123,8 @@ export const approveMaterial = async (req, res, next) => {
  */
 export const rejectMaterial = async (req, res, next) => {
   try {
-    const { materialId } = req.params;
-    const { reason } = req.body;
+    const {materialId} = req.params;
+    const {reason} = req.body;
 
     const material = await Material.findById(materialId);
     if (!material) {
@@ -129,16 +135,7 @@ export const rejectMaterial = async (req, res, next) => {
       return next(createError(400, 'Material is already rejected'));
     }
 
-    // Delete from Gozunga storage if file exists
-    if (material.driveFileId) {
-      try {
-        await deleteGozungaFile(material.driveFileId);
-        console.log(`Deleted file ${material.driveFileId} from Gozunga storage`);
-      } catch (gozungaError) {
-        console.warn('Failed to delete from Gozunga storage:', gozungaError);
-        // Continue with rejection even if storage deletion fails
-      }
-    }
+    // File stored locally, no additional cleanup needed
 
     // Update material status
     material.verifiedBy = 'rejected';
@@ -166,7 +163,7 @@ export const rejectMaterial = async (req, res, next) => {
  */
 export const getMaterialForAdmin = async (req, res, next) => {
   try {
-    const { materialId } = req.params;
+    const {materialId} = req.params;
 
     const material = await Material.findById(materialId)
       .populate('contributedBy', 'name email branch batch');
@@ -191,14 +188,14 @@ export const getMaterialForAdmin = async (req, res, next) => {
 export const getAdminStats = async (req, res, next) => {
   try {
     const totalUsers = await User.countDocuments();
-    const verifiedUsers = await User.countDocuments({ isVerified: true });
-    const adminUsers = await User.countDocuments({ isAdmin: true });
+    const verifiedUsers = await User.countDocuments({isVerified: true});
+    const adminUsers = await User.countDocuments({isAdmin: true});
 
     const materialStats = await Material.aggregate([
       {
         $group: {
-          _id: { $ifNull: ['$verifiedBy', 'legacy'] },
-          count: { $sum: 1 }
+          _id: {$ifNull: ['$verifiedBy', 'legacy']},
+          count: {$sum: 1}
         }
       }
     ]);
@@ -213,7 +210,7 @@ export const getAdminStats = async (req, res, next) => {
     // Recent activity
     const recentMaterials = await Material.find()
       .populate('contributedBy', 'name email')
-      .sort({ createdAt: -1 })
+      .sort({createdAt: -1})
       .limit(10);
 
     res.json({
@@ -246,7 +243,7 @@ export const getAdminStats = async (req, res, next) => {
  */
 export const promoteToAdmin = async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const {userId} = req.params;
 
     const user = await User.findById(userId);
     if (!user) {
@@ -283,7 +280,7 @@ export const promoteToAdmin = async (req, res, next) => {
  */
 export const demoteFromAdmin = async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const {userId} = req.params;
 
     // Prevent self-demotion
     if (userId === req.user._id.toString()) {

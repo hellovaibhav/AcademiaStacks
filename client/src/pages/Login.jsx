@@ -1,28 +1,48 @@
-import React, { useContext, useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import Loader from "../components/Loader";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import React, {useContext, useState, useEffect} from 'react';
+import {motion} from 'framer-motion';
+import {Link, useNavigate, useLocation} from 'react-router-dom';
+import {AuthContext} from '../context/AuthContext';
+import Loader from '../components/Loader';
+import {AiOutlineEye, AiOutlineEyeInvisible} from 'react-icons/ai';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [data, setData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
+  const [verificationMessage, setVerificationMessage] = useState(null);
 
-  const { loading, error, login, isAuthenticated, clearError } = useContext(AuthContext);
+  const {loading, error, login, isAuthenticated, clearError} = useContext(AuthContext);
 
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/material");
+      navigate('/material');
     }
   }, [isAuthenticated, navigate]);
+
+  // Check for verification success message
+  useEffect(() => {
+    if (location.state?.verified && location.state?.message) {
+      setVerificationMessage(location.state.message);
+
+      // Clear the message after 5 seconds
+      const timer = setTimeout(() => {
+        setVerificationMessage(null);
+      }, 5000);
+
+      // Clear the navigation state to prevent the message from showing again
+      // if user refreshes or navigates back
+      navigate(location.pathname, {replace: true, state: {}});
+
+      return () => clearTimeout(timer);
+    }
+  }, [location.state, navigate, location.pathname]);
 
   // Clear errors when component unmounts or data changes
   useEffect(() => {
@@ -31,44 +51,44 @@ const Login = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!data.email) {
-      newErrors.email = "Email is required";
+      newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(data.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = 'Please enter a valid email';
     }
-    
+
     if (!data.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = 'Password is required';
     } else if (data.password.length === 0) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password = 'Password must be at least 6 characters';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    setData(prev => ({ ...prev, [id]: value }));
-    
+    const {id, value} = e.target;
+    setData(prev => ({...prev, [id]: value}));
+
     // Clear error for this field when user starts typing
     if (errors[id]) {
-      setErrors(prev => ({ ...prev, [id]: "" }));
+      setErrors(prev => ({...prev, [id]: ''}));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     const result = await login(data);
-    
+
     if (result.success) {
-      navigate("/material");
+      navigate('/material');
     }
   };
 
@@ -76,15 +96,15 @@ const Login = () => {
     <>
       {loading ? (
         <div className="min-h-screen bg-[#F3EFE0] flex items-center justify-center pt-20">
-          <Loader />
+          <Loader message="Signing you in..." />
         </div>
       ) : (
         <div className="min-h-screen bg-[#F3EFE0] pt-20 pb-10">
           <div className="container mx-auto px-4">
             {/* Header Section */}
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{opacity: 0, y: -20}}
+              animate={{opacity: 1, y: 0}}
               className="text-center mb-12"
             >
               <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
@@ -97,15 +117,29 @@ const Login = () => {
 
             <div className="max-w-md mx-auto">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+                initial={{opacity: 0, y: 20}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 0.6}}
                 className="bg-white rounded-2xl shadow-xl p-8"
               >
+                {verificationMessage && (
+                  <motion.div
+                    initial={{opacity: 0, scale: 0.95}}
+                    animate={{opacity: 1, scale: 1}}
+                    exit={{opacity: 0, scale: 0.95}}
+                    className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6"
+                  >
+                    <div className="flex items-center">
+                      <div className="text-green-600 text-xl mr-3">✅</div>
+                      <div>{verificationMessage}</div>
+                    </div>
+                  </motion.div>
+                )}
+
                 {error && (
                   <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{opacity: 0, x: -20}}
+                    animate={{opacity: 1, x: 0}}
                     className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6"
                   >
                     {error}
@@ -127,13 +161,13 @@ const Login = () => {
                       className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#22A39F] focus:border-transparent transition-all duration-200 ${
                         errors.email ? 'border-red-500' : 'border-gray-300'
                       }`}
-                      whileFocus={{ scale: 1.02 }}
+                      whileFocus={{scale: 1.02}}
                       autoComplete="email"
                     />
                     {errors.email && (
                       <motion.p
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{opacity: 0, y: -10}}
+                        animate={{opacity: 1, y: 0}}
                         className="text-red-500 text-sm"
                       >
                         {errors.email}
@@ -148,7 +182,7 @@ const Login = () => {
                     </label>
                     <div className="relative">
                       <motion.input
-                        type={showPassword ? "text" : "password"}
+                        type={showPassword ? 'text' : 'password'}
                         id="password"
                         value={data.password}
                         onChange={handleChange}
@@ -156,7 +190,7 @@ const Login = () => {
                         className={`w-full px-4 py-3 pr-12 border rounded-lg focus:ring-2 focus:ring-[#22A39F] focus:border-transparent transition-all duration-200 ${
                           errors.password ? 'border-red-500' : 'border-gray-300'
                         }`}
-                        whileFocus={{ scale: 1.02 }}
+                        whileFocus={{scale: 1.02}}
                         autoComplete="current-password"
                       />
                       <button
@@ -169,8 +203,8 @@ const Login = () => {
                     </div>
                     {errors.password && (
                       <motion.p
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{opacity: 0, y: -10}}
+                        animate={{opacity: 1, y: 0}}
                         className="text-red-500 text-sm"
                       >
                         {errors.password}
@@ -183,23 +217,27 @@ const Login = () => {
                     type="submit"
                     disabled={loading}
                     className="w-full bg-[#22A39F] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#1a8a87] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
-                    whileHover={{ scale: loading ? 1 : 1.02 }}
-                    whileTap={{ scale: loading ? 1 : 0.98 }}
+                    whileHover={{scale: loading ? 1 : 1.02}}
+                    whileTap={{scale: loading ? 1 : 0.98}}
                   >
                     {loading ? (
                       <div className="flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                        <motion.div
+                          className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"
+                          animate={{rotate: 360}}
+                          transition={{duration: 1, repeat: Infinity, ease: 'linear'}}
+                        />
                         Signing in...
                       </div>
                     ) : (
-                      "Sign In"
+                      'Sign In'
                     )}
                   </motion.button>
 
                   {/* Register Link */}
                   <div className="text-center">
                     <p className="text-gray-600">
-                      Don't have an account?{" "}
+                      Don't have an account?{' '}
                       <Link
                         to="/register"
                         className="text-[#22A39F] hover:text-[#1a8a87] font-semibold transition-colors duration-200"
@@ -213,9 +251,9 @@ const Login = () => {
 
               {/* Additional Info */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                initial={{opacity: 0, y: 20}}
+                animate={{opacity: 1, y: 0}}
+                transition={{duration: 0.6, delay: 0.3}}
                 className="mt-8 text-center"
               >
                 <p className="text-gray-600 text-sm">

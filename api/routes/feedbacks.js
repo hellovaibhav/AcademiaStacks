@@ -1,8 +1,8 @@
-import express from "express"
-import { createFeedback } from "../controllers/feedback.js";
+import express from 'express';
+import {createFeedback} from '../controllers/feedback.js';
 
 const router = express.Router();
 
-router.post("/", createFeedback);
+router.post('/', createFeedback);
 
-export default router
+export default router;

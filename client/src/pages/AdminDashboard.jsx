@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, {useState, useEffect, useCallback} from 'react';
+import {motion} from 'framer-motion';
 import axios from 'axios';
-import { toast } from 'react-toastify';
-import { useAuth } from '../context/AuthContext';
-import { API_ENDPOINTS } from '../config/api';
-import { 
+import {useToast} from '../components/Toast';
+import {useAuth} from '../context/AuthContext';
+import {API_ENDPOINTS} from '../config/api';
+import {ModernSpinner} from '../components/Loader';
+import {
   AiOutlineCheckCircle,
   AiOutlineCloseCircle,
   AiOutlineEye,
@@ -15,9 +16,26 @@ import {
 } from 'react-icons/ai';
 
 const AdminDashboard = () => {
-  const { user, isAuthenticated } = useAuth();
+  const {user, isAuthenticated} = useAuth();
+  const {toast} = useToast();
   const [materials, setMaterials] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // Helper function to safely format dates
+  const formatDate = (dateString) => {
+    if (!dateString) {
+      return 'Date not available';
+    }
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return 'Date not available';
+    }
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
   const [stats, setStats] = useState(null);
   const [selectedMaterial, setSelectedMaterial] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -32,26 +50,31 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      if (filters.status) params.append('status', filters.status);
-      if (filters.materialType) params.append('materialType', filters.materialType);
-      if (filters.page) params.append('page', filters.page);
+      if (filters.status) {
+        params.append('status', filters.status);
+      }
+      if (filters.materialType) {
+        params.append('materialType', filters.materialType);
+      }
+      if (filters.page) {
+        params.append('page', filters.page);
+      }
 
       const response = await axios.get(`${API_ENDPOINTS.ADMIN_MATERIALS}?${params}`);
       setMaterials(response.data.materials || []);
     } catch (error) {
-      console.error('Error fetching materials:', error);
       toast.error('Failed to load materials');
     } finally {
       setLoading(false);
     }
-  }, [filters]);
+  }, [filters, toast]);
 
   const fetchStats = useCallback(async () => {
     try {
       const response = await axios.get(API_ENDPOINTS.ADMIN_STATS);
       setStats(response.data.stats);
     } catch (error) {
-      console.error('Error fetching stats:', error);
+      // Error fetching stats - continue without stats
     }
   }, []);
 
@@ -63,7 +86,7 @@ const AdminDashboard = () => {
   }, [isAuthenticated, user, filters, fetchMaterials, fetchStats]);
 
   const handleApprove = async (materialId) => {
-    setActionLoading(prev => ({ ...prev, [materialId]: true }));
+    setActionLoading(prev => ({...prev, [materialId]: true}));
     try {
       await axios.patch(`${API_ENDPOINTS.ADMIN_MATERIALS}/${materialId}/approve`, {
         adminNotes: 'Approved by admin'
@@ -72,18 +95,19 @@ const AdminDashboard = () => {
       fetchMaterials();
       fetchStats();
     } catch (error) {
-      console.error('Error approving material:', error);
       toast.error('Failed to approve material');
     } finally {
-      setActionLoading(prev => ({ ...prev, [materialId]: false }));
+      setActionLoading(prev => ({...prev, [materialId]: false}));
     }
   };
 
   const handleReject = async (materialId) => {
     const reason = prompt('Please provide a reason for rejection:');
-    if (!reason) return;
+    if (!reason) {
+      return;
+    }
 
-    setActionLoading(prev => ({ ...prev, [materialId]: true }));
+    setActionLoading(prev => ({...prev, [materialId]: true}));
     try {
       await axios.patch(`${API_ENDPOINTS.ADMIN_MATERIALS}/${materialId}/reject`, {
         reason
@@ -92,10 +116,9 @@ const AdminDashboard = () => {
       fetchMaterials();
       fetchStats();
     } catch (error) {
-      console.error('Error rejecting material:', error);
       toast.error('Failed to reject material');
     } finally {
-      setActionLoading(prev => ({ ...prev, [materialId]: false }));
+      setActionLoading(prev => ({...prev, [materialId]: false}));
     }
   };
 
@@ -105,30 +128,29 @@ const AdminDashboard = () => {
       setSelectedMaterial(response.data.material);
       setShowModal(true);
     } catch (error) {
-      console.error('Error fetching material details:', error);
       toast.error('Failed to load material details');
     }
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'verified': return 'text-green-600 bg-green-100';
-      case 'pending': return 'text-yellow-600 bg-yellow-100';
-      case 'rejected': return 'text-red-600 bg-red-100';
-      case 'legacy': return 'text-orange-600 bg-orange-100';
-      case 'notVerified': return 'text-blue-600 bg-blue-100';
-      default: return 'text-gray-600 bg-gray-100';
+    case 'verified': return 'text-green-600 bg-green-100';
+    case 'pending': return 'text-yellow-600 bg-yellow-100';
+    case 'rejected': return 'text-red-600 bg-red-100';
+    case 'legacy': return 'text-orange-600 bg-orange-100';
+    case 'notVerified': return 'text-blue-600 bg-blue-100';
+    default: return 'text-gray-600 bg-gray-100';
     }
   };
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'verified': return <AiOutlineCheckCircle className="w-4 h-4" />;
-      case 'pending': return <AiOutlineClockCircle className="w-4 h-4" />;
-      case 'rejected': return <AiOutlineCloseCircle className="w-4 h-4" />;
-      case 'legacy': return <AiOutlineFileText className="w-4 h-4" />;
-      case 'notVerified': return <AiOutlineFileText className="w-4 h-4" />;
-      default: return <AiOutlineFileText className="w-4 h-4" />;
+    case 'verified': return <AiOutlineCheckCircle className="w-4 h-4" />;
+    case 'pending': return <AiOutlineClockCircle className="w-4 h-4" />;
+    case 'rejected': return <AiOutlineCloseCircle className="w-4 h-4" />;
+    case 'legacy': return <AiOutlineFileText className="w-4 h-4" />;
+    case 'notVerified': return <AiOutlineFileText className="w-4 h-4" />;
+    default: return <AiOutlineFileText className="w-4 h-4" />;
     }
   };
 
@@ -136,8 +158,8 @@ const AdminDashboard = () => {
     return (
       <div className="min-h-screen bg-[#F3EFE0] flex items-center justify-center pt-20">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: 50}}
+          animate={{opacity: 1, y: 0}}
           className="bg-white p-8 rounded-xl shadow-lg text-center max-w-md mx-4"
         >
           <AiOutlineUser className="text-6xl text-[#22A39F] mx-auto mb-4" />
@@ -146,7 +168,9 @@ const AdminDashboard = () => {
             Please login to access the admin dashboard
           </p>
           <button
-            onClick={() => window.location.href = '/login'}
+            onClick={() => {
+              window.location.href = '/login';
+            }}
             className="bg-[#22A39F] text-white px-6 py-2 rounded-lg hover:bg-[#1a8a85] transition-colors"
           >
             Go to Login
@@ -160,8 +184,8 @@ const AdminDashboard = () => {
     return (
       <div className="min-h-screen bg-[#F3EFE0] flex items-center justify-center pt-20">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: 50}}
+          animate={{opacity: 1, y: 0}}
           className="bg-white p-8 rounded-xl shadow-lg text-center max-w-md mx-4"
         >
           <AiOutlineCloseCircle className="text-6xl text-red-500 mx-auto mb-4" />
@@ -185,8 +209,8 @@ const AdminDashboard = () => {
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: -20}}
+          animate={{opacity: 1, y: 0}}
           className="text-center mb-8"
         >
           <h1 className="text-4xl font-bold text-[#22A39F] mb-4">Admin Dashboard</h1>
@@ -198,8 +222,8 @@ const AdminDashboard = () => {
         {/* Statistics Cards */}
         {stats && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{opacity: 0, y: 20}}
+            animate={{opacity: 1, y: 0}}
             className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
           >
             <div className="bg-white rounded-lg shadow-lg p-6">
@@ -254,8 +278,8 @@ const AdminDashboard = () => {
 
         {/* Filters */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: 20}}
+          animate={{opacity: 1, y: 0}}
           className="bg-white rounded-lg shadow-lg p-6 mb-8"
         >
           <h3 className="text-lg font-semibold mb-4">Filters</h3>
@@ -264,7 +288,7 @@ const AdminDashboard = () => {
               <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
               <select
                 value={filters.status}
-                onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+                onChange={(e) => setFilters(prev => ({...prev, status: e.target.value}))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#22A39F]"
               >
                 <option value="">All Status</option>
@@ -277,7 +301,7 @@ const AdminDashboard = () => {
               <label className="block text-sm font-medium text-gray-700 mb-2">Material Type</label>
               <select
                 value={filters.materialType}
-                onChange={(e) => setFilters(prev => ({ ...prev, materialType: e.target.value }))}
+                onChange={(e) => setFilters(prev => ({...prev, materialType: e.target.value}))}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#22A39F]"
               >
                 <option value="">All Types</option>
@@ -289,7 +313,7 @@ const AdminDashboard = () => {
             </div>
             <div className="flex items-end">
               <button
-                onClick={() => setFilters({ status: '', materialType: '', page: 1 })}
+                onClick={() => setFilters({status: '', materialType: '', page: 1})}
                 className="w-full bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
               >
                 Clear Filters
@@ -300,17 +324,17 @@ const AdminDashboard = () => {
 
         {/* Materials List */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{opacity: 0, y: 20}}
+          animate={{opacity: 1, y: 0}}
           className="bg-white rounded-lg shadow-lg overflow-hidden"
         >
           <div className="px-6 py-4 border-b border-gray-200">
             <h3 className="text-lg font-semibold">Materials Management</h3>
           </div>
-          
+
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#22A39F]"></div>
+              <ModernSpinner size="medium" type="symmetric" />
             </div>
           ) : materials.length === 0 ? (
             <div className="text-center py-12 text-gray-500">
@@ -370,7 +394,7 @@ const AdminDashboard = () => {
                         {material.contributedBy}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(material.createdAt).toLocaleDateString()}
+                        {formatDate(material.createdAt)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex space-x-2">
@@ -381,7 +405,7 @@ const AdminDashboard = () => {
                           >
                             <AiOutlineEye className="w-4 h-4" />
                           </button>
-                          
+
                           {(material.verifiedBy === 'pending' || material.verifiedBy === 'notVerified' || !material.verifiedBy) && (
                             <>
                               <button
@@ -416,8 +440,8 @@ const AdminDashboard = () => {
         {showModal && selectedMaterial && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{opacity: 0, scale: 0.9}}
+              animate={{opacity: 1, scale: 1}}
               className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             >
               <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
@@ -429,7 +453,7 @@ const AdminDashboard = () => {
                   <AiOutlineCloseCircle className="w-6 h-6" />
                 </button>
               </div>
-              
+
               <div className="px-6 py-4 space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -452,29 +476,29 @@ const AdminDashboard = () => {
                     </span>
                   </div>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Description</label>
                   <p className="text-sm text-gray-900">{selectedMaterial.desc || 'No description provided'}</p>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Authors</label>
                   <p className="text-sm text-gray-900">{selectedMaterial.author?.join(', ')}</p>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Instructors</label>
                   <p className="text-sm text-gray-900">{selectedMaterial.instructorName?.join(', ')}</p>
                 </div>
-                
+
                 {selectedMaterial.rejectionReason && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700">Rejection Reason</label>
                     <p className="text-sm text-red-600">{selectedMaterial.rejectionReason}</p>
                   </div>
                 )}
-                
+
                 <div className="flex justify-end space-x-2 pt-4">
                   <button
                     onClick={() => window.open(selectedMaterial.materialLink, '_blank')}

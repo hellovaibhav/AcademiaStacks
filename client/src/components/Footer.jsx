@@ -1,14 +1,14 @@
-import React from "react";
-import { 
-  AiOutlineMail, 
-  AiOutlinePhone, 
+import React from 'react';
+import {
+  AiOutlineMail,
+  AiOutlinePhone,
   AiOutlineEnvironment,
   AiOutlineGithub,
   AiOutlineLinkedin,
   AiOutlineTwitter,
   AiOutlineHeart
-} from "react-icons/ai";
-import { BiCodeAlt } from "react-icons/bi";
+} from 'react-icons/ai';
+import {BiCodeAlt} from 'react-icons/bi';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
