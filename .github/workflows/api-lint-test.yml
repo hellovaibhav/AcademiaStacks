@@ -1,0 +1,44 @@
+name: API Lint & Test
+
+on:
+  push:
+    branches: [ main, development ]
+    paths:
+      - 'api/**'
+      - '.github/workflows/api-lint-test.yml'
+  pull_request:
+    branches: [ main, development ]
+    paths:
+      - 'api/**'
+      - '.github/workflows/api-lint-test.yml'
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: 'api/package-lock.json'
+        
+    - name: Install API dependencies
+      working-directory: ./api
+      run: npm ci
+      
+    - name: Run API linting
+      working-directory: ./api
+      run: npx eslint@8 . --ext .js --max-warnings 1000 || true
+      
+    - name: Run API security audit
+      working-directory: ./api
+      run: npm audit --audit-level=high
+      
+    - name: Test API syntax
+      working-directory: ./api
+      run: node -c index.js
