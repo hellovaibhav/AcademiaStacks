@@ -173,7 +173,7 @@ const Footer = () => {
             <div className="flex items-center space-x-4 text-sm text-gray-400">
               <span>© {currentYear} Academia Stacks</span>
               <span className="hidden sm:inline">•</span>
-              <span className="hidden sm:inline">Version 1.0.1 (α)</span>
+              <span className="hidden sm:inline">Version 2.0.0 (β)</span>
             </div>
           </div>
         </div>
