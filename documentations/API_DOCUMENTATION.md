@@ -718,7 +718,7 @@ GET /
 {
   "message": "The app is up and running",
   "timestamp": "2024-01-15T10:30:00Z",
-  "version": "1.0.0"
+  "version": "2.0.0"
 }
 ```
 
