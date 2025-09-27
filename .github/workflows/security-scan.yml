@@ -12,26 +12,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Check for hardcoded secrets (API)
+    - name: Run security scan
       run: |
-        echo "Scanning for potential secrets in API code..."
-        # Check for actual hardcoded secrets (not just variable names)
-        if grep -r -E "(password\s*[:=]\s*['\"][^'\"]{8,}['\"]|secret\s*[:=]\s*['\"][^'\"]{8,}['\"]|key\s*[:=]\s*['\"][^'\"]{8,}['\"])" api/ --exclude-dir=node_modules --exclude="*.json" --exclude="*.md" --exclude="*.pdf"; then
-          echo "❌ Potential hardcoded secrets found in API code!"
-          exit 1
-        else
-          echo "✅ No hardcoded secrets found in API code"
-        fi
-        
-    - name: Check for hardcoded secrets (Client)
-      run: |
-        echo "Scanning for potential secrets in client code..."
-        if grep -r -i -E "(password|secret|key|token|api_key|apikey)" client/src/ --exclude-dir=node_modules | grep -v "process.env" | grep -v "//.*password\|//.*secret\|//.*key\|//.*token" | grep -v "REACT_APP_"; then
-          echo "❌ Potential hardcoded secrets found in client code!"
-          exit 1
-        else
-          echo "✅ No hardcoded secrets found in client code"
-        fi
+        ./.github/scripts/security-scan.sh
         
     - name: Run basic security check
       run: |
