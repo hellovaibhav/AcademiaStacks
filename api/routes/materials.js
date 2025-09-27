@@ -1,35 +1,78 @@
-import express from "express"
-import { createMaterial, deleteMaterial, getMaterial, getMaterialByType, getMaterials, updateMaterial, upvoteMaterial } from "../controllers/material.js";
-import Material from "../models/Material.js";
-import { createError } from "../utils/error.js";
+import express from 'express';
+import {
+  createMaterial,
+  deleteMaterial,
+  getMaterial,
+  getMaterialByType,
+  getMaterials,
+  updateMaterial,
+  upvoteMaterial,
+  createMaterialValidation,
+  materialIdValidation,
+  materialTypeValidation,
+  upvoteValidation
+} from '../controllers/material.js';
+import {verifyToken, verifyAdmin} from '../utils/verifyToken.js';
+import Material from '../models/Material.js';
 
 const router = express.Router();
 
+// SECURITY: Create new material (Admin only)
+router.post('/', createMaterialValidation, verifyAdmin, createMaterial);
 
-// crete new material
+// SECURITY: Update the uploaded material (Admin only)
+router.put('/:materialType/:id', materialTypeValidation, materialIdValidation, verifyAdmin, updateMaterial);
 
-router.post("/", createMaterial);
+// SECURITY: Delete a selected material (Admin only)
+router.delete('/:materialType/:id', materialTypeValidation, materialIdValidation, verifyAdmin, deleteMaterial);
 
+// SECURITY: Get a particular material (Public with validation)
+router.get('/:materialType/:id', materialTypeValidation, materialIdValidation, getMaterial);
 
-// update the uploaded material
+// SECURITY: Get all materials (Public with pagination)
+router.get('/', getMaterials);
 
-router.put("/:materialType/:id", updateMaterial);
+// SECURITY: Get materials by type (Public with validation)
+router.get('/:materialType', materialTypeValidation, getMaterialByType);
 
-// delete a selected material
+// SECURITY: Upvote material (Authenticated users only)
+router.post('/upvote', upvoteValidation, verifyToken, upvoteMaterial);
 
-router.delete("/:materialType/:id", deleteMaterial);
+// SECURITY: Proxy PDF requests to avoid CORS issues
+router.get('/pdf-proxy/:materialId', async (req, res) => {
+  try {
+    const {materialId} = req.params;
+    const material = await Material.findById(materialId);
 
-// get a particular material
+    if (!material) {
+      return res.status(404).json({error: 'Material not found'});
+    }
 
-router.get("/:materialType/:id", getMaterial);
+    // Convert Google Drive URL to direct view URL
+    let pdfUrl = material.materialLink;
+    if (pdfUrl.includes('drive.google.com/file/d/')) {
+      const fileId = pdfUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)?.[1];
+      if (fileId) {
+        pdfUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+      }
+    }
 
-// get all material
-router.get("/", getMaterials);
+    // Set appropriate headers for PDF viewing
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'inline',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    });
 
-router.get("/:materialType", getMaterialByType);
-
-// upvote counts
-
-router.post("/upvote" , upvoteMaterial);
+    // For now, redirect to the Google Drive URL
+    // In production, you might want to proxy the actual content
+    res.redirect(pdfUrl);
+  } catch (error) {
+    console.error('PDF proxy error:', error);
+    res.status(500).json({error: 'Failed to load PDF'});
+  }
+});
 
 export default router;

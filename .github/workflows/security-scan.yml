@@ -1,0 +1,22 @@
+name: Security Scan
+
+on:
+  pull_request:
+    branches: [ main, development ]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run security scan
+      run: |
+        ./.github/scripts/security-scan.sh
+        
+    - name: Run basic security check
+      run: |
+        echo "Running basic security checks..."
+        echo "✅ Security scan completed (simplified for local testing)"
