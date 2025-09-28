@@ -60,31 +60,31 @@ app.set('trust proxy', 1);
 // These are the domains that are allowed to make requests to this API
 const allowedOrigins = [
   'http://localhost:3000',              // Local development frontend
-  'https://academia-stacks.vercel.app', // Production frontend
+  'https://academia-stacks.vercel.app'  // Production frontend
 ];
 
 // SECURITY: Enhanced CORS configuration
 const options = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, Postman, etc.)
-    if (!origin) {
-      return callback(null, true);
+    // SECURITY: In production, be more strict about origins
+    if (process.env.NODE_ENV === 'production') {
+      if (!origin || allowedOrigins.indexOf(origin) === -1) {
+        var errorMsg = 'The CORS policy for this site does not ' +
+                    'allow access from the specified Origin.';
+        return callback(new Error(errorMsg), false);
+      }
+    } else {
+      // Allow development origins
+      if (!origin) {
+        return callback(null, true);
+      }
+      if (allowedOrigins.indexOf(origin) === -1) {
+        var errorMsg = 'The CORS policy for this site does not ' +
+                    'allow access from the specified Origin.';
+        return callback(new Error(errorMsg), false);
+      }
     }
-    
-    // Check if origin is in allowed list
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      return callback(null, true);
-    }
-    
-    // For development, be more permissive
-    if (process.env.NODE_ENV !== 'production') {
-      return callback(null, true);
-    }
-    
-    // In production, only allow specific origins
-    var errorMsg = 'The CORS policy for this site does not ' +
-                'allow access from the specified Origin.';
-    return callback(new Error(errorMsg), false);
+    return callback(null, true);
   },
   credentials: true, // SECURITY: Allow credentials (cookies) to be sent
   optionsSuccessStatus: 200 // SECURITY: Some legacy browsers choke on 204
