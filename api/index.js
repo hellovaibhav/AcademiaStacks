@@ -249,10 +249,7 @@ const connect = async () => {
 
     // Different connection options for Vercel vs local development
     const mongoOptions = process.env.VERCEL ? {
-      // Vercel serverless-optimized configuration
-      ssl: true,
-      retryWrites: true,
-      w: 'majority',
+      // Vercel serverless-optimized configuration (only driver options, not URI options)
       serverSelectionTimeoutMS: 5000, // Shorter timeout for serverless
       socketTimeoutMS: 30000, // Shorter socket timeout
       connectTimeoutMS: 10000, // Shorter connection timeout
@@ -266,9 +263,6 @@ const connect = async () => {
       retryWrites: true
     } : {
       // Local development configuration
-      ssl: true,
-      retryWrites: true,
-      w: 'majority',
       serverSelectionTimeoutMS: 10000,
       socketTimeoutMS: 60000,
       connectTimeoutMS: 15000,
