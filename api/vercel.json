@@ -1,7 +1,7 @@
 {
     "version": 2,
     "functions": {
-        "api/**/*.js": {
+        "index.js": {
             "runtime": "@vercel/node@3.0.0"
         }
     },
