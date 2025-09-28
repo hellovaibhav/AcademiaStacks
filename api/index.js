@@ -60,31 +60,41 @@ app.set('trust proxy', 1);
 // These are the domains that are allowed to make requests to this API
 const allowedOrigins = [
   'http://localhost:3000',              // Local development frontend
-  'https://academia-stacks.vercel.app'  // Production frontend
+  'https://academia-stacks.vercel.app', // Production frontend
+  /^https:\/\/academia-stacks.*\.vercel\.app$/, // All Vercel preview deployments
 ];
 
 // SECURITY: Enhanced CORS configuration
 const options = {
   origin: function (origin, callback) {
-    // SECURITY: In production, be more strict about origins
-    if (process.env.NODE_ENV === 'production') {
-      if (!origin || allowedOrigins.indexOf(origin) === -1) {
-        var errorMsg = 'The CORS policy for this site does not ' +
-                    'allow access from the specified Origin.';
-        return callback(new Error(errorMsg), false);
-      }
-    } else {
-      // Allow development origins
-      if (!origin) {
-        return callback(null, true);
-      }
-      if (allowedOrigins.indexOf(origin) === -1) {
-        var errorMsg = 'The CORS policy for this site does not ' +
-                    'allow access from the specified Origin.';
-        return callback(new Error(errorMsg), false);
-      }
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) {
+      return callback(null, true);
     }
-    return callback(null, true);
+
+    // Debug logging to help identify blocked origins
+    console.log('CORS: Checking origin:', origin);
+
+    // Check if origin matches any allowed origin (string or regex)
+    const isAllowed = allowedOrigins.some(allowedOrigin => {
+      if (typeof allowedOrigin === 'string') {
+        return allowedOrigin === origin;
+      } else if (allowedOrigin instanceof RegExp) {
+        return allowedOrigin.test(origin);
+      }
+      return false;
+    });
+
+    if (isAllowed) {
+      console.log('CORS: Origin allowed:', origin);
+      return callback(null, true);
+    } else {
+      console.log('CORS: Origin blocked:', origin);
+      console.log('CORS: Allowed origins:', allowedOrigins);
+      var errorMsg = 'The CORS policy for this site does not ' +
+                  'allow access from the specified Origin.';
+      return callback(new Error(errorMsg), false);
+    }
   },
   credentials: true, // SECURITY: Allow credentials (cookies) to be sent
   optionsSuccessStatus: 200 // SECURITY: Some legacy browsers choke on 204
