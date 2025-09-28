@@ -374,8 +374,12 @@ app.use((err, req, res, next) => {
 });
 
 
-// Start the server
-app.listen(port, async () => {
+// Export the app for serverless deployment
+export default app;
+
+// Start the server only when not in serverless mode
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  app.listen(port, async () => {
   console.log(`🚀 Server running on port ${port}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
 
@@ -399,4 +403,5 @@ app.listen(port, async () => {
   console.log('='.repeat(60));
   console.log('✅ All APIs are ready to receive requests!');
   console.log('='.repeat(60) + '\n');
-});
+  });
+}
