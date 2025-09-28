@@ -5,9 +5,29 @@ import mongoose from 'mongoose';
 const router = express.Router();
 
 router.get('/', cors(), (req, res) => {
+  const dbState = mongoose.connection.readyState;
+  const dbStates = {
+    0: 'Disconnected',
+    1: 'Connected',
+    2: 'Connecting',
+    3: 'Disconnecting'
+  };
+  
   res.status(200).json({
     message: 'The app is up and running',
-    database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
+    database: {
+      status: dbStates[dbState],
+      isConnected: dbState === 1,
+      state: dbState,
+      host: mongoose.connection.host,
+      name: mongoose.connection.name
+    },
+    emailService: {
+      configured: !!(process.env.MAILID && process.env.MAILPASS),
+      hasMailId: !!process.env.MAILID,
+      hasMailPass: !!process.env.MAILPASS,
+      status: (process.env.MAILID && process.env.MAILPASS) ? 'Ready' : 'Not Configured'
+    },
     environment: process.env.NODE_ENV || 'development',
     vercel: !!process.env.VERCEL
   });
@@ -31,6 +51,12 @@ router.get('/health', cors(), (req, res) => {
       host: mongoose.connection.host,
       port: mongoose.connection.port,
       name: mongoose.connection.name
+    },
+    emailService: {
+      configured: !!(process.env.MAILID && process.env.MAILPASS),
+      hasMailId: !!process.env.MAILID,
+      hasMailPass: !!process.env.MAILPASS,
+      status: (process.env.MAILID && process.env.MAILPASS) ? 'Ready' : 'Not Configured'
     },
     environment: {
       nodeEnv: process.env.NODE_ENV || 'development',
