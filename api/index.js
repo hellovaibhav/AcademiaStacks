@@ -263,10 +263,7 @@ const connect = async () => {
       tlsAllowInvalidHostnames: false,
       heartbeatFrequencyMS: 10000,
       retryReads: true,
-      retryWrites: true,
-      // Serverless-specific options
-      bufferCommands: false, // Disable mongoose buffering
-      bufferMaxEntries: 0 // Disable mongoose buffering
+      retryWrites: true
     } : {
       // Local development configuration
       ssl: true,
@@ -284,6 +281,12 @@ const connect = async () => {
       retryReads: true,
       retryWrites: true
     };
+
+    // Set Mongoose-specific options for serverless environment
+    if (process.env.VERCEL) {
+      mongoose.set('bufferCommands', false);
+      mongoose.set('bufferMaxEntries', 0);
+    }
 
     await mongoose.connect(process.env.MONGODB_URI, mongoOptions);
     console.log('✅ Connected to MongoDB Database');
