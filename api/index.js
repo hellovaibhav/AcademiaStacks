@@ -285,7 +285,6 @@ const connect = async () => {
     // Set Mongoose-specific options for serverless environment
     if (process.env.VERCEL) {
       mongoose.set('bufferCommands', false);
-      mongoose.set('bufferMaxEntries', 0);
     }
 
     await mongoose.connect(process.env.MONGODB_URI, mongoOptions);
