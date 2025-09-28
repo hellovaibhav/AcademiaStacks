@@ -175,7 +175,7 @@ app.use(generalLimiter);
 // Database health check middleware
 // This middleware ensures that all API requests are only processed when the database is connected
 // It prevents errors and provides a clear response when the database is unavailable
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   // Skip health check for the root route to allow basic API status
   if (req.path === '/' || req.path === '/api' || req.path === '/api/') {
     return next();
@@ -183,12 +183,28 @@ app.use((req, res, next) => {
   
   // Check if MongoDB connection is ready (state 1 = connected)
   if (mongoose.connection.readyState !== 1) {
-    // Return 503 Service Unavailable when database is not connected
-    return res.status(503).json({
-      success: false,
-      message: 'Database connection not available. Please try again later.',
-      status: 503
-    });
+    // On Vercel, attempt to connect on first request
+    if (process.env.VERCEL) {
+      try {
+        console.log('Vercel: Attempting database connection on request...');
+        await connect();
+        console.log('Vercel: Database connected successfully on request');
+      } catch (error) {
+        console.error('Vercel: Failed to connect to database on request:', error);
+        return res.status(503).json({
+          success: false,
+          message: 'Database connection not available. Please try again later.',
+          status: 503
+        });
+      }
+    } else {
+      // Local development - return error immediately
+      return res.status(503).json({
+        success: false,
+        message: 'Database connection not available. Please try again later.',
+        status: 503
+      });
+    }
   }
   // Continue to the next middleware if database is connected
   next();
@@ -225,24 +241,46 @@ const connect = async () => {
     console.log('NODE_ENV:', process.env.NODE_ENV);
     console.log('VERCEL:', !!process.env.VERCEL);
     
-    // Enhanced MongoDB connection with proper SSL configuration and reconnection handling
-    const mongoOptions = {
+    // Check if already connected
+    if (mongoose.connection.readyState === 1) {
+      console.log('✅ Already connected to MongoDB Database');
+      return;
+    }
+
+    // Different connection options for Vercel vs local development
+    const mongoOptions = process.env.VERCEL ? {
+      // Vercel serverless-optimized configuration
       ssl: true,
       retryWrites: true,
       w: 'majority',
-      // Connection timeout and retry settings for better stability
-      serverSelectionTimeoutMS: 10000, // Wait up to 10 seconds to select a server
-      socketTimeoutMS: 60000, // Wait up to 60 seconds for socket operations
-      connectTimeoutMS: 15000, // Wait up to 15 seconds for initial connection
-      maxPoolSize: 20, // Maximum number of connections in the pool
-      minPoolSize: 10, // Minimum number of connections in the pool
-      maxIdleTimeMS: 60000, // Close connections after 60 seconds of inactivity
-      // SSL/TLS configuration for secure connections
+      serverSelectionTimeoutMS: 5000, // Shorter timeout for serverless
+      socketTimeoutMS: 30000, // Shorter socket timeout
+      connectTimeoutMS: 10000, // Shorter connection timeout
+      maxPoolSize: 1, // Single connection for serverless
+      minPoolSize: 0, // No minimum pool size
+      maxIdleTimeMS: 10000, // Close idle connections quickly
       tlsAllowInvalidCertificates: false,
       tlsAllowInvalidHostnames: false,
-      // Heartbeat frequency to keep connection alive
       heartbeatFrequencyMS: 10000,
-      // Retry logic for failed operations
+      retryReads: true,
+      retryWrites: true,
+      // Serverless-specific options
+      bufferCommands: false, // Disable mongoose buffering
+      bufferMaxEntries: 0 // Disable mongoose buffering
+    } : {
+      // Local development configuration
+      ssl: true,
+      retryWrites: true,
+      w: 'majority',
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 60000,
+      connectTimeoutMS: 15000,
+      maxPoolSize: 20,
+      minPoolSize: 10,
+      maxIdleTimeMS: 60000,
+      tlsAllowInvalidCertificates: false,
+      tlsAllowInvalidHostnames: false,
+      heartbeatFrequencyMS: 10000,
       retryReads: true,
       retryWrites: true
     };
@@ -251,6 +289,7 @@ const connect = async () => {
     console.log('✅ Connected to MongoDB Database');
   } catch (error) {
     console.error('❌ Database connection error:', error.message);
+    console.error('❌ Full error:', error);
     throw error;
   }
 };
@@ -298,16 +337,17 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-// Connect to MongoDB
-connect().catch(err => {
-  console.error('Failed to connect to MongoDB:', err);
-  // Don't exit process on Vercel - let it continue and retry
-  if (process.env.VERCEL) {
-    console.log('Running on Vercel - continuing without database connection for now');
-  } else {
+// Connect to MongoDB - handle Vercel serverless environment
+if (process.env.VERCEL) {
+  // On Vercel, connect on first request to avoid cold start issues
+  console.log('Running on Vercel - database will connect on first request');
+} else {
+  // Local development - connect immediately
+  connect().catch(err => {
+    console.error('Failed to connect to MongoDB:', err);
     process.exit(1);
-  }
-});
+  });
+}
 
 // SECURITY: Schedule cleanup of unverified users every 15 minutes
 setInterval(() => {
