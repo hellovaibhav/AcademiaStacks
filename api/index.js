@@ -166,6 +166,11 @@ app.use(generalLimiter);
 // This middleware ensures that all API requests are only processed when the database is connected
 // It prevents errors and provides a clear response when the database is unavailable
 app.use((req, res, next) => {
+  // Skip health check for the root route to allow basic API status
+  if (req.path === '/' || req.path === '/api' || req.path === '/api/') {
+    return next();
+  }
+  
   // Check if MongoDB connection is ready (state 1 = connected)
   if (mongoose.connection.readyState !== 1) {
     // Return 503 Service Unavailable when database is not connected
@@ -205,6 +210,11 @@ app.use('/uploads', express.static('uploads'));
 
 const connect = async () => {
   try {
+    console.log('Attempting to connect to MongoDB...');
+    console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
+    console.log('NODE_ENV:', process.env.NODE_ENV);
+    console.log('VERCEL:', !!process.env.VERCEL);
+    
     // Enhanced MongoDB connection with proper SSL configuration and reconnection handling
     const mongoOptions = {
       ssl: true,
@@ -281,7 +291,12 @@ process.on('SIGINT', async () => {
 // Connect to MongoDB
 connect().catch(err => {
   console.error('Failed to connect to MongoDB:', err);
-  process.exit(1);
+  // Don't exit process on Vercel - let it continue and retry
+  if (process.env.VERCEL) {
+    console.log('Running on Vercel - continuing without database connection for now');
+  } else {
+    process.exit(1);
+  }
 });
 
 // SECURITY: Schedule cleanup of unverified users every 15 minutes
