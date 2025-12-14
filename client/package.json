@@ -6,6 +6,7 @@
     "node": "22.x"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^4.3.1",
     "@tailwindcss/postcss": "^4.1.13",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -17,11 +18,12 @@
     "framer-motion": "^12.23.16",
     "js-cookie": "^3.0.5",
     "lottie-react": "^2.4.1",
-    "pdfjs-dist": "^5.4.149",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^3.6.172",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
-    "react-pdf": "^10.1.0",
+    "react-pdf": "^7.3.3",
     "react-router-dom": "^6.8.2",
     "react-scripts": "^5.0.1",
     "react-spinners": "^0.17.0",

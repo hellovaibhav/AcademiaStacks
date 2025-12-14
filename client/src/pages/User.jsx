@@ -11,7 +11,7 @@ import {
 import {BsBookmark} from 'react-icons/bs';
 import {BiUpvote} from 'react-icons/bi';
 import axios from 'axios';
-import PDFViewer from '../components/PDFViewer';
+import SecurePDFViewer from '../components/SecurePDFViewer';
 import PDFThumbnail from '../components/PDFThumbnail';
 import {ModernSpinner} from '../components/Loader';
 import {API_ENDPOINTS} from '../config/api';
@@ -396,12 +396,18 @@ const User = () => {
         </motion.div>
 
         {/* PDF Viewer Modal */}
-        <PDFViewer
+        <SecurePDFViewer
           isOpen={pdfViewer.isOpen}
           onClose={handleClosePDFViewer}
           pdfUrl={pdfViewer.url}
           materialId={pdfViewer.materialId}
           title={pdfViewer.title}
+          isSubscribed={user?.isSubscribed}
+          onSubscribeClick={() => {
+            // Handle subscription - you can implement this based on your subscription flow
+            toast.info('Please subscribe to access full features');
+            // You might want to redirect to a subscription page or show a modal
+          }}
         />
       </div>
     </div>
