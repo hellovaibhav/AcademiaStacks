@@ -36,6 +36,7 @@ import uploadRoute from './routes/upload.js';       // File upload routes
 import adminRoute from './routes/admin.js';         // Admin-only routes
 import userProfileRoute from './routes/userProfile.js'; // User profile routes
 import statsRoute from './routes/stats.js';         // Statistics and analytics routes
+import securePdfRoute from './routes/securePdf.js'; // Secure PDF serving routes
 
 // Utility imports
 import cookieParser from 'cookie-parser';           // Cookie parsing middleware
@@ -403,6 +404,7 @@ app.use('/api/upload', uploadRoute);        // File upload endpoints
 app.use('/api/admin', adminRoute);          // Admin-only endpoints
 app.use('/api/user-profile', userProfileRoute); // User profile management
 app.use('/api/stats', statsRoute);          // Statistics and analytics endpoints
+app.use('/api/secure', securePdfRoute);     // Secure PDF serving endpoints
 
 
 // Global error handling middleware

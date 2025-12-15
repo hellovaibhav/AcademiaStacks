@@ -8,36 +8,36 @@ if (!API_BASE_URL) {
 
 export const API_ENDPOINTS = {
   // Authentication
-  VERIFY: `${API_BASE_URL}/auth/verification`,
+  VERIFY: `${API_BASE_URL}/api/auth/verification`,
 
   // Materials (using consistent lowercase plural format)
-  NOTES: `${API_BASE_URL}/materials/notes`,
-  ASSIGNMENTS: `${API_BASE_URL}/materials/assignments`,
-  PYQ: `${API_BASE_URL}/materials/pyqs`,
-  HANDOUTS: `${API_BASE_URL}/materials/handouts`,
-  MATERIAL: `${API_BASE_URL}/materials`,
+  NOTES: `${API_BASE_URL}/api/materials/notes`,
+  ASSIGNMENTS: `${API_BASE_URL}/api/materials/assignments`,
+  PYQ: `${API_BASE_URL}/api/materials/pyqs`,
+  HANDOUTS: `${API_BASE_URL}/api/materials/handouts`,
+  MATERIAL: `${API_BASE_URL}/api/materials`,
 
   // Upload
-  UPLOAD_MATERIAL: `${API_BASE_URL}/upload/material`,
-  UPLOAD_STATS: `${API_BASE_URL}/upload/stats`,
+  UPLOAD_MATERIAL: `${API_BASE_URL}/api/upload/material`,
+  UPLOAD_STATS: `${API_BASE_URL}/api/upload/stats`,
 
   // Admin
-  ADMIN_MATERIALS: `${API_BASE_URL}/admin/materials`,
-  ADMIN_STATS: `${API_BASE_URL}/admin/stats`,
+  ADMIN_MATERIALS: `${API_BASE_URL}/api/admin/materials`,
+  ADMIN_STATS: `${API_BASE_URL}/api/admin/stats`,
 
   // User Profile
-  USER_PROFILE_STATS: `${API_BASE_URL}/user-profile`,
+  USER_PROFILE_STATS: `${API_BASE_URL}/api/user-profile`,
 
   // Statistics
-  PLATFORM_STATS: `${API_BASE_URL}/stats/platform`,
-  GITHUB_STATS: `${API_BASE_URL}/stats/github`,
-  USER_UPLOADED: `${API_BASE_URL}/user-profile`,
-  USER_UPVOTED: `${API_BASE_URL}/user-profile`,
-  USER_SAVED: `${API_BASE_URL}/user-profile`,
+  PLATFORM_STATS: `${API_BASE_URL}/api/stats/platform`,
+  GITHUB_STATS: `${API_BASE_URL}/api/stats/github`,
+  USER_UPLOADED: `${API_BASE_URL}/api/user-profile`,
+  USER_UPVOTED: `${API_BASE_URL}/api/user-profile`,
+  USER_SAVED: `${API_BASE_URL}/api/user-profile`,
 
   // Other
-  UPVOTE: `${API_BASE_URL}/materials/upvote`,
-  FEEDBACK: `${API_BASE_URL}/feedbacks`
+  UPVOTE: `${API_BASE_URL}/api/materials/upvote`,
+  FEEDBACK: `${API_BASE_URL}/api/feedbacks`
 };
 
 export default API_ENDPOINTS;

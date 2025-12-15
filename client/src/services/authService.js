@@ -101,7 +101,7 @@ class AuthService {
         throw new Error('API Base URL is not configured. Please check your .env file.');
       }
 
-      const response = await axios.post(`${this.apiBaseUrl}/auth/login`, credentials);
+      const response = await axios.post(`${this.apiBaseUrl}/api/auth/login`, credentials);
 
       const {access_token: accessToken, refresh_token: refreshToken, user} = response.data;
 
@@ -155,7 +155,7 @@ class AuthService {
         throw new Error('API Base URL is not configured. Please check your .env file.');
       }
 
-      const response = await axios.post(`${this.apiBaseUrl}/auth/register`, userData);
+      const response = await axios.post(`${this.apiBaseUrl}/api/auth/register`, userData);
 
       // Store email for OTP verification
       Cookies.set('email', userData.email, this.getCookieOptions());
@@ -193,7 +193,7 @@ class AuthService {
         throw new Error('No refresh token available');
       }
 
-      const response = await axios.post(`${this.apiBaseUrl}/auth/refresh`, {
+      const response = await axios.post(`${this.apiBaseUrl}/api/auth/refresh`, {
         refreshToken
       });
 
@@ -213,7 +213,7 @@ class AuthService {
 
       if (refreshToken) {
         // Notify server to invalidate tokens
-        await axios.post(`${this.apiBaseUrl}/auth/logout`, {
+        await axios.post(`${this.apiBaseUrl}/api/auth/logout`, {
           refreshToken
         });
       }
@@ -228,7 +228,7 @@ class AuthService {
   async verifyOTP (otp) {
     try {
       const email = Cookies.get('email');
-      const response = await axios.post(`${this.apiBaseUrl}/auth/verification`, {
+      const response = await axios.post(`${this.apiBaseUrl}/api/auth/verification`, {
         email,
         otp
       });
@@ -248,7 +248,7 @@ class AuthService {
         throw new Error('API Base URL is not configured. Please check your .env file.');
       }
 
-      const response = await axios.post(`${this.apiBaseUrl}/auth/resend-otp`, {
+      const response = await axios.post(`${this.apiBaseUrl}/api/auth/resend-otp`, {
         email
       });
 

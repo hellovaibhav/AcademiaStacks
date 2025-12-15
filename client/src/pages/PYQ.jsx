@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {motion} from 'framer-motion';
 import axios from 'axios';
-import PDFViewer from '../components/PDFViewer';
+import SecurePDFViewer from '../components/SecurePDFViewer';
 import PDFThumbnail from '../components/PDFThumbnail';
 import Loader from '../components/Loader';
 import ModernFilter from '../components/ModernFilter';
@@ -10,9 +10,11 @@ import {AiOutlineEye} from 'react-icons/ai';
 import Cookies from 'js-cookie';
 import {useToast} from '../components/Toast';
 import {API_ENDPOINTS} from '../config/api';
+import {useAuth} from '../context/AuthContext';
 
 const PYQ = () => {
   const {toast} = useToast();
+  const {user} = useAuth();
   const [index, setIndex] = useState(7);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -58,7 +60,25 @@ const PYQ = () => {
   };
 
   useEffect(() => {
-    fetchPYQs();
+    // Add a test PDF item along with fetched PYQs TTOTO SOM PRIDAL NA TEST
+    const testPDF = {
+      _id: 'test123',
+      subject: 'Sample PDF Test',
+      materialLink: '/sample.pdf', // Local sample PDF
+      instructorName: ['Test Instructor'],
+      author: ['Test Author'],
+      yearOfWriting: '2025',
+      branch: ['Computer Science'],
+      semester: 1,
+      materialType: 'PYQ',
+      desc: 'This is a test PDF to demonstrate the secure PDF viewer',
+      upvotes: [],
+      createdAt: new Date().toISOString()
+    };
+
+    fetchPYQs().then(() => {
+      setData(prevData => [testPDF, ...prevData]);
+    });
   }, []);
 
   const handleFilterChange = (event) => {
@@ -353,12 +373,18 @@ const PYQ = () => {
       }
 
       {/* PDF Viewer */}
-      <PDFViewer
+      <SecurePDFViewer
         isOpen={pdfViewer.isOpen}
         onClose={() => setPdfViewer({isOpen: false, url: '', materialId: '', title: ''})}
         pdfUrl={pdfViewer.url}
         materialId={pdfViewer.materialId}
         title={pdfViewer.title}
+        isSubscribed={user?.isSubscribed}
+        onSubscribeClick={() => {
+          // Handle subscription - you can implement this based on your subscription flow
+          toast.info('Please subscribe to access full features');
+          // You might want to redirect to a subscription page or show a modal
+        }}
       />
 
       {/* Loading Overlay */}
